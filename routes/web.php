@@ -25,37 +25,50 @@ use App\Http\Controllers\CampaignController;
 Route::redirect('/', 'login');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/clientes', function () {
+        return view('pages.dashboard.customers');
+    })->name('customers');
+    Route::get('/servicios', function () {
+        return view('pages.dashboard.services');
+    })->name('services');
 
+    Route::get('/mascotas', function () {
+        return view('pages.dashboard.pets');
+    })->name('pets');
+
+    Route::get('/veterinarios', function () {
+        return view('pages.dashboard.veterinarians');
+    })->name('veterinarians');
+    //////////////////////////////////////////////////////
     // Route for the getting the data feed
     Route::get('/json-data-feed', [DataFeedController::class, 'getDataFeed'])->name('json_data_feed');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/analytics', [DashboardController::class, 'analytics'])->name('analytics');
     Route::get('/dashboard/fintech', [DashboardController::class, 'fintech'])->name('fintech');
-    Route::get('/ecommerce/customers', [CustomerController::class, 'index'])->name('customers');
     Route::get('/ecommerce/orders', [OrderController::class, 'index'])->name('orders');
     Route::get('/ecommerce/invoices', [InvoiceController::class, 'index'])->name('invoices');
     Route::get('/ecommerce/shop', function () {
         return view('pages/ecommerce/shop');
-    })->name('shop');    
+    })->name('shop');
     Route::get('/ecommerce/shop-2', function () {
         return view('pages/ecommerce/shop-2');
-    })->name('shop-2');     
+    })->name('shop-2');
     Route::get('/ecommerce/product', function () {
         return view('pages/ecommerce/product');
     })->name('product');
     Route::get('/ecommerce/cart', function () {
         return view('pages/ecommerce/cart');
-    })->name('cart');    
+    })->name('cart');
     Route::get('/ecommerce/cart-2', function () {
         return view('pages/ecommerce/cart-2');
-    })->name('cart-2');    
+    })->name('cart-2');
     Route::get('/ecommerce/cart-3', function () {
         return view('pages/ecommerce/cart-3');
-    })->name('cart-3');    
+    })->name('cart-3');
     Route::get('/ecommerce/pay', function () {
         return view('pages/ecommerce/pay');
-    })->name('pay');     
+    })->name('pay');
     Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns');
     Route::get('/community/users-tabs', [MemberController::class, 'indexTabs'])->name('users-tabs');
     Route::get('/community/users-tiles', [MemberController::class, 'indexTiles'])->name('users-tiles');
@@ -64,19 +77,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('profile');
     Route::get('/community/feed', function () {
         return view('pages/community/feed');
-    })->name('feed');     
+    })->name('feed');
     Route::get('/community/forum', function () {
         return view('pages/community/forum');
     })->name('forum');
     Route::get('/community/forum-post', function () {
         return view('pages/community/forum-post');
-    })->name('forum-post');    
+    })->name('forum-post');
     Route::get('/community/meetups', function () {
         return view('pages/community/meetups');
-    })->name('meetups');    
+    })->name('meetups');
     Route::get('/community/meetups-post', function () {
         return view('pages/community/meetups-post');
-    })->name('meetups-post');    
+    })->name('meetups-post');
     Route::get('/finance/cards', function () {
         return view('pages/finance/credit-cards');
     })->name('credit-cards');
@@ -85,7 +98,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/job/job-listing', [JobController::class, 'index'])->name('job-listing');
     Route::get('/job/job-post', function () {
         return view('pages/job/job-post');
-    })->name('job-post');    
+    })->name('job-post');
     Route::get('/job/company-profile', function () {
         return view('pages/job/company-profile');
     })->name('company-profile');
@@ -97,43 +110,43 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('tasks-kanban');
     Route::get('/tasks/list', function () {
         return view('pages/tasks/tasks-list');
-    })->name('tasks-list');       
+    })->name('tasks-list');
     Route::get('/inbox', function () {
         return view('pages/inbox');
-    })->name('inbox'); 
+    })->name('inbox');
     Route::get('/calendar', function () {
         return view('pages/calendar');
-    })->name('calendar'); 
+    })->name('calendar');
     Route::get('/settings/account', function () {
         return view('pages/settings/account');
-    })->name('account');  
+    })->name('account');
     Route::get('/settings/notifications', function () {
         return view('pages/settings/notifications');
-    })->name('notifications');  
+    })->name('notifications');
     Route::get('/settings/apps', function () {
         return view('pages/settings/apps');
     })->name('apps');
     Route::get('/settings/plans', function () {
         return view('pages/settings/plans');
-    })->name('plans');      
+    })->name('plans');
     Route::get('/settings/billing', function () {
         return view('pages/settings/billing');
-    })->name('billing');  
+    })->name('billing');
     Route::get('/settings/feedback', function () {
         return view('pages/settings/feedback');
     })->name('feedback');
     Route::get('/utility/changelog', function () {
         return view('pages/utility/changelog');
-    })->name('changelog');  
+    })->name('changelog');
     Route::get('/utility/roadmap', function () {
         return view('pages/utility/roadmap');
-    })->name('roadmap');  
+    })->name('roadmap');
     Route::get('/utility/faqs', function () {
         return view('pages/utility/faqs');
-    })->name('faqs');  
+    })->name('faqs');
     Route::get('/utility/empty-state', function () {
         return view('pages/utility/empty-state');
-    })->name('empty-state');  
+    })->name('empty-state');
     Route::get('/utility/404', function () {
         return view('pages/utility/404');
     })->name('404');
@@ -142,13 +155,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('knowledge-base');
     Route::get('/onboarding-01', function () {
         return view('pages/onboarding-01');
-    })->name('onboarding-01');   
+    })->name('onboarding-01');
     Route::get('/onboarding-02', function () {
         return view('pages/onboarding-02');
-    })->name('onboarding-02');   
+    })->name('onboarding-02');
     Route::get('/onboarding-03', function () {
         return view('pages/onboarding-03');
-    })->name('onboarding-03');   
+    })->name('onboarding-03');
     Route::get('/onboarding-04', function () {
         return view('pages/onboarding-04');
     })->name('onboarding-04');
@@ -166,7 +179,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('alert-page');
     Route::get('/component/modal', function () {
         return view('pages/component/modal-page');
-    })->name('modal-page'); 
+    })->name('modal-page');
     Route::get('/component/pagination', function () {
         return view('pages/component/pagination-page');
     })->name('pagination-page');
@@ -178,7 +191,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('breadcrumb-page');
     Route::get('/component/badge', function () {
         return view('pages/component/badge-page');
-    })->name('badge-page'); 
+    })->name('badge-page');
     Route::get('/component/avatar', function () {
         return view('pages/component/avatar-page');
     })->name('avatar-page');
@@ -191,7 +204,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/component/icons', function () {
         return view('pages/component/icons-page');
     })->name('icons-page');
-    Route::fallback(function() {
+    Route::fallback(function () {
         return view('pages/utility/404');
-    });    
+    });
 });
