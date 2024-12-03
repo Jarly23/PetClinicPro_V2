@@ -3,14 +3,10 @@
     <section class="bg-gray-500 text-white py-16 text-center">
         <h1 class="text-4xl font-bold">Welcome to Our Veterinary Clinic</h1>
         <p class="mt-4 text-lg">We care for your pets like they’re our own</p>
-        <div class="mt-8">
-            <input type="text" placeholder="Search for services..." class="px-4 py-2 w-1/2 rounded-md text-black">
-            <button class="ml-4 bg-black text-white px-6 py-2 rounded-md hover:bg-gray-700">Book Now</button>
-        </div>
     </section>
 
     <!-- Services Section -->
-    <section class="py-16">
+    <section class="py-16" id="services">
         <div class="text-center mb-8">
             <h2 class="text-3xl font-bold">Our Services</h2>
             <p class="text-gray-600">Explore our range of services for your furry friends</p>
@@ -41,7 +37,7 @@
     </section>
 
     <!-- Our Team Section -->
-    <section class="py-16 bg-gray-50">
+    <section class="py-16 bg-gray-50" id="our-team">
         <div class="text-center mb-8">
             <h2 class="text-3xl font-bold">Meet Our Team</h2>
             <p class="text-gray-600">Dedicated professionals caring for your pets</p>
@@ -64,9 +60,8 @@
             </div>
         </div>
     </section>
-
     <!-- Reservation Section -->
-    <section class="py-16">
+    <section class="py-16" id="contact">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
             <div class="w-full md:w-1/2">
                 <h2 class="text-3xl font-bold mb-4">Make a Reservation</h2>
@@ -87,7 +82,8 @@
                     <option>Service 3</option>
                 </select>
 
-                <button type="submit" class="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-700">Confirm Reservation</button>
+                <button type="submit" class="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-700">Confirm
+                    Reservation</button>
             </form>
         </div>
     </section>
@@ -117,7 +113,10 @@
     <!-- Address Section -->
     <section class="py-16">
         <div class="max-w-7xl mx-auto">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1609.9431321139905!2d-71.54151186149731!3d-16.31723820587318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9142490e69cc1acd%3A0x4e048d757bfbb445!2sFerreteria%20la%20Quinta%20Grande!5e0!3m2!1sen!2spe!4v1733033123940!5m2!1sen!2spe" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1609.9431321139905!2d-71.54151186149731!3d-16.31723820587318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9142490e69cc1acd%3A0x4e048d757bfbb445!2sFerreteria%20la%20Quinta%20Grande!5e0!3m2!1sen!2spe!4v1733033123940!5m2!1sen!2spe"
+                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </section>
 </x-guest-layout>

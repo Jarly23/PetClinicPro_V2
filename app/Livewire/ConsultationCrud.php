@@ -10,13 +10,15 @@ use App\Models\Customer;
 use App\Models\Veterinarian;
 use App\Models\Service;
 
-
 class ConsultationCrud extends Component
 {
     use WithPagination;
+
     public $open = false;
     public $consultation_id, $consultation_date, $observations, $pet_id, $customer_id, $veterinarian_id, $service_id;
-   
+
+    public $pets = []; // Almacena las mascotas filtradas
+
     protected $rules = [
         'consultation_date' => 'required|date',
         'observations' => 'nullable|string',
@@ -26,16 +28,24 @@ class ConsultationCrud extends Component
         'service_id' => 'required|exists:services,id',
     ];
 
+    // Método que escucha el cambio del customer_id
+    public function updatedCustomerId($value)
+    {
+        $this->pets = Pet::where('owner_id', $value)->get();
+        $this->pet_id = null; // Limpiar la mascota seleccionada, ya que el cliente cambió
+    }
+
     public function render()
     {
         return view('livewire.consultation-crud', [
             'consultations' => Consultation::with('pet', 'customer', 'veterinarian', 'service')->paginate(10),
-            'pets' => Pet::all(),
             'customers' => Customer::all(),
             'veterinarians' => Veterinarian::all(),
             'services' => Service::all(),
+            'pets' => $this->pets, // Pasar las mascotas filtradas a la vista
         ]);
     }
+
     public function save()
     {
         $this->validate(); // Validación
@@ -50,7 +60,6 @@ class ConsultationCrud extends Component
                 'service_id' => $this->service_id,
                 'consultation_date' => $this->consultation_date,
                 'observations' => $this->observations,
-   
             ]);
         } else {
             Consultation::create([
@@ -60,7 +69,6 @@ class ConsultationCrud extends Component
                 'service_id' => $this->service_id,
                 'consultation_date' => $this->consultation_date,
                 'observations' => $this->observations,
-
             ]);
         }
 
@@ -78,7 +86,6 @@ class ConsultationCrud extends Component
         $this->service_id = null;
         $this->consultation_date = null;
         $this->observations = null;
-
     }
 
     public function edit(Consultation $consultation)

@@ -16,42 +16,48 @@
                     <!-- Nombre de la mascota -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-900">Nombre</label>
-                        <input wire:model="name" type="text" class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <input wire:model="name" type="text"
+                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                         <x-input-error for="name" />
                     </div>
 
                     <!-- Especie -->
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Especie</label>
-                        <input wire:model="species" type="text" class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <input wire:model="species" type="text"
+                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                         <x-input-error for="species" />
                     </div>
 
                     <!-- Raza -->
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Raza</label>
-                        <input wire:model="breed" type="text" class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <input wire:model="breed" type="text"
+                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                         <x-input-error for="breed" />
                     </div>
 
                     <!-- Edad -->
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Edad</label>
-                        <input wire:model="age" type="number" class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <input wire:model="age" type="number"
+                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                         <x-input-error for="age" />
                     </div>
 
                     <!-- Peso -->
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Peso (kg)</label>
-                        <input wire:model="weight" type="number" step="0.01" class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <input wire:model="weight" type="number" step="0.01"
+                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                         <x-input-error for="weight" />
                     </div>
 
                     <!-- Propietario -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-900">Dueño</label>
-                        <select wire:model="owner_id" class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <select wire:model="owner_id"
+                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Seleccione un propietario</option>
                             @foreach ($owners as $owner)
                                 <option value="{{ $owner->id }}">{{ $owner->name }}</option>
@@ -66,10 +72,12 @@
         <!-- Footer del Modal -->
         <x-slot name="footer">
             <div class="flex justify-end space-x-4">
-                <button wire:click="$set('open', false)" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button wire:click="$set('open', false)"
+                    class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     Cancelar
                 </button>
-                <button wire:click="{{ $pet_id ? 'update' : 'store' }}" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button wire:click="{{ $pet_id ? 'update' : 'store' }}"
+                    class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     Guardar
                 </button>
             </div>
@@ -79,7 +87,7 @@
     <!-- Tabla de Mascotas -->
     <div class="mt-6">
         <table class="min-w-full table-auto bg-white rounded-lg">
-            <thead >
+            <thead>
                 <tr>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Nombre</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Especie</th>
@@ -102,6 +110,9 @@
                         <td class="px-4 py-2 text-sm">
                             <button wire:click="edit({{ $pet->id }})" class="text-blue-600 hover:text-blue-800">Editar</button>
                             <button wire:click="delete({{ $pet->id }})" class="ml-2 text-red-600 hover:text-red-800">Eliminar</button>
+                            <a href="{{ route('pets.history', $pet->id) }}" class="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400">
+                                Ver historial médico
+                            </a>
                         </td>
                     </tr>
                 @endforeach

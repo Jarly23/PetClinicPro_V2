@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
-
+use App\Http\Controllers\PetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +53,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard/analytics', [DashboardController::class, 'analytics'])->name('analytics');
     Route::get('/dashboard/fintech', [DashboardController::class, 'fintech'])->name('fintech');
 });
+Route::get('/pets/{pet}/history', [PetController::class, 'history'])->name('pets.history');
+
