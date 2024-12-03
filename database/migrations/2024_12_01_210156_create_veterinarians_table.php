@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('veterinarians', function (Blueprint $table) {
+        Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('specialty');
-            $table->string('photo')->nullable(); 
+            $table->foreignId('customer_id')->constrained('customers');
+            $table->foreignId('pet_id')->constrained('pets');
+            $table->foreignId('veterinarian_id')->constrained('veterinarians');
+            $table->foreignId('service_id')->constrained('services');
+            $table->date('reservation_date'); // Solo fecha
+            $table->time('start_time'); // Hora de inicio
+            $table->time('end_time'); // Hora de fin
+            $table->enum('status', ['Pending', 'Confirmed', 'Canceled'])->default('Pending');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('veterinarians');
+        Schema::dropIfExists('reservations');
     }
 };
