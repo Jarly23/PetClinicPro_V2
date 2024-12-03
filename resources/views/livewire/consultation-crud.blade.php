@@ -119,7 +119,6 @@
                 @endforeach
             </tbody>
         </table>
-
         <!-- Paginación -->
         <div class="px-4 py-2">
             {{ $consultations->links() }}

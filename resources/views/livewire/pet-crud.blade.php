@@ -78,8 +78,8 @@
 
     <!-- Tabla de Mascotas -->
     <div class="mt-6">
-        <table class="min-w-full table-auto">
-            <thead class="bg-gray-100">
+        <table class="min-w-full table-auto bg-white rounded-lg">
+            <thead >
                 <tr>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Nombre</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Especie</th>

@@ -102,7 +102,7 @@
     </x-dialog-modal>
 
     <div class="mt-6">
-        <table class="min-w-full table-auto">
+        <table class="min-w-full table-auto bg-white">
             <thead class="bg-gray-200">
                 <tr>
                     <th class="px-6 py-3 text-sm font-semibold text-left text-gray-900">Nombre</th>
