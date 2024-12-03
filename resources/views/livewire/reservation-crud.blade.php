@@ -13,9 +13,10 @@
     @endif
 
     <!-- Botón para Registrar Reserva -->
-    <x-danger-button wire:click="$set('open',true)">
+    <button wire:click="$set('open', true)" 
+            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75">
         Registrar Reserva
-    </x-danger-button>
+    </button>
 
     <!-- Modal para la Gestión de Reservas -->
     <x-dialog-modal wire:model="open">
@@ -30,7 +31,7 @@
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-900">Cliente</label>
                         <select wire:model="customer_id"
-                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Seleccione un cliente</option>
                             @foreach ($customers as $customer)
                                 <option value="{{ $customer->id }}">{{ $customer->name }}</option>
@@ -43,7 +44,7 @@
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Mascota</label>
                         <select wire:model="pet_id"
-                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Seleccione una mascota</option>
                             @foreach ($pets as $pet)
                                 <option value="{{ $pet->id }}">{{ $pet->name }}</option>
@@ -56,7 +57,7 @@
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Veterinario</label>
                         <select wire:model="veterinarian_id"
-                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Seleccione un veterinario</option>
                             @foreach ($veterinarians as $vet)
                                 <option value="{{ $vet->id }}">{{ $vet->name }}</option>
@@ -69,7 +70,7 @@
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-900">Servicio</label>
                         <select wire:model="service_id"
-                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Seleccione un servicio</option>
                             @foreach ($services as $service)
                                 <option value="{{ $service->id }}">{{ $service->name }}</option>
@@ -81,16 +82,32 @@
                     <!-- Fecha de Reserva -->
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Fecha de Reserva</label>
-                        <input wire:model="reservation_date" type="datetime-local"
-                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <input wire:model="reservation_date" type="date"
+                               class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                         <x-input-error for="reservation_date" />
+                    </div>
+
+                    <!-- Hora de Inicio -->
+                    <div class="sm:col-span-1">
+                        <label class="block text-sm font-medium text-gray-900">Hora de Inicio</label>
+                        <input wire:model="start_time" type="time"
+                               class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <x-input-error for="start_time" />
+                    </div>
+
+                    <!-- Hora de Fin -->
+                    <div class="sm:col-span-1">
+                        <label class="block text-sm font-medium text-gray-900">Hora de Fin</label>
+                        <input wire:model="end_time" type="time"
+                               class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                        <x-input-error for="end_time" />
                     </div>
 
                     <!-- Estado -->
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Estado</label>
                         <select wire:model="status"
-                            class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="Pending">Pendiente</option>
                             <option value="Confirmed">Confirmada</option>
                             <option value="Canceled">Cancelada</option>
@@ -104,10 +121,10 @@
         <!-- Footer del Modal -->
         <x-slot name="footer">
             <div class="mt-6 flex items-center justify-end gap-x-6">
-                <button wire:click="$set('open',false)" type="button"
-                    class="text-sm/6 font-semibold text-gray-900">Cancelar</button>
+                <button wire:click="$set('open', false)" type="button"
+                        class="text-sm font-semibold text-gray-900">Cancelar</button>
                 <button wire:click="save" type="submit"
-                    class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Guardar</button>
+                        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Guardar</button>
             </div>
         </x-slot>
     </x-dialog-modal>
@@ -122,6 +139,8 @@
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Veterinario</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Servicio</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Fecha de Reserva</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Hora de Inicio</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Hora de Fin</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Estado</th>
                     <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Acciones</th>
                 </tr>
@@ -134,6 +153,8 @@
                         <td class="px-4 py-2">{{ $reservation->veterinarian->name }}</td>
                         <td class="px-4 py-2">{{ $reservation->service->name }}</td>
                         <td class="px-4 py-2">{{ $reservation->reservation_date }}</td>
+                        <td class="px-4 py-2">{{ $reservation->start_time }}</td>
+                        <td class="px-4 py-2">{{ $reservation->end_time }}</td>
                         <td class="px-4 py-2">
                             <select wire:change="updateStatus({{ $reservation->id }}, $event.target.value)" 
                                     class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">

@@ -10,17 +10,18 @@ use App\Models\Customer;
 use App\Models\Veterinarian;
 use App\Models\Service;
 
-
 class ReservationCrud extends Component
 {
-
     use WithPagination;
+
     public $open = false;
-    public $reservation_id, $reservation_date, $status, $pet_id, $customer_id, $veterinarian_id, $service_id;
+    public $reservation_id, $reservation_date, $status = 'Pending', $pet_id, $customer_id, $veterinarian_id, $service_id, $start_time, $end_time;
 
     protected $rules = [
         'reservation_date' => 'required|date',
-        'status' => 'required|string',
+        'start_time' => 'required|date_format:H:i',
+        'end_time' => 'required|date_format:H:i|after:start_time',
+        'status' => 'required|string|in:Pending,Confirmed,Canceled',
         'pet_id' => 'required|exists:pets,id',
         'customer_id' => 'required|exists:customers,id',
         'veterinarian_id' => 'required|exists:veterinarians,id',
@@ -40,78 +41,69 @@ class ReservationCrud extends Component
 
     public function save()
     {
-        try {
-            $this->validate();
-    
-            if ($this->reservation_id) {
-                // Actualizar reserva existente
-                $reservation = Reservation::find($this->reservation_id);
-                $reservation->update([
-                    'customer_id' => $this->customer_id,
-                    'pet_id' => $this->pet_id,
-                    'veterinarian_id' => $this->veterinarian_id,
-                    'service_id' => $this->service_id,
-                    'reservation_date' => $this->reservation_date,
-                    'status' => $this->status, // Estado actualizado
-                ]);
-            } else {
-                // Crear nueva reserva con estado predeterminado
-                Reservation::create([
-                    'customer_id' => $this->customer_id,
-                    'pet_id' => $this->pet_id,
-                    'veterinarian_id' => $this->veterinarian_id,
-                    'service_id' => $this->service_id,
-                    'reservation_date' => $this->reservation_date,
-                    'status' => 'Pending', // Siempre "Pending" al crear
-                ]);
+        $this->validate();
+
+        $data = [
+            'customer_id' => $this->customer_id,
+            'pet_id' => $this->pet_id,
+            'veterinarian_id' => $this->veterinarian_id,
+            'service_id' => $this->service_id,
+            'reservation_date' => $this->reservation_date,
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
+            'status' => $this->status,
+        ];
+
+        if ($this->reservation_id) {
+            $reservation = Reservation::find($this->reservation_id);
+            if ($reservation) {
+                $reservation->update($data);
             }
-    
-            $this->resetForm();
-            $this->open = false;
-            session()->flash('message', '¡Reserva guardada exitosamente!');
-        } catch (\Exception $e) {
-            session()->flash('error', 'Hubo un error al guardar la reserva: ' . $e->getMessage());
+        } else {
+            Reservation::create($data);
         }
+
+        $this->resetForm();
+        $this->open = false;
+        session()->flash('message', '¡Reserva guardada exitosamente!');
     }
-    public function updateStatus(Reservation $reservation, $newStatus)
-    {
-        try {
-            $reservation->update(['status' => $newStatus]);
-            session()->flash('message', 'Estado actualizado correctamente.');
-        } catch (\Exception $e) {
-            session()->flash('error', 'Error al actualizar el estado: ' . $e->getMessage());
-        }
-    }
+
     public function resetForm()
     {
         $this->reservation_id = null;
-        $this->customer_id = null;
+        $this->reservation_date = null;
+        $this->status = 'Pending';
         $this->pet_id = null;
+        $this->customer_id = null;
         $this->veterinarian_id = null;
         $this->service_id = null;
-        $this->reservation_date = null;
-        $this->status = null;
+        $this->start_time = null;
+        $this->end_time = null;
     }
 
-    public function edit(Reservation $reservation)
+    public function edit($id)
     {
-        $this->reservation_id = $reservation->id;
-        $this->reservation_date = $reservation->reservation_date;
-        $this->status = $reservation->status;
-        $this->pet_id = $reservation->pet_id;
-        $this->customer_id = $reservation->customer_id;
-        $this->veterinarian_id = $reservation->veterinarian_id;
-        $this->service_id = $reservation->service_id;
-        $this->open = true;
+        $reservation = Reservation::find($id);
+        if ($reservation) {
+            $this->reservation_id = $reservation->id;
+            $this->reservation_date = $reservation->reservation_date;
+            $this->status = $reservation->status;
+            $this->pet_id = $reservation->pet_id;
+            $this->customer_id = $reservation->customer_id;
+            $this->veterinarian_id = $reservation->veterinarian_id;
+            $this->service_id = $reservation->service_id;
+            $this->start_time = $reservation->start_time;
+            $this->end_time = $reservation->end_time;
+            $this->open = true;
+        }
     }
 
-    public function delete(Reservation $reservation)
+    public function delete($id)
     {
-        try {
+        $reservation = Reservation::find($id);
+        if ($reservation) {
             $reservation->delete();
             session()->flash('message', 'Reserva eliminada con éxito.');
-        } catch (\Exception $e) {
-            session()->flash('error', 'No se pudo eliminar la reserva: ' . $e->getMessage());
         }
     }
 }
