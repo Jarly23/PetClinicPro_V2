@@ -14,11 +14,12 @@ class VeterinarianCrud extends Component
     public $veterinarian_id, $name, $phone, $email, $specialty, $photo;
     protected $rules = [
         'name' => 'required|string|max:255',
-        'phone' => 'required|string|max:15',
-        'email' => 'required|email|max:255',
+        'phone' => 'required|digits:9',  // Validación para que tenga 9 dígitos
+        'email' => 'required|email|max:255',  // Validación de correo
         'specialty' => 'required|string|max:255',
-        'photo' => 'nullable|image|max:1024', // Si usas una foto
+        'photo' => 'nullable|image|max:1024', // Validación para la foto
     ];
+    
 
     public function render()
     {

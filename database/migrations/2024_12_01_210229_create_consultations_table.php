@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('service_id')->constrained('services');
             $table->dateTime('consultation_date');
             $table->text('observations');
+            $table->text('recomendaciones');  // Columna para recomendaciones
+            $table->text('diagnostico');      // Columna para diagnóstico
             $table->timestamps();
         });
     }

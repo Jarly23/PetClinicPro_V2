@@ -10,6 +10,7 @@ class Consultation extends Model
     use HasFactory;
     protected $fillable = [
         'pet_id', 'customer_id', 'veterinarian_id', 'service_id', 'consultation_date', 'observations',
+        'recomendaciones','diagnostico'
     ];
 
     public function pet()

@@ -10,12 +10,13 @@ class CustomerCrud extends Component
     public $open = false;
     public $customer_id, $name, $lastname, $email, $phone, $address;
     protected $rules = [
-        'name' => 'required',
-        'lastname' => 'required',
-        'email' => 'required',
-        'phone' => 'required',
-        'address' => 'required',
+        'name' => 'required',  // Sin cambios
+        'lastname' => 'required',  // Sin cambios
+        'email' => 'required|email',  // Validación de email
+        'phone' => 'required|digits:9',  // Validación para que tenga 9 dígitos
+        'address' => 'required',  // Sin cambios
     ];
+    
     public function render()
     {
         $customers = Customer::all();
