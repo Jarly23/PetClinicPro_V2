@@ -115,7 +115,11 @@
                         <td class="px-4 py-2">
                             <button wire:click="edit({{ $consultation->id }})" class="px-2 py-1 text-xs text-white bg-blue-500 rounded">Editar</button>
                             <button wire:click="delete({{ $consultation->id }})" class="px-2 py-1 text-xs text-white bg-red-500 rounded">Eliminar</button>
+
+                            <button wire:click="viewDetails({{ $consultation->id }})" class="px-2 py-1 text-xs text-white bg-green-500 rounded">Más detalles</button>
+
                             <a class="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400" href="#0">Ver más<span class="hidden sm:inline"> -&gt;</span></a>
+
                         </td>
                     </tr>
                 @endforeach
@@ -126,4 +130,42 @@
             {{ $consultations->links() }}
         </div>
     </div>
+
+    <!-- Modal de Detalles -->
+    <x-dialog-modal wire:model="showDetails">
+        <x-slot name="title">
+            <h2 class="text-lg font-semibold text-gray-900">Detalles de la Consulta</h2>
+        </x-slot>
+        <x-slot name="content">
+            @if ($consultation_details)
+                <p><strong>Cliente:</strong> {{ $consultation_details->customer->name }}</p>
+                <p><strong>Mascota:</strong> {{ $consultation_details->pet->name }}</p>
+                <p><strong>Veterinario:</strong> {{ $consultation_details->veterinarian->name }}</p>
+                <p><strong>Servicio:</strong> {{ $consultation_details->service->name }}</p>
+                <p><strong>Fecha:</strong> {{ $consultation_details->consultation_date }}</p>
+                <p><strong>Observaciones:</strong> {{ $consultation_details->observations }}</p>
+
+                <!-- Botones de Exportación -->
+                <div class="mt-4 flex justify-end space-x-4">
+                    <button wire:click="$set('export_format', 'pdf'); $emit('export', {{ $consultation_details->id }})" wire:loading.attr="disabled" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md">
+                        Imprimir en PDF
+                    </button>
+                    <button wire:click="$set('export_format', 'word'); $emit('export', {{ $consultation_details->id }})" wire:loading.attr="disabled" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md">
+                        Imprimir en Word
+                    </button>
+                    <button wire:click="$set('export_format', 'excel'); $emit('export', {{ $consultation_details->id }})" wire:loading.attr="disabled" class="px-4 py-2 text-sm font-medium text-white bg-yellow-600 rounded-md">
+                        Imprimir en Excel
+                    </button>
+                </div>
+            @else
+                <p>No se encontraron detalles para esta consulta.</p>
+            @endif
+        </x-slot>
+        <x-slot name="footer">
+            <button wire:click="$set('showDetails', false)" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                Cerrar
+            </button>
+        </x-slot>
+    </x-dialog-modal>
+
 </div>
