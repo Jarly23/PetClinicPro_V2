@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('breed');
             $table->integer('age'); // Cambiamos de `date` a `integer` para la edad
             $table->float('weight'); // Agregamos peso
-            $table->foreignId('owner_id')->constrained('customers'); // Propietario
+            $table->foreignId('owner_id')->references('id')->on('customers')->onDelete('cascade'); // Relación con la tabla customers// Propietario
             $table->timestamps();
         });
     }

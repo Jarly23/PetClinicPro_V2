@@ -9,19 +9,21 @@ class CustomerCrud extends Component
 {
     public $open = false;
     public $customer_id, $name, $lastname, $email, $phone, $address;
+
     protected $rules = [
-        'name' => 'required',  // Sin cambios
-        'lastname' => 'required',  // Sin cambios
-        'email' => 'required|email',  // Validación de email
-        'phone' => 'required|digits:9',  // Validación para que tenga 9 dígitos
-        'address' => 'required',  // Sin cambios
+        'name' => 'required',
+        'lastname' => 'required',
+        'email' => 'required|email',
+        'phone' => 'required|digits:9',
+        'address' => 'required',
     ];
-    
+
     public function render()
     {
         $customers = Customer::all();
-        return view('livewire.customer-crud' , compact('customers'));
+        return view('livewire.customer-crud', compact('customers'));
     }
+
     public function save()
     {
         $this->validate();
@@ -48,6 +50,7 @@ class CustomerCrud extends Component
         $this->resetForm();
         $this->open = false;
     }
+
     public function edit($id)
     {
         $customer = Customer::find($id);
@@ -60,10 +63,19 @@ class CustomerCrud extends Component
 
         $this->open = true;
     }
+
     public function delete($id)
     {
-        Customer::find($id)->delete();
+        $customer = Customer::find($id);
+
+        if ($customer) {
+            $customer->delete();
+            $this->dispatch('alert', ['type' => 'success', 'message' => 'Cliente eliminado correctamente.']);
+        } else {
+            $this->dispatch('alert', ['type' => 'error', 'message' => 'Cliente no encontrado.']);
+        }
     }
+
     public function resetForm()
     {
         $this->customer_id = '';
@@ -73,5 +85,4 @@ class CustomerCrud extends Component
         $this->phone = '';
         $this->address = '';
     }
-
 }

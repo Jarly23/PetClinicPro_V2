@@ -15,7 +15,12 @@ class ConsultationCrud extends Component
     use WithPagination;
 
     public $open = false;
+    public $showDetails = false;
     public $consultation_id, $consultation_date, $observations, $pet_id, $customer_id, $veterinarian_id, $service_id, $recomendaciones, $diagnostico;
+
+    public $consultation_details, $export_format;
+
+    public $pets = []; // Almacena las mascotas filtradas
 
     protected $rules = [
         'consultation_date' => 'required|date',
@@ -28,14 +33,21 @@ class ConsultationCrud extends Component
         'service_id' => 'required|exists:services,id',
     ];
 
+    // Método que escucha el cambio del customer_id
+    public function updatedCustomerId($value)
+    {
+        $this->pets = Pet::where('owner_id', $value)->get();
+        $this->pet_id = null; // Limpiar la mascota seleccionada, ya que el cliente cambió
+    }
+
     public function render()
     {
         return view('livewire.consultation-crud', [
             'consultations' => Consultation::with('pet', 'customer', 'veterinarian', 'service')->paginate(10),
-            'pets' => Pet::all(),
             'customers' => Customer::all(),
             'veterinarians' => Veterinarian::all(),
             'services' => Service::all(),
+            'pets' => $this->pets, // Pasar las mascotas filtradas a la vista
         ]);
     }
 
@@ -70,6 +82,7 @@ class ConsultationCrud extends Component
 
         $this->resetForm();
         $this->open = false;
+        $this->resetPage();
     }
 
     public function resetForm()
@@ -102,5 +115,12 @@ class ConsultationCrud extends Component
     public function delete(Consultation $consultation)
     {
         $consultation->delete();
+        $this->resetPage();
+    }
+
+    public function viewDetails($id)
+    {
+        $this->consultation_details = Consultation::with('customer', 'pet', 'veterinarian', 'service')->find($id);
+        $this->showDetails = true;
     }
 }
