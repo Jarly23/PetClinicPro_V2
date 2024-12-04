@@ -6,7 +6,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+
         "barryvdh/laravel-dompdf": "^3.0",
+
+        "greenter/lite": "^5.1",
+
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.2",

@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('veterinarians', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->string('email'); // Corregido
-            $table->string('specialty');
-            $table->string('photo')->nullable(); // Se agrega nullable en la columna 'photo'
+            $table->unsignedBigInteger('customer_id');
+            $table->date('date');
+            $table->string('details');
+            $table->decimal('total', 10, 2);
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('payments');
     }
 };

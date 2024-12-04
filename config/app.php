@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('Paw Patrol Veterinary', 'Paw Patrol Veterinary'),
 
     /*
     |--------------------------------------------------------------------------

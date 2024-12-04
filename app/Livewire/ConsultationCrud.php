@@ -9,11 +9,13 @@ use App\Models\Pet;
 use App\Models\Customer;
 use App\Models\Veterinarian;
 use App\Models\Service;
+
 use Barryvdh\DomPDF\Facade\Pdf;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Illuminate\Support\Facades\Storage;
+
 
 class ConsultationCrud extends Component
 {
@@ -22,7 +24,12 @@ class ConsultationCrud extends Component
     public $open = false;
     public $showDetails = false;
     public $consultation_id, $consultation_date, $observations, $pet_id, $customer_id, $veterinarian_id, $service_id;
+
     public $consultation_details, $export_format;
+
+
+    public $pets = []; // Almacena las mascotas filtradas
+
 
     protected $rules = [
         'consultation_date' => 'required|date',
@@ -33,14 +40,21 @@ class ConsultationCrud extends Component
         'service_id' => 'required|exists:services,id',
     ];
 
+    // Método que escucha el cambio del customer_id
+    public function updatedCustomerId($value)
+    {
+        $this->pets = Pet::where('owner_id', $value)->get();
+        $this->pet_id = null; // Limpiar la mascota seleccionada, ya que el cliente cambió
+    }
+
     public function render()
     {
         return view('livewire.consultation-crud', [
             'consultations' => Consultation::with('pet', 'customer', 'veterinarian', 'service')->paginate(10),
-            'pets' => Pet::all(),
             'customers' => Customer::all(),
             'veterinarians' => Veterinarian::all(),
             'services' => Service::all(),
+            'pets' => $this->pets, // Pasar las mascotas filtradas a la vista
         ]);
     }
 
