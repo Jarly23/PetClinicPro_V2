@@ -17,7 +17,7 @@ use App\Http\Controllers\PetController;
 |
 */
 
-Route::get('/send-invoice', [InvoiceController::class, 'sendInvoice']);
+
 Route::get('/', function () {
     return view('pages.web.home');
 });

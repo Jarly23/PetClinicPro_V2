@@ -17,6 +17,9 @@ class ReservationCrud extends Component
     public $open = false;
     public $reservation_id, $reservation_date, $status = 'Pending', $pet_id, $customer_id, $veterinarian_id, $service_id, $start_time, $end_time;
 
+    // Para almacenar las mascotas filtradas
+    public $pets = [];
+
     protected $rules = [
         'reservation_date' => 'required|date',
         'start_time' => 'required|date_format:H:i',
@@ -28,11 +31,18 @@ class ReservationCrud extends Component
         'service_id' => 'required|exists:services,id',
     ];
 
+    // Método para actualizar las mascotas basadas en el customer_id
+    public function updatedCustomerId($value)
+    {
+        $this->pets = Pet::where('owner_id', $value)->get(); // Filtrar las mascotas por el cliente seleccionado
+        $this->pet_id = null; // Limpiar el pet_id cuando cambie el cliente
+    }
+
     public function render()
     {
         return view('livewire.reservation-crud', [
             'reservations' => Reservation::with('pet', 'customer', 'veterinarian', 'service')->paginate(10),
-            'pets' => Pet::all(),
+            'pets' => $this->pets, // Pasar las mascotas filtradas a la vista
             'customers' => Customer::all(),
             'veterinarians' => Veterinarian::all(),
             'services' => Service::all(),
