@@ -16,6 +16,7 @@ class ConsultationCrud extends Component
 
     public $open = false;
     public $showDetails = false;
+    public $search = "";
     public $consultation_id, $consultation_date, $observations, $pet_id, $customer_id, $veterinarian_id, $service_id, $recomendaciones, $diagnostico;
 
     public $consultation_details, $export_format;
@@ -37,18 +38,39 @@ class ConsultationCrud extends Component
     public function updatedCustomerId($value)
     {
         $this->pets = Pet::where('owner_id', $value)->get();
-        $this->pet_id = null; // Limpiar la mascota seleccionada, ya que el cliente cambió
+        $this->pet_id = null;
     }
 
     public function render()
     {
+        $consultations = Consultation::with('pet', 'customer', 'veterinarian', 'service')
+            ->whereHas('customer', function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->orWhereHas('pet', function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->orWhereHas('veterinarian', function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })
+            ->orWhere('observations', 'like', '%' . $this->search . '%')
+            ->paginate(10);
+
         return view('livewire.consultation-crud', [
-            'consultations' => Consultation::with('pet', 'customer', 'veterinarian', 'service')->paginate(10),
+            'consultations' => $consultations,
             'customers' => Customer::all(),
             'veterinarians' => Veterinarian::all(),
             'services' => Service::all(),
-            'pets' => $this->pets, // Pasar las mascotas filtradas a la vista
+            'pets' => $this->pets,
         ]);
+    }
+    public function updated($propertyName)
+{
+    $this->validateOnly($propertyName);
+}
+    public function searchConsultations()
+    {
+        $this->resetPage(); 
     }
 
     public function save()

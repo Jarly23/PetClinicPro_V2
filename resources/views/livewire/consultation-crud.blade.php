@@ -3,7 +3,24 @@
     <div class="mb-4">
         <x-danger-button wire:click="$set('open',true)">Registrar Consulta</x-danger-button>
     </div>
-
+    @if (count($consultations))
+        <div class="overflow-hidden">
+            <div class="flex justify-end items-center gap-2">
+                <!-- Campo de entrada -->
+                <x-input class="py-1 px-2 w-80 text-stone-700" wire:model.defer="search"
+                    wire:keydown.enter="searchConsultations" placeholder="Buscar consulta..." />
+                <!-- Botón de búsqueda -->
+                <button wire:click="searchConsultations"
+                    class="py-1 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    @else
+        <div class="flex items-center justify-center w-full h-full">
+            <p class="text-2xl font-semibold text-gray-900">No hay consulta registrada</p>
+        </div>
+    @endif
     <!-- Modal para la Gestión de Consultas -->
     <x-dialog-modal wire:model="open">
         <x-slot name="title">
@@ -136,25 +153,26 @@
                     <tr class="border-b">
                         <!-- Cliente -->
                         <td class="px-4 py-2">{{ $consultation->customer->name ?? 'No asignado' }}</td>
-                        
+
                         <!-- Mascota -->
                         <td class="px-4 py-2">{{ $consultation->pet->name ?? 'No asignada' }}</td>
-                        
+
                         <!-- Veterinario -->
                         <td class="px-4 py-2">{{ $consultation->veterinarian->name ?? 'No asignado' }}</td>
-                        
+
                         <!-- Fecha de Consulta -->
-                        <td class="px-4 py-2">{{ \Carbon\Carbon::parse($consultation->consultation_date)->format('d/m/Y H:i') }}</td>
-                        
+                        <td class="px-4 py-2">
+                            {{ \Carbon\Carbon::parse($consultation->consultation_date)->format('d/m/Y H:i') }}</td>
+
                         <!-- Observaciones -->
                         <td class="px-4 py-2">{{ $consultation->observations ?? 'Sin observaciones' }}</td>
-                        
+
                         <!-- Diagnóstico -->
                         <td class="px-4 py-2">{{ $consultation->diagnostico ?? 'No disponible' }}</td>
-                        
+
                         <!-- Recomendaciones -->
                         <td class="px-4 py-2">{{ $consultation->recomendaciones ?? 'No disponibles' }}</td>
-                        
+
                         <!-- Acciones -->
                         <td class="px-4 py-2">
                             <button wire:click="edit({{ $consultation->id }})"

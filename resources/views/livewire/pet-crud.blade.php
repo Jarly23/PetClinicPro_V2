@@ -3,7 +3,24 @@
     <div class="mb-4">
         <x-danger-button wire:click="create">Registrar Mascota</x-danger-button>
     </div>
-
+    @if (count($pets))
+        <div class="overflow-hidden">
+            <div class="flex justify-end items-center gap-2">
+                <!-- Campo de entrada -->
+                <x-input class="py-1 px-2 w-80 text-stone-700" wire:model.defer="search"
+                    placeholder="Buscar mascotas..." />
+                <!-- Botón de búsqueda -->
+                <button wire:click="searchPets"
+                    class="py-1 px-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    @else
+        <div class="flex items-center justify-center w-full h-full">
+            <p class="text-2xl font-semibold text-gray-900">No hay mascotas registradas</p>
+        </div>
+    @endif
     <!-- Modal para la gestión de mascotas -->
     <x-dialog-modal wire:model="open">
         <x-slot name="title">
@@ -108,9 +125,12 @@
                         <td class="px-4 py-2 text-sm text-gray-900">{{ $pet->weight }} kg</td>
                         <td class="px-4 py-2 text-sm text-gray-900">{{ $pet->owner->name }}</td>
                         <td class="px-4 py-2 text-sm">
-                            <button wire:click="edit({{ $pet->id }})" class="text-blue-600 hover:text-blue-800">Editar</button>
-                            <button wire:click="delete({{ $pet->id }})" class="ml-2 text-red-600 hover:text-red-800">Eliminar</button>
-                            <a href="{{ route('pets.history', $pet->id) }}" class="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400">
+                            <button wire:click="edit({{ $pet->id }})"
+                                class="text-blue-600 hover:text-blue-800">Editar</button>
+                            <button wire:click="delete({{ $pet->id }})"
+                                class="ml-2 text-red-600 hover:text-red-800">Eliminar</button>
+                            <a href="{{ route('pets.history', $pet->id) }}"
+                                class="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400">
                                 Ver historial médico
                             </a>
                         </td>

@@ -13,6 +13,7 @@ class Customer extends Model
         'lastname',
         'email',
         'phone',
-        'address'
+        'address',
+        'dniruc'
     ];
 }

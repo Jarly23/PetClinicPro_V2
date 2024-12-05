@@ -11,6 +11,7 @@ class PetCrud extends Component
 {
     use WithPagination;
     public $open = false;
+    public $search = '';
     public $pet_id, $name, $species, $breed, $age, $weight, $owner_id;
 
     protected $rules = [
@@ -21,16 +22,27 @@ class PetCrud extends Component
         'weight' => 'required|numeric|min:0',
         'owner_id' => 'required|exists:customers,id',
     ];
-
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
+        $pets = Pet::with('owner')
+            ->where('name', 'like', '%' . $this->search . '%')
+            ->orWhere('species', 'like', '%' . $this->search . '%')
+            ->orWhere('breed', 'like', '%' . $this->search . '%')
+            ->paginate(10);
 
         return view('livewire.pet-crud', [
-            'pets' => Pet::with('owner')->paginate(10),
-            'owners' => Customer::all(), // Lista de propietarios
+            'pets' => $pets,
+            'owners' => Customer::all(),
         ]);
-
+    }
+    public function searchPets()
+    {
+        $this->resetPage();
     }
     public function create()
     {
