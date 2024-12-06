@@ -304,7 +304,7 @@
                                 </ul>
                             @endcan
                             <!-- roles -->
-
+                            @can('roles.index')                                                 
                             <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
                                 :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
@@ -316,6 +316,7 @@
                                     </a>
                                 </li>
                             </ul>
+                            @endcan
 
                         </div>
                     </li>

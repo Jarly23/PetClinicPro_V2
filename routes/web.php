@@ -63,4 +63,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('/pets/{pet}/history', [PetController::class, 'history'])->name('pets.history');
 
 Route::resource('users', UserController::class)->middleware('can:users.index') ->names('admin.users');
-Route::resource('roles', RoleController::class)->names('admin.roles');
+Route::resource('roles', RoleController::class)->middleware('can:roles.index')-> names('admin.roles');
