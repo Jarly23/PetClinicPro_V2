@@ -47,7 +47,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('pages.dashboard.consultations');
     })->name('consultations');
 
-    //////////////////////////////////////////////////////
+    Route::get('/reportes', function () {
+        return view('pages.dashboard.reports');
+    })->name('report');
+
+
     // Route for the getting the data feed
     Route::get('/json-data-feed', [DataFeedController::class, 'getDataFeed'])->name('json_data_feed');
 
