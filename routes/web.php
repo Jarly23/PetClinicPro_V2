@@ -6,7 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\Admin\UserController;
-
+use PhpOffice\PhpSpreadsheet\RichText\Run;
+use App\Http\Controllers\Admin\RoleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,3 +63,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('/pets/{pet}/history', [PetController::class, 'history'])->name('pets.history');
 
 Route::resource('users', UserController::class)->middleware('can:users.index') ->names('admin.users');
+Route::resource('roles', RoleController::class)->names('admin.roles');
