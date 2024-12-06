@@ -9,9 +9,10 @@ use Livewire\WithPagination;
 class CustomerCrud extends Component
 {
     use WithPagination;
+
     public $open = false;
     public $search;
-    public $customer_id, $name, $lastname, $email, $phone, $address, $dniruc;
+    public $customer_id, $name, $lastname, $email, $phone, $address, $dniruc, $documentType;
 
     protected $rules = [
         'name' => 'required',
@@ -19,6 +20,7 @@ class CustomerCrud extends Component
         'email' => 'required|email',
         'phone' => 'required|digits:9',
         'address' => 'required',
+        'documentType' => 'required|in:dni,ruc',
         'dniruc' => 'required',
     ];
 
@@ -26,11 +28,13 @@ class CustomerCrud extends Component
     {
         $this->resetPage();
     }
+
     public function searchCustomers()
     {
         // Si ya estás filtrando en el render, este método puede quedar vacío.
         $this->resetPage(); // Si necesitas resetear la paginación.
     }
+
     public function render()
     {
         $customers = Customer::where('name', 'LIKE', '%' . $this->search . '%')
@@ -43,10 +47,18 @@ class CustomerCrud extends Component
         return view('livewire.customer-crud', compact('customers'));
     }
 
-
     public function save()
     {
         $this->validate();
+
+        // Validación dinámica según el tipo de documento
+        if ($this->documentType === 'dni' && strlen($this->dniruc) !== 8) {
+            $this->addError('dniruc', 'El DNI debe tener exactamente 8 dígitos.');
+            return;
+        } elseif ($this->documentType === 'ruc' && strlen($this->dniruc) !== 11) {
+            $this->addError('dniruc', 'El RUC debe tener exactamente 11 dígitos.');
+            return;
+        }
 
         if ($this->customer_id) {
             $customer = Customer::find($this->customer_id);
@@ -84,6 +96,9 @@ class CustomerCrud extends Component
         $this->address = $customer->address;
         $this->dniruc = $customer->dniruc;
 
+        // Determinar el tipo de documento (suponiendo que puedes distinguirlo por la longitud)
+        $this->documentType = strlen($this->dniruc) === 8 ? 'dni' : 'ruc';
+
         $this->open = true;
     }
 
@@ -108,5 +123,6 @@ class CustomerCrud extends Component
         $this->phone = '';
         $this->address = '';
         $this->dniruc = '';
+        $this->documentType = '';
     }
 }
