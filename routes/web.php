@@ -5,6 +5,7 @@ use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('pages.dashboard.reports');
     })->name('report');
 
+
     // Route for the getting the data feed
     Route::get('/json-data-feed', [DataFeedController::class, 'getDataFeed'])->name('json_data_feed');
 
@@ -59,3 +61,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 Route::get('/pets/{pet}/history', [PetController::class, 'history'])->name('pets.history');
 
+Route::resource('users', UserController::class)->middleware('can:users.index') ->names('admin.users');

@@ -24,7 +24,7 @@
                         <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                             <p
                                 class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
-                                Obseraciones</p>
+                                Diagnosticos</p>
                         </th>
                     </tr>
                 </thead>
@@ -34,7 +34,7 @@
                             <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->consultation_date }}</td>
                             <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->veterinarian->name }}</td>
                             <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->service->name }}</td>
-                            <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->observations }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->diagnostico }}</td>
                         </tr>
                     @endforeach
                 </tbody>
