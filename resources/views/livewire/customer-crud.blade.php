@@ -30,7 +30,7 @@
                                 <label for="first-name"
                                     class="block text-sm/6 font-medium text-gray-900">Nombres</label>
                                 <div class="mt-2">
-                                    <input wire :model="name" type="text" name="first-name" id="first-name"
+                                    <input wire:model="name" type="text" name="first-name" id="first-name"
                                         autocomplete="given-name"
                                         class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                                 </div>
@@ -41,7 +41,7 @@
                                 <label for="last-name"
                                     class="block text-sm/6 font-medium text-gray-900">Apellidos</label>
                                 <div class="mt-2">
-                                    <input wire :model="lastname" type="text" name="last-name" id="last-name"
+                                    <input wire:model="lastname" type="text" name="last-name" id="last-name"
                                         autocomplete="family-name"
                                         class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                                 </div>
@@ -51,7 +51,7 @@
                             <div class="sm:col-span-4">
                                 <label for="email" class="block text-sm/6 font-medium text-gray-900">Corre Electrónico</label>
                                 <div class="mt-2">
-                                    <input wire :model="email" id="email" name="email" type="email"
+                                    <input wire:model="email" id="email" name="email" type="email"
                                         autocomplete="email"
                                         class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                                 </div>
@@ -60,7 +60,7 @@
                             <div class="sm:col-span-2">
                                 <label for="email" class="block text-sm/6 font-medium text-gray-900">Teléfono</label>
                                 <div class="mt-2">
-                                    <input wire :model="phone" id="phone" name="phone" type="tel"
+                                    <input wire:model="phone" id="phone" name="phone" type="tel"
                                         autocomplete="phone"
                                         class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                                 </div>
@@ -69,7 +69,7 @@
                             <div class="col-span-full">
                                 <label for="tipo-documento" class="block text-sm/6 font-medium text-gray-900">Tipo de Documento</label>
                                 <div class="mt-2">
-                                    <select wire :model="documentType" id="tipo-documento"
+                                    <select wire:model="documentType" id="tipo-documento"
                                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                                         <option value="">Seleccione</option>
                                         <option value="dni">DNI</option>
@@ -85,7 +85,7 @@
                                 </label>
                                 <div class="mt-2">
                                     <input
-                                        wire :model="dniruc"
+                                        wire:model="dniruc"
                                         type="text"
                                         id="dni-ruc"
                                         maxlength="{{ $documentType === 'dni' ? 8 : ($documentType === 'ruc' ? 11 : '') }}"
@@ -99,7 +99,7 @@
                                 <label for="street-address"
                                     class="block text-sm/6 font-medium text-gray-900">Dirección</label>
                                 <div class="mt-2">
-                                    <input wire :model="address" type="text" name="street-address" id="street-address"
+                                    <input wire:model="address" type="text" name="street-address" id="street-address"
                                         autocomplete="street-address"
                                         class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6">
                                 </div>
@@ -114,14 +114,14 @@
         <x-slot name="footer">
             <div class="flex items-center justify-end gap-x-6">
                 <button type="button" class="text-sm/6 font-semibold text-gray-900"
-                    wire :click="$set('open', false)">Cancelar</button>
+                    wire:click="$set('open', false)">Cancelar</button>
                 <button
                     class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    wire :click="save" wire :loading.attr="disabled">
+                    wire:click="save" wire :loading.attr="disabled">
                     {{ $customer_id ? 'Actualizar' : 'Guardar' }}
                 </button>
             </div>
-            <span wire :loading>Guardando</span>
+            <span wire:loading>Guardando</span>
         </x-slot>
     </x-dialog-modal>
 
@@ -177,9 +177,9 @@
                         <td class="p-4 max-w-64">{{ $customer->address }}</td>
                         <td class="p-4 max-w-64">{{ $customer->dniruc }}</td>
                         <td class="p-4">
-                            <button wire :click="edit({{ $customer->id }})"
+                            <button wire:click="edit({{ $customer->id }})"
                                 class="font-bold rounded-lg text-base  w-24 h-8 bg-[#0d4dff] text-[#ffffff] justify-center">Editar</button>
-                            <button wire :click="delete({{ $customer->id }})"
+                            <button wire:click="delete({{ $customer->id }})"
                                 class="font-bold rounded-lg text-base  w-24 h-8 bg-[#f20e1e] text-[#ffffff] justify-center">Eliminar</button>
                         </td>
                     </tr>
