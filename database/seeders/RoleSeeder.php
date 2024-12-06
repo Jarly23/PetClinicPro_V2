@@ -18,20 +18,22 @@ class RoleSeeder extends Seeder
         $role1 = Role::create(['name' => 'Admin']);
         $role2 = Role::create(['name' => 'User']);
 
-        Permission::create(['name' => 'dashboard'])->syncRoles([$role1,$role2]); 
+        Permission::create(['name' => 'dashboard','description'=>'ver dashboard'])->syncRoles([$role1,$role2]); 
 
-        Permission::create(['name' => 'users.index'])->syncRoles([$role1]);
-        Permission::create(['name' => 'users.edit'])->syncRoles([$role1]);
-        Permission::create(['name' => 'users.update'])->syncRoles([$role1]);
 
-        Permission::create(['name' => 'services.index'])->syncRoles([$role2]);
-        Permission::create(['name' => 'services.create'])->syncRoles([$role2]);
-        Permission::create(['name' => 'services.edit'])->syncRoles([$role2]);
-        Permission::create(['name' => 'services.destroy'])->syncRoles([$role1,$role2]);
 
-        Permission::create(['name' => 'veterinarians.index'])->syncRoles([$role2]);
-        Permission::create(['name' => 'veterinarians.create'])->syncRoles([$role2]);
-        Permission::create(['name' => 'veterinarians.edit'])->syncRoles([$role2]);
-        Permission::create(['name' => 'veterinarians.destroy'])->syncRoles([$role2]);     
+        Permission::create(['name' => 'users.index', 'description' => 'Ver la lista de usuarios'])->syncRoles([$role1]);
+        Permission::create(['name' => 'users.edit', 'description' => 'Editar usuarios'])->syncRoles([$role1]);
+        Permission::create(['name' => 'users.update', 'description' => 'Actualizar información de usuarios'])->syncRoles([$role1]);
+        
+        Permission::create(['name' => 'services.index', 'description' => 'Ver la lista de servicios'])->syncRoles([$role2]);
+        Permission::create(['name' => 'services.create', 'description' => 'Crear servicios'])->syncRoles([$role2]);
+        Permission::create(['name' => 'services.edit', 'description' => 'Editar servicios'])->syncRoles([$role2]);
+        Permission::create(['name' => 'services.destroy', 'description' => 'Eliminar servicios'])->syncRoles([$role1, $role2]);
+        
+        Permission::create(['name' => 'veterinarians.index', 'description' => 'Ver la lista de veterinarios'])->syncRoles([$role2]);
+        Permission::create(['name' => 'veterinarians.create', 'description' => 'Registrar veterinarios'])->syncRoles([$role2]);
+        Permission::create(['name' => 'veterinarians.edit', 'description' => 'Editar veterinarios'])->syncRoles([$role2]);
+        Permission::create(['name' => 'veterinarians.destroy', 'description' => 'Eliminar veterinarios'])->syncRoles([$role2]);
     }
 }
