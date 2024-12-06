@@ -50,33 +50,49 @@ class ReservationCrud extends Component
     }
 
     public function save()
-    {
-        $this->validate();
+{
+    // Validar la disponibilidad del veterinario
+    $this->validate();
 
-        $data = [
-            'customer_id' => $this->customer_id,
-            'pet_id' => $this->pet_id,
-            'veterinarian_id' => $this->veterinarian_id,
-            'service_id' => $this->service_id,
-            'reservation_date' => $this->reservation_date,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
-            'status' => $this->status,
-        ];
+    // Verificar si el veterinario está disponible en la fecha y horario seleccionados
+    $existingReservation = Reservation::where('veterinarian_id', $this->veterinarian_id)
+        ->where('reservation_date', $this->reservation_date)
+        ->where(function($query) {
+            $query->whereBetween('start_time', [$this->start_time, $this->end_time])
+                ->orWhereBetween('end_time', [$this->start_time, $this->end_time]);
+        })
+        ->exists();
 
-        if ($this->reservation_id) {
-            $reservation = Reservation::find($this->reservation_id);
-            if ($reservation) {
-                $reservation->update($data);
-            }
-        } else {
-            Reservation::create($data);
-        }
-
-        $this->resetForm();
-        $this->open = false;
-        session()->flash('message', '¡Reserva guardada exitosamente!');
+    if ($existingReservation) {
+        session()->flash('error', 'El veterinario ya tiene una reserva en este horario. Por favor, seleccione otro horario.');
+        return; // Salir si el veterinario no está disponible
     }
+
+    // Si no hay conflictos, guarda o actualiza la reserva
+    $data = [
+        'customer_id' => $this->customer_id,
+        'pet_id' => $this->pet_id,
+        'veterinarian_id' => $this->veterinarian_id,
+        'service_id' => $this->service_id,
+        'reservation_date' => $this->reservation_date,
+        'start_time' => $this->start_time,
+        'end_time' => $this->end_time,
+        'status' => $this->status,
+    ];
+
+    if ($this->reservation_id) {
+        $reservation = Reservation::find($this->reservation_id);
+        if ($reservation) {
+            $reservation->update($data);
+        }
+    } else {
+        Reservation::create($data);
+    }
+
+    $this->resetForm();
+    $this->open = false;
+    session()->flash('message', '¡Reserva guardada exitosamente!');
+}
 
     public function resetForm()
     {
