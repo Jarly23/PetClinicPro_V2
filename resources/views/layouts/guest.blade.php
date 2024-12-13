@@ -43,7 +43,7 @@
 
                     </div>
 
-                    <div class="w-full  mx-auto py-8">
+                    <div class="w-full  mx-auto ">
                         {{ $slot }}
                     </div>
 

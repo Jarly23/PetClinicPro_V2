@@ -1,64 +1,27 @@
 <x-guest-layout>
     <!-- Hero Section -->
-    <section class="bg-gray-500 text-white py-16 text-center">
-        <h1 class="text-4xl font-bold">Welcome to Our Veterinary Clinic</h1>
-        <p class="mt-4 text-lg">We care for your pets like they’re our own</p>
+    <section class=" text-white py-16 text-center"
+        style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/hero-img.webp'); height:600px; background-size:cover;">
+        <h1 class="text-4xl font-bold">Bienvenidos a nuestra Clínica Veterinaria</h1>
+        <p class="mt-4 text-lg">Cuidamos a tus mascotas como si fueran nuestras</p>
     </section>
 
     <!-- Services Section -->
     <section class="py-16" id="services">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold">Our Services</h2>
-            <p class="text-gray-600">Explore our range of services for your furry friends</p>
+            <h2 class="text-3xl font-bold">Nuestros Servicios</h2>
+            <p class="text-gray-600">Explora nuestra gama de servicios para tus amigos peludos</p>
         </div>
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <img src="assets/images/service-image.webp" alt="Service Image" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="font-bold text-xl">Pet Checkup</h3>
-                    <p class="text-gray-600 mt-2">Price: $50</p>
-                </div>
-            </div>
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <img src="assets/images/service-image.webp" alt="Service Image" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="font-bold text-xl">Vaccination</h3>
-                    <p class="text-gray-600 mt-2">Price: $30</p>
-                </div>
-            </div>
-            <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                <img src="assets/images/service-image.webp" alt="Service Image" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="font-bold text-xl">Surgery</h3>
-                    <p class="text-gray-600 mt-2">Price: $200</p>
-                </div>
-            </div>
-        </div>
+        @livewire('web.show-services')
     </section>
 
     <!-- Our Team Section -->
     <section class="py-16 bg-gray-50" id="our-team">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold">Meet Our Team</h2>
-            <p class="text-gray-600">Dedicated professionals caring for your pets</p>
+            <h2 class="text-3xl font-bold">Conozca a nuestro equipo</h2>
+            <p class="text-gray-600">Profesionales dedicados al cuidado de tus mascotas</p>
         </div>
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center">
-                <img src="assets/images/service-image.webp" alt="Team Member" class="w-24 h-24 mx-auto rounded-full">
-                <h3 class="font-bold text-xl mt-4">Dr. Smith</h3>
-                <p class="text-gray-600">Veterinarian</p>
-            </div>
-            <div class="text-center">
-                <img src="assets/images/service-image.webp" alt="Team Member" class="w-24 h-24 mx-auto rounded-full">
-                <h3 class="font-bold text-xl mt-4">Dr. Johnson</h3>
-                <p class="text-gray-600">Surgeon</p>
-            </div>
-            <div class="text-center">
-                <img src="assets/images/service-image.webp" alt="Team Member" class="w-24 h-24 mx-auto rounded-full">
-                <h3 class="font-bold text-xl mt-4">Dr. Martinez</h3>
-                <p class="text-gray-600">Laboratory Specialist</p>
-            </div>
-        </div>
+        @livewire('web.show-veterinans')
     </section>
     <!-- Reservation Section -->
     <section class="py-16" id="contact">
@@ -91,21 +54,21 @@
     <!-- Testimonials Section -->
     <section class="py-16 bg-gray-50">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold">Client Testimonials</h2>
-            <p class="text-gray-600">See what our clients have to say about us</p>
+            <h2 class="text-3xl font-bold">Testimonios de clientes</h2>
+            <p class="text-gray-600">Vea lo que nuestros clientes dicen sobre nosotros</p>
         </div>
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-white shadow-md rounded-lg p-4">
                 <p class="text-lg font-bold">Emily</p>
-                <p class="text-gray-600 mt-2">Great service! My pet received top-notch care.</p>
+                <p class="text-gray-600 mt-2">¡Excelente servicio! Mi mascota recibió una atención de primera.</p>
             </div>
             <div class="bg-white shadow-md rounded-lg p-4">
                 <p class="text-lg font-bold">Michael</p>
-                <p class="text-gray-600 mt-2">Highly skilled team. Recommend this clinic!</p>
+                <p class="text-gray-600 mt-2">Equipo altamente capacitado. ¡Recomiendo esta clínica!</p>
             </div>
             <div class="bg-white shadow-md rounded-lg p-4">
                 <p class="text-lg font-bold">Sarah</p>
-                <p class="text-gray-600 mt-2">Friendly staff and excellent care for my dog.</p>
+                <p class="text-gray-600 mt-2">Personal amable y excelente atención para mi perro.</p>
             </div>
         </div>
     </section>
