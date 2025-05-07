@@ -16,4 +16,8 @@ class Customer extends Model
         'address',
         'dniruc'
     ];
+    public function ventas()
+    {
+        return $this->hasMany(Venta::class, 'customer_id');
+    }
 }

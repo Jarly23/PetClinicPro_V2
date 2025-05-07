@@ -8,6 +8,8 @@ use App\Http\Controllers\PetController;
 use App\Http\Controllers\Admin\UserController;
 use PhpOffice\PhpSpreadsheet\RichText\Run;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Livewire\CategoryComponent;
+use App\Http\Controllers\PDFController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,6 +53,39 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/reportes', function () {
         return view('pages.dashboard.reports');
     })->name('report');
+
+    Route::get('/Productos', function () {
+      return view('pages.dashboard.categorys');
+    })->name('inventary');//
+
+    Route::get('/proveedor', function () {
+        return view('pages.dashboard.suppliers');
+      })->name('suppliers');//
+
+    Route::get('/producto', function () {
+        return view('pages.dashboard.products');
+    })->name('products');//
+    
+    Route::get('/entradas', function () {
+        return view('pages.dashboard.entradas'); // Asegúrate que esta vista exista
+    })->name('entradas');
+
+    Route::get('/notaventas', function () {
+        return view('pages.dashboard.notaventa'); // Asegúrate que esta vista exista
+    })->name('venta');
+
+    Route::get('/Historial', function () {
+        return view('pages.dashboard.Historial'); // Asegúrate que esta vista exista
+    })->name('historial');
+
+    Route::get('/Analityc', function () {
+        return view('pages.dashboard.analitycVentas'); // Asegúrate que esta vista exista
+    })->name('analityc');
+    
+   
+    
+
+    
 
 
     // Route for the getting the data feed
