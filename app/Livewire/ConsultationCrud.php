@@ -7,7 +7,7 @@ use Livewire\WithPagination;
 use App\Models\Consultation;
 use App\Models\Pet;
 use App\Models\Customer;
-use App\Models\Veterinarian;
+use App\Models\User;
 use App\Models\Service;
 
 class ConsultationCrud extends Component
@@ -17,7 +17,7 @@ class ConsultationCrud extends Component
     public $open = false;
     public $showDetails = false;
     public $search = "";
-    public $consultation_id, $consultation_date, $observations, $pet_id, $customer_id, $veterinarian_id, $service_id, $recomendaciones, $diagnostico;
+    public $consultation_id, $consultation_date, $observations, $pet_id, $customer_id, $user_id, $service_id, $recomendaciones, $diagnostico;
 
     public $consultation_details, $export_format;
 
@@ -30,7 +30,7 @@ class ConsultationCrud extends Component
         'diagnostico' => 'nullable|string',
         'pet_id' => 'required|exists:pets,id',
         'customer_id' => 'required|exists:customers,id',
-        'veterinarian_id' => 'required|exists:veterinarians,id',
+        'user_id' => 'required|exists:users,id',
         'service_id' => 'required|exists:services,id',
     ];
 
@@ -43,14 +43,14 @@ class ConsultationCrud extends Component
 
     public function render()
     {
-        $consultations = Consultation::with('pet', 'customer', 'veterinarian', 'service')
+        $consultations = Consultation::with('pet', 'customer', 'user', 'service')
             ->whereHas('customer', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->orWhereHas('pet', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
-            ->orWhereHas('veterinarian', function ($query) {
+            ->orWhereHas('user', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
             ->orWhere('observations', 'like', '%' . $this->search . '%')
@@ -59,7 +59,7 @@ class ConsultationCrud extends Component
         return view('livewire.consultation-crud', [
             'consultations' => $consultations,
             'customers' => Customer::all(),
-            'veterinarians' => Veterinarian::all(),
+            'veterinarians' => User::role('Veterinario')->get(),
             'services' => Service::all(),
             'pets' => $this->pets,
         ]);
@@ -82,7 +82,7 @@ class ConsultationCrud extends Component
             $consultation->update([
                 'customer_id' => $this->customer_id,
                 'pet_id' => $this->pet_id,
-                'veterinarian_id' => $this->veterinarian_id,
+                'user_id' => $this->user_id,
                 'service_id' => $this->service_id,
                 'consultation_date' => $this->consultation_date,
                 'observations' => $this->observations,
@@ -93,7 +93,7 @@ class ConsultationCrud extends Component
             Consultation::create([
                 'customer_id' => $this->customer_id,
                 'pet_id' => $this->pet_id,
-                'veterinarian_id' => $this->veterinarian_id,
+                'user_id' => $this->user_id,
                 'service_id' => $this->service_id,
                 'consultation_date' => $this->consultation_date,
                 'observations' => $this->observations,
@@ -112,7 +112,7 @@ class ConsultationCrud extends Component
         $this->consultation_id = null;
         $this->customer_id = null;
         $this->pet_id = null;
-        $this->veterinarian_id = null;
+        $this->user_id = null;
         $this->service_id = null;
         $this->consultation_date = null;
         $this->observations = null;
@@ -127,7 +127,7 @@ class ConsultationCrud extends Component
         $this->observations = $consultation->observations;
         $this->pet_id = $consultation->pet_id;
         $this->customer_id = $consultation->customer_id;
-        $this->veterinarian_id = $consultation->veterinarian_id;
+        $this->user_id = $consultation->user_id;
         $this->service_id = $consultation->service_id;
         $this->recomendaciones = $consultation->recomendaciones;
         $this->diagnostico = $consultation->diagnostico;
@@ -142,7 +142,7 @@ class ConsultationCrud extends Component
 
     public function viewDetails($id)
     {
-        $this->consultation_details = Consultation::with('customer', 'pet', 'veterinarian', 'service')->find($id);
+        $this->consultation_details = Consultation::with('customer', 'pet', 'user', 'service')->find($id);
         $this->showDetails = true;
     }
 }

@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('veterinarians', function (Blueprint $table) {
+        Schema::create('vaccine_disease', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->string('email'); // Corregido
-            $table->string('specialty');
-            $table->string('photo')->nullable(); // Se agrega nullable en la columna 'photo'
+            $table->foreignId('disease_id')->constrained()->onDelete('cascade');
+            $table->foreignId('vaccine_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('vaccine_disease');
     }
 };

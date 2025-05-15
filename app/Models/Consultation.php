@@ -9,12 +9,12 @@ class Consultation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'pet_id', 'customer_id', 'veterinarian_id', 'service_id', 'consultation_date', 'observations',
+        'pet_id', 'customer_id', 'user_id', 'service_id', 'consultation_date', 'observations',
         'recomendaciones','diagnostico'
     ];
 
     public function pet()
-    {
+    {   
         return $this->belongsTo(Pet::class);
     }
 
@@ -23,13 +23,12 @@ class Consultation extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function veterinarian()
-    {
-        return $this->belongsTo(Veterinarian::class);
-    }
-
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+        public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

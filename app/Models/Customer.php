@@ -14,10 +14,10 @@ class Customer extends Model
         'email',
         'phone',
         'address',
-        'dniruc'
+        'dni'
     ];
     public function ventas()
     {
-        return $this->hasMany(Venta::class, 'customer_id');
+        return $this->hasMany(Ventas::class, 'customer_id');
     }
 }

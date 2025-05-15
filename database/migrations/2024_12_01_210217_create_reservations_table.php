@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('pet_id')->constrained('pets');
-            $table->foreignId('veterinarian_id')->constrained('veterinarians');
+            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('service_id')->constrained('services');
-            $table->dateTime('reservation_date');
-            $table->enum('Status', ['Pending', 'Confirmed', 'Canceled'])->default('Pending');
+            $table->date('reservation_date');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->enum('status', ['Pending', 'Confirmed', 'Completed', 'Canceled'])->default('Pending');
             $table->timestamps();
         });
     }

@@ -59,14 +59,14 @@
                     <!-- Veterinario -->
                     <div class="sm:col-span-1">
                         <label class="block text-sm font-medium text-gray-900">Veterinario</label>
-                        <select wire:model="veterinarian_id"
+                        <select wire:model="user_id"
                             class="w-full rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Seleccione un veterinario</option>
                             @foreach ($veterinarians as $vet)
                                 <option value="{{ $vet->id }}">{{ $vet->name }}</option>
                             @endforeach
                         </select>
-                        <x-input-error for="veterinarian_id" />
+                        <x-input-error for="user_id" />
                     </div>
 
                     <!-- Servicio -->
@@ -158,7 +158,7 @@
                         <td class="px-4 py-2">{{ $consultation->pet->name ?? 'No asignada' }}</td>
 
                         <!-- Veterinario -->
-                        <td class="px-4 py-2">{{ $consultation->veterinarian->name ?? 'No asignado' }}</td>
+                        <td class="px-4 py-2">{{ $consultation->user->name ?? 'No asignado' }}</td>
 
                         <!-- Fecha de Consulta -->
                         <td class="px-4 py-2">

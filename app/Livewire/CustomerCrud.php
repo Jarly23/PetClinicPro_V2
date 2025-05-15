@@ -3,47 +3,53 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Customer;
 use Livewire\WithPagination;
+use App\Models\Customer;
 
 class CustomerCrud extends Component
 {
     use WithPagination;
 
     public $open = false;
-    public $search;
-    public $customer_id, $name, $lastname, $email, $phone, $address, $dniruc, $documentType;
+    public $search = '';
+    public $customer_id, $name, $lastname, $email, $phone, $address, $dni;
 
-    protected $rules = [
-        'name' => 'required',
-        'lastname' => 'required',
-        'email' => 'required|email',
-        'phone' => 'required|digits:9',
-        'address' => 'required',
-        'documentType' => 'required|in:dni,ruc',
-        'dniruc' => 'required',
-    ];
+    protected function rules()
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|digits:9',
+            'address' => 'required|string|max:255',
+            'dni' => 'required|digits:8|unique:customers,dni,'
+        ];
+    }
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function searchCustomers()
+    public function searchCustomer()
     {
-        // Si ya estás filtrando en el render, este método puede quedar vacío.
-        $this->resetPage(); // Si necesitas resetear la paginación.
+        $this->resetPage(); 
     }
 
     public function render()
     {
-        $customers = Customer::where('name', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('lastname', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('email', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('phone', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('address', 'LIKE', '%' . $this->search . '%')
-            ->orWhere('dniruc', 'LIKE', '%' . $this->search . '%')
-            ->get();
+        $customers = Customer::query()
+            ->where(function ($query) {
+                $query->where('name', 'like', "%{$this->search}%")
+                    ->orWhere('lastname', 'like', "%{$this->search}%")
+                    ->orWhere('email', 'like', "%{$this->search}%")
+                    ->orWhere('phone', 'like', "%{$this->search}%")
+                    ->orWhere('address', 'like', "%{$this->search}%")
+                    ->orWhere('dni', 'like', "%{$this->search}%");
+            })
+            ->orderBy('name')
+            ->paginate(10);
+
         return view('livewire.customer-crud', compact('customers'));
     }
 
@@ -51,54 +57,28 @@ class CustomerCrud extends Component
     {
         $this->validate();
 
-        // Validación dinámica según el tipo de documento
-        if ($this->documentType === 'dni' && strlen($this->dniruc) !== 8) {
-            $this->addError('dniruc', 'El DNI debe tener exactamente 8 dígitos.');
-            return;
-        } elseif ($this->documentType === 'ruc' && strlen($this->dniruc) !== 11) {
-            $this->addError('dniruc', 'El RUC debe tener exactamente 11 dígitos.');
-            return;
-        }
+        $data = $this->only(['name', 'lastname', 'email', 'phone', 'address', 'dni']);
 
         if ($this->customer_id) {
-            $customer = Customer::find($this->customer_id);
-            $customer->update([
-                'name' => $this->name,
-                'lastname' => $this->lastname,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'address' => $this->address,
-                'dniruc' => $this->dniruc,
-            ]);
+            Customer::findOrFail($this->customer_id)->update($data);
         } else {
-            Customer::create([
-                'name' => $this->name,
-                'lastname' => $this->lastname,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'address' => $this->address,
-                'dniruc' => $this->dniruc,
-            ]);
+            Customer::create($data);
         }
 
         $this->resetForm();
         $this->open = false;
+
+        $this->dispatch('alert', [
+            'type' => 'success',
+            'message' => $this->customer_id ? 'Cliente actualizado.' : 'Cliente creado.'
+        ]);
     }
 
     public function edit($id)
     {
-        $customer = Customer::find($id);
-        $this->customer_id = $id;
-        $this->name = $customer->name;
-        $this->lastname = $customer->lastname;
-        $this->email = $customer->email;
-        $this->phone = $customer->phone;
-        $this->address = $customer->address;
-        $this->dniruc = $customer->dniruc;
+        $customer = Customer::findOrFail($id);
 
-        // Determinar el tipo de documento (suponiendo que puedes distinguirlo por la longitud)
-        $this->documentType = strlen($this->dniruc) === 8 ? 'dni' : 'ruc';
-
+        $this->fillCustomerFields($customer);
         $this->open = true;
     }
 
@@ -106,23 +86,38 @@ class CustomerCrud extends Component
     {
         $customer = Customer::find($id);
 
-        if ($customer) {
-            $customer->delete();
-            $this->dispatch('alert', ['type' => 'success', 'message' => 'Cliente eliminado correctamente.']);
-        } else {
-            $this->dispatch('alert', ['type' => 'error', 'message' => 'Cliente no encontrado.']);
+        if (!$customer) {
+            return $this->dispatch('alert', [
+                'type' => 'error',
+                'message' => 'Cliente no encontrado.'
+            ]);
         }
+
+        $customer->delete();
+
+        $this->dispatch('alert', [
+            'type' => 'success',
+            'message' => 'Cliente eliminado correctamente.'
+        ]);
     }
 
     public function resetForm()
     {
-        $this->customer_id = '';
-        $this->name = '';
-        $this->lastname = '';
-        $this->email = '';
-        $this->phone = '';
-        $this->address = '';
-        $this->dniruc = '';
-        $this->documentType = '';
+        $this->reset(['customer_id', 'name', 'lastname', 'email', 'phone', 'address', 'dni']);
+    }
+
+    protected function fillCustomerFields($customer)
+    {
+        $this->customer_id = $customer->id;
+        $this->name = $customer->name;
+        $this->lastname = $customer->lastname;
+        $this->email = $customer->email;
+        $this->phone = $customer->phone;
+        $this->address = $customer->address;
+        $this->dni = $customer->dni;
+    }
+    public function cancel(){
+        $this-> resetForm();
+        $this->open= false;
     }
 }
