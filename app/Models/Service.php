@@ -14,4 +14,9 @@ class Service extends Model
         'price',
         'image',
     ];
+
+    public function consultations()
+    {
+        return $this->belongsToMany(Consultation::class, 'consultation_service');
+    }
 }

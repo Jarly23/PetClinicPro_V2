@@ -10,6 +10,9 @@ use PhpOffice\PhpSpreadsheet\RichText\Run;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Livewire\CategoryComponent;
 use App\Http\Controllers\PDFController;
+use App\Livewire\Pets\Detail;
+use App\Livewire\Pets\Show;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -96,12 +99,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('pages.dashboard.vaccinesDiseases');
     })->name('vaccines-diseases');
 
-    Route::get('/control-vacunas', function () {
-        return view('pages.dashboard.petVaccineControl');
-    })->name('petVaccineControl');
-
-
-
     // Route for the getting the data feed
     Route::get('/json-data-feed', [DataFeedController::class, 'getDataFeed'])->name('json_data_feed');
 
@@ -109,7 +106,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard/analytics', [DashboardController::class, 'analytics'])->name('analytics');
     //Route::get(uri: '/dashboard/fintech', [DashboardController::class, 'fintech'])->name('fintech');
 });
-Route::get('/pets/{pet}/history', [PetController::class, 'history'])->name('pets.history');
+Route::get('/pets/{pet}/show', Show::class)->name('pets.detail');
 
 Route::resource('users', UserController::class)->middleware('can:users.index')->names('admin.users');
 Route::resource('roles', RoleController::class)->middleware('can:roles.index')->names('admin.roles');

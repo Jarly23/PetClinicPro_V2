@@ -22,7 +22,7 @@ class PendingReservations extends Component
         $today = $now->toDateString();
 
         $this->todayReservations = Reservation::with(['pet', 'customer'])
-            ->where('status', 'Pending')
+            ->where('status', 'Pending ')
             ->whereDate('reservation_date', $today)
             ->orderBy('start_time', 'asc')
             ->get()

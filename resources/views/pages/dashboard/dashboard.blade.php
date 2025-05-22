@@ -41,6 +41,7 @@
 
             @livewire('dashboard.charts.most-consumed-services')
             @livewire('dashboard.tables.pending-reservations')
+            
 
         </div>
 

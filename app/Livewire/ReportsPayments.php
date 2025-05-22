@@ -20,7 +20,7 @@ class ReportsPayments extends Component
         // Verifica si el campo de búsqueda no está vacío
         if ($this->search !== '') {
             // Buscar cliente por DNI o RUC
-            $this->selectedCustomer = Customer::where('dniruc', 'LIKE', '%' . $this->search . '%')->first();
+            $this->selectedCustomer = Customer::where('dni', 'LIKE', '%' . $this->search . '%')->first();
 
             if ($this->selectedCustomer) {
                 // Si el cliente es encontrado, obtenemos las consultas
@@ -75,7 +75,7 @@ class ReportsPayments extends Component
                 echo $pdf->output();
             }, 200, [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment; filename="reporte_cliente_' . $this->selectedCustomer->dniruc . '.pdf"',
+                'Content-Disposition' => 'attachment; filename="reporte_cliente_' . $this->selectedCustomer->dni . '.pdf"',
             ]);
         } else {
             // Si no se ha seleccionado un cliente o consulta, se podría agregar un mensaje o acción

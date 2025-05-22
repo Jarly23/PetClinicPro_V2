@@ -10,7 +10,7 @@ class VaccineApplication extends Model
 
     use HasFactory;
 
-    protected $filliable = ['vaccine_id','application_date', 'notes', 'pet_id', 'user_id' ];
+    protected $fillable  = ['vaccine_id','application_date', 'notes', 'pet_id', 'user_id' , 'with_deworming'];
 
     public function pet()
     {

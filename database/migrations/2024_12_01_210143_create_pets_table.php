@@ -16,8 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('animal_type_id')->constrained()->onDelete('cascade');
             $table->string('breed');
-            $table->integer('age'); // Cambiamos de `date` a `integer` para la edad
-            $table->foreignId('owner_id')->references('id')->on('customers')->onDelete('cascade'); // Relación con la tabla customers// Propietario
+            $table->date('birth_date'); // Fecha de nacimiento
+            $table->enum('sex', ['Macho', 'Hembra']); // Sexo
+            $table->string('color')->nullable(); // Color
+            $table->boolean('sterilized')->default(false); // Esterilizado
+            $table->string('photo')->nullable(); // Foto (ruta)
+            $table->foreignId('owner_id')->constrained('customers')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -17,12 +17,23 @@ return new class extends Migration
             $table->foreignId('pet_id')->constrained('pets');
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('service_id')->constrained('services');
             $table->dateTime('consultation_date');
-            $table->text('observations')->nullable(); // Opcional si no siempre hay observaciones
-            $table->text('recomendaciones')->nullable();  // Opcional
-            $table->text('diagnostico')->nullable();      // Opcional
-            $table->foreignId('reservation_id')->nullable()->constrained('reservations'); // Opcional
+
+            $table->string('motivo_consulta')->nullable();
+            $table->float('peso', 5, 2)->nullable();
+            $table->float('temperatura', 4, 1)->nullable();
+            $table->string('frecuencia_cardiaca')->nullable();
+            $table->string('frecuencia_respiratoria')->nullable();
+            $table->string('estado_general')->nullable();
+
+            $table->boolean('desparasitacion')->default(false);
+            $table->boolean('vacunado')->default(false);
+
+            $table->text('observations')->nullable();
+            $table->text('diagnostico')->nullable();
+            $table->text('recomendaciones')->nullable();
+            $table->text('tratamiento')->nullable();
+            $table->foreignId('reservation_id')->nullable()->constrained('reservations');
 
             $table->timestamps();
         });

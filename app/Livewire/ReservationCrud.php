@@ -9,6 +9,7 @@ use App\Models\Pet;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Service;
+use App\Models\Consultation;
 use Illuminate\Support\Facades\Log;
 
 class ReservationCrud extends Component
@@ -24,6 +25,7 @@ class ReservationCrud extends Component
 
     public $pets = [];
     public $diagnostico, $recomendaciones;
+    public $selected_services = [];
     public $owner_found = false;
 
     protected $listeners = ['ownerSelected', 'saveReservation'];
@@ -227,27 +229,31 @@ class ReservationCrud extends Component
         }
     }
     public function saveConsultation()
-{
-    $this->validate([
-        'diagnostico' => 'required|string|min:3',
-        'recomendaciones' => 'required|string|min:3',
-    ]);
+    {
+        $this->validate([
+            'diagnostico' => 'required|string|min:3',
+            'recomendaciones' => 'required|string|min:3',
+        ]);
 
-    \App\Models\Consultation::create([
-        'reservation_id' => $this->reservation_id,
-        'customer_id' => $this->customer_id,
-        'pet_id' => $this->pet_id,
-        'user_id' => $this->user_id,
-        'service_id' => $this->service_id,
-        'consultation_date' => now(),
-        'diagnostico' => $this->diagnostico,
-        'recomendaciones' => $this->recomendaciones,
-        'observations' => '',
-    ]);
+        $consultation = Consultation::create([
+            'reservation_id' => $this->reservation_id,
+            'customer_id' => $this->customer_id,
+            'pet_id' => $this->pet_id,
+            'user_id' => $this->user_id,
+            'consultation_date' => now(),
+            'diagnostico' => $this->diagnostico,
+            'recomendaciones' => $this->recomendaciones,
+            'observations' => '',
+        ]);
 
-    Reservation::find($this->reservation_id)->update(['status' => 'Completed']);
+        // Guardar servicios seleccionados en la tabla pivote consultation_service
+        $consultation->services()->sync($this->selected_services);
 
-    $this->reset(['diagnostico', 'recomendaciones', 'openConsultationModal']);
-    session()->flash('message', 'Consulta registrada exitosamente.');
-}   
+        // Cambiar estado de la reserva
+        Reservation::find($this->reservation_id)->update(['status' => 'Completed']);
+
+        $this->reset(['diagnostico', 'recomendaciones', 'openConsultationModal', 'selected_services']);
+
+        session()->flash('message', 'Consulta registrada exitosamente.');
+    }
 }
