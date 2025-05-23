@@ -12,6 +12,7 @@ use App\Http\Livewire\CategoryComponent;
 use App\Http\Controllers\PDFController;
 use App\Livewire\Pets\Detail;
 use App\Livewire\Pets\Show;
+use App\Livewire\UserCreate;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,3 +111,6 @@ Route::get('/pets/{pet}/show', Show::class)->name('pets.detail');
 
 Route::resource('users', UserController::class)->middleware('can:users.index')->names('admin.users');
 Route::resource('roles', RoleController::class)->middleware('can:roles.index')->names('admin.roles');
+
+Route::get('users/create', UserCreate::class)->name('users.create');
+

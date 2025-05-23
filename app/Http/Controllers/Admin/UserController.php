@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Livewire\Features\SupportFormObjects\Form;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -45,9 +45,32 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         //
-        $user->roles()->sync($request->roles);
-        return redirect()->route('admin.users.edit',$user)->with('info','se asignó los roles asignados correctamente');
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,' . $user->id,
+    
+        'password' => 'nullable|string|min:8',
+        'roles' => 'array',
+    ]);
+
+    // Actualizar datos básicos
+    $user->name = $request->name;
+    $user->email = $request->email;
+   
+
+    // Actualizar contraseña solo si se proporciona
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
     }
+
+    $user->save();
+
+    // Sincronizar roles
+    $user->roles()->sync($request->roles);
+
+    // Redireccionar con mensaje
+    return redirect()->route('admin.users.index', $user)
+        ->with('info', 'El usuario fue actualizado correctamente.');    }
 
  
     public function destroy(string $id)
