@@ -16,13 +16,13 @@ class Reservation extends Model
         'status',
         'pet_id',
         'customer_id',
-        'veterinarian_id',
+        'user_id',
         'service_id',
     ];
 
-    public function veterinarian()
+    public function user()
     {
-        return $this->belongsTo(Veterinarian::class);
+        return $this->belongsTo(User::class);
     }
 
     public function service()

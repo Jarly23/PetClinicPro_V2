@@ -21,7 +21,7 @@
             <h2 class="text-3xl font-bold">Conozca a nuestro equipo</h2>
             <p class="text-gray-600">Profesionales dedicados al cuidado de tus mascotas</p>
         </div>
-        @livewire('web.show-veterinans')
+      
     </section>
     <!-- Reservation Section -->
     <section class="py-16" id="contact">

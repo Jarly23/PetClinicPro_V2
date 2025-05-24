@@ -32,7 +32,7 @@
                     @foreach ($consultations as $consultation)
                         <tr class="even:bg-blue-gray-50/50">
                             <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->consultation_date }}</td>
-                            <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->veterinarian->name }}</td>
+                            <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->user->name }}</td>
                             <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->service->name }}</td>
                             <td class="px-4 py-2 text-sm text-gray-900">{{ $consultation->diagnostico }}</td>
                         </tr>

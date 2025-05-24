@@ -13,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    
+
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
@@ -61,4 +61,12 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+    public function consultation()
+{
+    return $this->hasMany(Consultation::class);
+}
 }
