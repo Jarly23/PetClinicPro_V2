@@ -4,5 +4,4 @@
             <h2>mostrar de rol</h2>
         </div>
     </div>
-
 </x-app-layout>

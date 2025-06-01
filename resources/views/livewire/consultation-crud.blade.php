@@ -33,14 +33,7 @@
 
                     <!-- Cliente -->
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-medium text-gray-900">Cliente</label>
-                        <select wire:model="customer_id" class="w-full rounded-md border-gray-300">
-                            <option value="">Seleccione un cliente</option>
-                            @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                            @endforeach
-                        </select>
-                        <x-input-error for="customer_id" />
+                      <livewire:client-selector>
                     </div>
 
                     <!-- Mascota -->

@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Dashboard\Stats;
 
+use App\Models\Pet;
 use Livewire\Component;
-use App\Models\Customer;
 use Carbon\Carbon;
-class ClientsToday extends Component
+
+class PetsTotal extends Component
 {
-    public $title = 'Clientes totales';
+    public $title = 'Mascotas totales';
     public $icon = 'images/icons/user-group.svg';
     public $secondIcon;
     public $value; // Total de clientes
@@ -15,10 +16,10 @@ class ClientsToday extends Component
 
     public function mount()
     {
-        $totalClientes = Customer::count();
-        $nuevosHoy = Customer::whereDate('created_at', Carbon::today())->count();
+        $totalMascotas = Pet::count();
+        $nuevosHoy = Pet::whereDate('created_at', Carbon::today())->count();
 
-        $this->value = $totalClientes;
+        $this->value = $totalMascotas;
 
         $this->secondIcon = $nuevosHoy > 0
             ? 'images/icons/VectorArrowUp.svg'
@@ -28,9 +29,8 @@ class ClientsToday extends Component
             ? "$nuevosHoy nuevo(s) hoy"
             : 'No hubo nuevos clientes hoy';
     }
-
     public function render()
     {
-        return view('livewire.dashboard.stats.clients-today');
+        return view('livewire.dashboard.stats.pets-total');
     }
 }
