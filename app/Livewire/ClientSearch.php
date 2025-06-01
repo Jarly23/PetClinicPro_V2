@@ -12,7 +12,7 @@ class ClientSearch extends Component
     public $owner_data = [];
     public $owner_id = null;
     public $showNewOwnerForm = false;
-
+  
     public $new_owner =[
         'name' =>'',
         'lastname' => '',
@@ -22,7 +22,7 @@ class ClientSearch extends Component
         'dni' =>'',
     ];
 
-    public function updateOwnerSearch()
+    public function updatedOwnerSearch()
     {
         $this-> searchOwner();
     }
@@ -30,7 +30,7 @@ class ClientSearch extends Component
     // Logica de busqueda de propietario
     public function searchOwner()
     {
-        if(strlen($this-> owner_search < 2)){
+        if (strlen($this->owner_search) < 2) {
             $this->resetOwner();
             return;
         }
@@ -95,7 +95,7 @@ class ClientSearch extends Component
             'new_owner.email' => 'nullable|email|unique:customers,email',
             'new_owner.phone' => 'nullable|string|max:20',
             'new_owner.address' => 'nullable|string|max:255',
-            'new_owner.dniruc' => 'required|string|max:20|unique:customers,dniruc',
+            'new_owner.dni' => 'required|string|max:20|unique:customers,dni',
         ])['new_owner'];
     }
 

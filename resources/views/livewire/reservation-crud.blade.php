@@ -34,7 +34,7 @@
                     <!-- Cliente -->
                     <div class="sm:col-span-2">
                         <label class="block text-sm font-medium text-gray-900">Cliente</label>
-                        <livewire:client-search />
+                        <livewire:client-selector />
                     </div>
 
                     <!-- Mascota -->
@@ -105,7 +105,7 @@
 
         <x-slot name="footer">
             <div class="flex justify-end gap-3">
-                <button wire:click="$set('open', false)" type="button"
+                <button wire:click="resetForm" type="button"
                     class="text-sm font-semibold text-gray-600 hover:text-gray-800">
                     Cancelar
                 </button>

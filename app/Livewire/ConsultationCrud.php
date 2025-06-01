@@ -26,6 +26,7 @@ class ConsultationCrud extends Component
     public $consultation_details, $export_format;
     public $service_ids = []; // Servicios múltiples
     public $pets = [];
+        protected $listeners = [ 'clientSelected' => 'loadClientPets'];
     protected $rules = [
         'consultation_date' => 'required|date',
         'pet_id' => 'required|exists:pets,id',
@@ -47,7 +48,11 @@ class ConsultationCrud extends Component
         'diagnostico' => 'nullable|string',
         'tratamiento' => 'nullable|string',
     ];
-
+    public function loadClientPets($clientData)
+    {
+        $this->customer_id = $clientData['id'];
+        $this->pets = Pet::where('owner_id', $this->customer_id)->get();
+    }
     // Actualiza mascotas cuando cambia el cliente
     public function updatedCustomerId($value)
     {

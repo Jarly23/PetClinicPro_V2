@@ -28,7 +28,7 @@ class ReservationCrud extends Component
     public $selected_services = [];
     public $owner_found = false;
 
-    protected $listeners = ['ownerSelected', 'saveReservation'];
+    protected $listeners = ['ownerSelected', 'saveReservation', 'clientSelected' => 'loadClientPets'];
 
     protected $rules = [
         'reservation_date' => 'required|date',
@@ -59,11 +59,10 @@ class ReservationCrud extends Component
         $this->owner_found = true;
     }
 
-    public function ownerSelected($ownerId)
+    public function loadClientPets($clientData)
     {
-        Log::debug("Evento ownerSelected recibido con ID: {$ownerId}");
-        $this->customer_id = $ownerId;
-        $this->updatedCustomerId($ownerId);
+        $this->customer_id = $clientData['id'];
+        $this->pets = Pet::where('owner_id', $this->customer_id)->get();
     }
 
     public function saveReservation()
@@ -171,6 +170,8 @@ class ReservationCrud extends Component
         ]);
 
         $this->status = 'Pending';
+        $this->open = false;
+        $this->openConsultationModal = false;
     }
     public function confirmReservation($reservationId)
     {

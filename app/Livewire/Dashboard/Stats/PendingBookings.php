@@ -15,7 +15,7 @@ class PendingBookings extends Component
 
     public function mount()
     {
-        $this->value = Reservation::where('status', 'Pending')->count();
+        $this->value = Reservation::where('status', 'Confirmed')->count();
     }
     public function render()
     {

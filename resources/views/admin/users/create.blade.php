@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            Editar Usuario
+            Crear Usuario
         </h2>
     </x-slot>
 
@@ -31,25 +31,30 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('admin.users.update', $user) }}">
+                <form method="POST" action="{{ route('admin.users.store') }}">
                     @csrf
-                    @method('PUT')
 
                     <div class="mb-4">
                         <label class="block font-medium">Nombre</label>
-                        <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full border-gray-300 rounded mt-1" required>
+                        <input type="text" name="name" value="{{ old('name') }}" class="w-full border-gray-300 rounded mt-1" required>
                         @error('name') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="mb-4">
+                        <label class="block font-medium">Apellido</label>
+                        <input type="text" name="lastname" value="{{ old('lastname') }}" class="w-full border-gray-300 rounded mt-1" required>
+                        @error('lastname') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="mb-4">
                         <label class="block font-medium">Email</label>
-                        <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full border-gray-300 rounded mt-1" required>
+                        <input type="email" name="email" value="{{ old('email') }}" class="w-full border-gray-300 rounded mt-1" required>
                         @error('email') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="mb-4">
-                        <label class="block font-medium">Contraseña (opcional)</label>
-                        <input type="password" name="password" class="w-full border-gray-300 rounded mt-1">
+                        <label class="block font-medium">Contraseña</label>
+                        <input type="password" name="password" class="w-full border-gray-300 rounded mt-1" required>
                         @error('password') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 
@@ -58,15 +63,8 @@
                         @foreach($roles as $role)
                             <div>
                                 <label class="inline-flex items-center">
-                                    <input 
-                                        type="checkbox" 
-                                        name="roles[]" 
-                                        value="{{ $role->name }}" 
-                                        class="rounded"
-                                        {{-- Mantener roles seleccionados tras error o mostrar roles actuales --}}
-                                        {{ (is_array(old('roles')) && in_array($role->name, old('roles'))) 
-                                            ? 'checked' 
-                                            : ($user->roles->contains('name', $role->name) ? 'checked' : '') }}>
+                                    <input type="checkbox" name="roles[]" value="{{ $role->name }}" class="rounded"
+                                        {{ (is_array(old('roles')) && in_array($role->name, old('roles'))) ? 'checked' : '' }}>
                                     <span class="ml-2">{{ $role->name }}</span>
                                 </label>
                             </div>
@@ -75,8 +73,8 @@
                     </div>
 
                     <div>
-                        <button type="submit" class="px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700">
-                            Actualizar
+                        <button type="submit" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+                            Crear
                         </button>
                         <a href="{{ route('admin.users.index') }}" class="ml-4 text-gray-600 underline">Cancelar</a>
                     </div>

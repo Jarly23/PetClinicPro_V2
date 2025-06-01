@@ -18,7 +18,7 @@ class ReportsCrud extends Component
     // Buscar clientes por DNI o RUC
     public function updatedDniOrRuc()
     {
-        $this->clients = Client::where('dni', $this->dniOrRuc)
+        $this->clients = Customer::where('dni', $this->dniOrRuc)
             ->orWhere('ruc', $this->dniOrRuc)
             ->get();
     }
