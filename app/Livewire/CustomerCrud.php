@@ -12,7 +12,7 @@ class CustomerCrud extends Component
 
     public $open = false;
     public $search = '';
-    public $customer_id, $name, $lastname, $email, $phone, $address, $dni;
+    public $customer_id, $name, $lastname, $email, $phone, $address, $dniruc;
 
     protected function rules()
     {
@@ -22,7 +22,7 @@ class CustomerCrud extends Component
             'email' => 'required|email|max:255',
             'phone' => 'required|digits:9',
             'address' => 'required|string|max:255',
-            'dni' => 'required|digits:8|unique:customers,dni,'
+            'dniruc' => 'required|digits:8|unique:customers,dniruc,'
         ];
     }
 
@@ -45,7 +45,7 @@ class CustomerCrud extends Component
                     ->orWhere('email', 'like', "%{$this->search}%")
                     ->orWhere('phone', 'like', "%{$this->search}%")
                     ->orWhere('address', 'like', "%{$this->search}%")
-                    ->orWhere('dni', 'like', "%{$this->search}%");
+                    ->orWhere('dniruc', 'like', "%{$this->search}%");
             })
             ->orderBy('name')
             ->paginate(10);
@@ -57,7 +57,7 @@ class CustomerCrud extends Component
     {
         $this->validate();
 
-        $data = $this->only(['name', 'lastname', 'email', 'phone', 'address', 'dni']);
+        $data = $this->only(['name', 'lastname', 'email', 'phone', 'address', 'dniruc']);
 
         if ($this->customer_id) {
             Customer::findOrFail($this->customer_id)->update($data);
@@ -103,7 +103,7 @@ class CustomerCrud extends Component
 
     public function resetForm()
     {
-        $this->reset(['customer_id', 'name', 'lastname', 'email', 'phone', 'address', 'dni']);
+        $this->reset(['customer_id', 'name', 'lastname', 'email', 'phone', 'address', 'dniruc']);
     }
 
     protected function fillCustomerFields($customer)
@@ -114,7 +114,7 @@ class CustomerCrud extends Component
         $this->email = $customer->email;
         $this->phone = $customer->phone;
         $this->address = $customer->address;
-        $this->dni = $customer->dni;
+        $this->dniruc = $customer->dniruc;
     }
     public function cancel(){
         $this-> resetForm();

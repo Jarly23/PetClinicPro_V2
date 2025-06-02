@@ -14,7 +14,7 @@ class Customer extends Model
         'email',
         'phone',
         'address',
-        'dni'
+        'dniruc'
     ];
     public function ventas()
     {

@@ -25,7 +25,7 @@ class ClientSelector extends Component
 
         $this->results = Customer::where('name', 'like', '%' . $this->search . '%')
             ->orWhere('email', 'like', '%' . $this->search . '%')
-            ->orWhere('dni', 'like', '%' . $this->search . '%')
+            ->orWhere('dniruc', 'like', '%' . $this->search . '%')
             ->limit(5)
             ->get()
             ->toArray();

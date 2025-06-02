@@ -55,9 +55,9 @@
 
                     <div class="sm:col-span-2">
                         <label for="dni" class="block text-sm font-medium text-gray-900">DNI</label>
-                        <input wire:model="dni" id="dni" maxlength="8" placeholder="Ingrese su DNI"
+                        <input wire:model="dniruc" id="dniruc" maxlength="8" placeholder="Ingrese su DNI"
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-600 focus:border-indigo-600">
-                        <x-input-error for="dni" />
+                        <x-input-error for="dniruc" />
                     </div>
 
                     <div class="sm:col-span-2">
@@ -102,7 +102,7 @@
                             <td class="px-4 py-2">{{ $customer->email }}</td>
                             <td class="px-4 py-2">{{ $customer->phone }}</td>
                             <td class="px-4 py-2">{{ $customer->address }}</td>
-                            <td class="px-4 py-2">{{ $customer->dni }}</td>
+                            <td class="px-4 py-2">{{ $customer->dniruc }}</td>
                             <td class="px-4 py-2 flex space-x-2">
                                 <x-button wire:click="edit({{ $customer->id }})">✏️</x-button>
                                 <x-danger-button wire:click="delete({{ $customer->id }})">🗑️</x-danger-button>

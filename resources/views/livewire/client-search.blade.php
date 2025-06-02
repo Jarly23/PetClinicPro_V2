@@ -13,7 +13,7 @@
                     @foreach ($owner_data as $owner)
                         <li wire:click="selectOwner({{ $owner['id'] }})"
                             class="px-4 py-2 hover:bg-indigo-100 cursor-pointer text-sm">
-                            {{ $owner['name'] }} {{ $owner['lastname'] }} - {{ $owner['dni'] }}
+                            {{ $owner['name'] }} {{ $owner['lastname'] }} - {{ $owner['dniruc'] }}
                         </li>
                     @endforeach
                 </ul>
@@ -35,7 +35,7 @@
                 <x-input type="text" :value="$owner_data['lastname']" readonly />
             </x-form-group>
             <x-form-group label="DNI">
-                <x-input type="text" :value="$owner_data['dni']" readonly />
+                <x-input type="text" :value="$owner_data['dniruc']" readonly />
             </x-form-group>
             <x-form-group label="Correo">
                 <x-input type="email" :value="$owner_data['email']" readonly />
@@ -69,8 +69,8 @@
                     <x-input-error for="new_owner.lastname" />
                 </x-form-group>
                 <x-form-group label="DNI">
-                    <x-input wire:model.defer="new_owner.dni" type="text" />
-                    <x-input-error for="new_owner.dni" />
+                    <x-input wire:model.defer="new_owner.dniruc" type="text" />
+                    <x-input-error for="new_owner.dniruc" />
                 </x-form-group>
                 <x-form-group label="Correo">
                     <x-input wire:model.defer="new_owner.email" type="email" />
