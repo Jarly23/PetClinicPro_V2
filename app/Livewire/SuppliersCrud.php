@@ -7,18 +7,32 @@ use App\Models\Supplier;
 
 class SuppliersCrud extends Component
 {
-    public $name, $contact, $phone, $address, $supplierId, $open = false;
+    public $name, $contact, $phone, $address, $document_type, $document_number;
+    public $supplierId, $open = false, $search = '';
 
-    protected $rules = [
-        'name' => 'required|string|max:255|unique:suppliers,name',
-        'contact' => 'required|string|max:255',
-        'phone' => 'required|digits_between:7,15', 
-        'address' => 'required|string',
-    ];
+    protected function rules()
+    {
+        $rules = [
+            'name' => 'required|string|max:255',
+            'contact' => 'required|string|max:255',
+            'phone' => 'required|digits_between:7,15',
+            'address' => 'required|string',
+            'document_type' => 'nullable|in:DNI,RUC',
+            'document_number' => 'nullable'
+        ];
+
+        if ($this->document_type === 'DNI') {
+            $rules['document_number'] = 'nullable|digits:8';
+        } elseif ($this->document_type === 'RUC') {
+            $rules['document_number'] = 'nullable|digits:11';
+        }
+
+        return $rules;
+    }
 
     public function openModal()
     {
-        $this->reset(['name', 'contact', 'phone', 'address', 'supplierId']);
+        $this->reset(['name', 'contact', 'phone', 'address', 'document_type', 'document_number', 'supplierId']);
         $this->open = true;
     }
 
@@ -31,19 +45,22 @@ class SuppliersCrud extends Component
     {
         $this->validate();
 
+        $action = $this->supplierId ? 'editado' : 'creado';
+
         Supplier::updateOrCreate(
-            ['id_supplier' => $this->supplierId], // Clave primaria correcta
+            ['id_supplier' => $this->supplierId],
             [
                 'name' => $this->name,
                 'contact' => $this->contact,
                 'phone' => $this->phone,
-                'address' => $this->address
+                'address' => $this->address,
+                'document_type' => $this->document_type,
+                'document_number' => $this->document_number
             ]
         );
 
-        session()->flash('message', 'Proveedor guardado con éxito.');
+        session()->flash('message', "Proveedor {$action} correctamente.");
         $this->closeModal();
-        $this->dispatch('refreshSuppliers'); // Para actualizar la lista
     }
 
     public function edit($id)
@@ -54,19 +71,25 @@ class SuppliersCrud extends Component
         $this->contact = $supplier->contact;
         $this->phone = $supplier->phone;
         $this->address = $supplier->address;
+        $this->document_type = $supplier->document_type;
+        $this->document_number = $supplier->document_number;
         $this->open = true;
     }
 
     public function delete($id)
     {
         Supplier::findOrFail($id)->delete();
-        session()->flash('message', 'Proveedor eliminado con éxito.');
+        session()->flash('message', 'Proveedor eliminado correctamente.');
     }
 
     public function render()
     {
-        return view('livewire.suppliers-crud', [
-            'suppliers' => Supplier::all()
-        ]);
+        $suppliers = Supplier::query()
+            ->when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('contact', 'like', '%' . $this->search . '%');
+            })->get();
+
+        return view('livewire.suppliers-crud', compact('suppliers'));
     }
 }

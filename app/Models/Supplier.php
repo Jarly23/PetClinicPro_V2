@@ -13,5 +13,12 @@ class Supplier extends Model
 
     protected $primaryKey = 'id_supplier';
 
-    protected $fillable = ['name', 'contact', 'phone', 'address'];
+    protected $fillable = ['name', 'contact', 'phone', 'address', 'document_type', 'document_number'];
+
+    public function products()
+{
+    return $this->hasMany(Product::class,'id_supplier');
+}
+
+
 }

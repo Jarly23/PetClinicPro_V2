@@ -70,7 +70,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('pages.dashboard.entradas'); // Asegúrate que esta vista exista
     })->name('entradas');
 
-    Route::get('/notaventas', function () {
+    Route::get('/registrar-venta', function () {
         return view('pages.dashboard.notaventa'); // Asegúrate que esta vista exista
     })->name('venta');
 
@@ -79,7 +79,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('historial');
 
     Route::get('/Analityc', function () {
-        return view('pages.dashboard.analitycVentas'); // Asegúrate que esta vista exista
+        return view('pages.dashboard.dashboardInve'); // Asegúrate que esta vista exista
     })->name('analityc');
     
    
@@ -92,7 +92,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/json-data-feed', [DataFeedController::class, 'getDataFeed'])->name('json_data_feed');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/analytics', [DashboardController::class, 'analytics'])->name('analytics');
     Route::get('/dashboard/fintech', [DashboardController::class, 'fintech'])->name('fintech');
 });
 Route::get('/pets/{pet}/history', [PetController::class, 'history'])->name('pets.history');
