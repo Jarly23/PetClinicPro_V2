@@ -21,10 +21,10 @@ class detalle_venta extends Model
 
     public function venta()
     {
-        return $this->belongsTo(Venta::class, 'id_venta');
+        return $this->belongsTo(Ventas::class, 'id_venta');
     }
 
-    public function producto()
+    public function product()
     {
         return $this->belongsTo(Product::class, 'id_product');
     }

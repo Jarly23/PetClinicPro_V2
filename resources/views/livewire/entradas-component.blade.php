@@ -1,93 +1,158 @@
-<div>
-    <x-danger-button wire:click="openModal">Nueva entrada</x-danger-button>
-    <x-secondary-button wire:click="exportarExcel">Exportar a Excel</x-secondary-button>
+<div class="p-6 bg-white rounded-lg shadow-lg">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-6 flex items-center justify-center gap-3">
+    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.8"
+         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 7l9 5 9-5M3 7v10l9 5 9-5V7M3 17l9 5 9-5"/>
+    </svg>
+    Gestión de Entradas de Productos
+</h2>
 
-    <x-dialog-modal wire:model="open">
-        <x-slot name="title">
-            {{ $entradaId ? 'Editar Entrada' : 'Registrar Nueva Entrada' }}
-        </x-slot>
+    {{-- Header --}}
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <button
+            wire:click="openModal"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-200 shadow"
+        >
+            + Registrar Entrada
+        </button>
+    </div>
+
+    {{-- Mensaje flotante --}}
+    @if (session()->has('message'))
+        <div x-data="{ show: true }" x-show="show"
+            x-init="setTimeout(() => show = false, 1500)"
+            class="mb-4 px-4 py-2 bg-green-100 border border-green-400 text-green-700 rounded shadow transition">
+            {{ session('message') }}
+        </div>
+    @endif
+
+    {{-- Modal Confirmación de Precio --}}
+    <x-dialog-modal wire:model="showUpdatePriceModal">
+        <x-slot name="title"> Confirmación </x-slot>
 
         <x-slot name="content">
-            <form wire:submit.prevent="saveEntrada">
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Producto</label>
-                    <select wire:model="id_product" class="w-full border p-2 rounded-md">
-                        <option value="">Seleccione</option>
-                        @foreach($productos as $producto)
-                            <option value="{{ $producto->id_product }}">{{ $producto->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('id_product') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Cantidad</label>
-                    <input wire:model="cantidad" type="number" class="w-full border p-2 rounded-md" min="1">
-                    @error('cantidad') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Fecha</label>
-                    <input wire:model="fecha" type="datetime-local" class="w-full border p-2 rounded-md">
-                    @error('fecha') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Precio Unitario</label>
-                    <input wire:model="precio_u" type="number" step="0.01" class="w-full border p-2 rounded-md">
-                    @error('precio_u') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-            </form>
+            <p class="text-gray-700">
+                El precio de compra difiere del precio actual (S/ {{ number_format($precio_actual, 2) }}).
+                ¿Deseas actualizar el precio?
+            </p>
         </x-slot>
 
         <x-slot name="footer">
-            <div class="flex justify-end space-x-2">
-                <x-secondary-button wire:click="closeModal">Cancelar</x-secondary-button>
-                <button wire:click="saveEntrada" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
-                    Guardar
-                </button>
-                
-            </div>
+            <button
+                wire:click="cancelUpdatePrice"
+                class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md"
+            >
+                No
+            </button>
+            <button
+                wire:click="updatePrice"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md ml-2"
+            >
+                Sí, actualizar
+            </button>
         </x-slot>
     </x-dialog-modal>
 
-    <div class="mt-6">
-        <table class="w-full border border-gray-300">
-            <thead class="bg-gray-100">
+    {{-- Modal de Entrada --}}
+    <x-dialog-modal wire:model="open">
+        <x-slot name="title">
+            {{ $entradaId ? 'Editar Entrada' : 'Registrar Entrada' }}
+        </x-slot>
+
+        <x-slot name="content">
+            <div class="space-y-4 text-sm text-gray-700">
+                <div>
+                    <label class="block mb-1">Producto</label>
+                    <select wire:model="id_product" class="w-full border rounded-md px-3 py-2 focus:ring-blue-500">
+                        <option value="">Seleccione un producto</option>
+                        @foreach ($productos as $producto)
+                            <option value="{{ $producto->id_product }}">{{ $producto->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('id_product') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block mb-1">Cantidad</label>
+                    <input type="number" wire:model="cantidad" class="w-full border rounded-md px-3 py-2" min="1">
+                    @error('cantidad') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block mb-1">Fecha</label>
+                    <input type="datetime-local" wire:model="fecha" class="w-full border rounded-md px-3 py-2">
+                    @error('fecha') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="block mb-1">Precio de compra</label>
+                    <input type="number" wire:model="precio_u" step="0.01" class="w-full border rounded-md px-3 py-2">
+                    @error('precio_u') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <button
+                wire:click="closeModal"
+                class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md"
+            >
+                Cancelar
+            </button>
+            <button
+                wire:click="saveEntrada"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md ml-2"
+            >
+                Guardar
+            </button>
+        </x-slot>
+    </x-dialog-modal>
+
+    {{-- Tabla --}}
+    <div class="overflow-x-auto mt-6">
+        <table class="min-w-full bg-white rounded-md shadow-sm border border-gray-200 text-sm">
+            <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                    <th class="border px-4 py-2">Categoría</th>
-                    <th class="border px-4 py-2">Producto</th>
-                    <th class="border px-4 py-2">Proveedor</th>
-                    <th class="border px-4 py-2">Fecha</th>
-                    <th class="border px-4 py-2">Cantidad Actual</th>
-                    <th class="border px-4 py-2">Precio de Compra</th>
-                    <th class="border px-4 py-2">Precio de Venta</th>
-                    <th class="border px-4 py-2">Acciones</th>
+                    <th class="px-4 py-3 text-left">Categoría</th>
+                    <th class="px-4 py-3 text-left">Producto</th>
+                    <th class="px-4 py-3 text-left">Proveedor</th>
+                    <th class="px-4 py-3 text-left">Fecha</th>
+                    <th class="px-4 py-3 text-left">Cantidad</th>
+                    <th class="px-4 py-3 text-left">Precio Unitario</th>
+                    <th class="px-4 py-3 text-center">Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach($entradas as $entrada)
-                    <tr class="text-center">
-                        <td class="border px-4 py-2">{{ $entrada->producto->category->name ?? 'N/A' }}</td>
-                        <td class="border px-4 py-2">{{ $entrada->producto->name }}</td>
-                        <td class="border px-4 py-2">{{ $entrada->producto->supplier->name ?? 'N/A' }}</td>
-                        <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($entrada->fecha)->format('d/m/Y H:i') }}</td>
-                        <td class="border px-4 py-2">{{ $entrada->producto->current_stock }}</td>
-                        <td class="border px-4 py-2">${{ number_format($entrada->producto->purchase_price, 2) }}</td>
-                        <td class="border px-4 py-2">${{ number_format($entrada->producto->sale_price, 2) }}</td>
-                        <td class="border px-4 py-2 space-x-2">
-                            <button wire:click="editEntrada({{ $entrada->id_entrada }})" class="bg-blue-500 text-white px-3 py-1 rounded-md">Editar</button>
-                            <button wire:click="deleteEntrada({{ $entrada->id_entrada }})" onclick="confirm('¿Eliminar entrada?') || event.stopImmediatePropagation()" class="bg-red-500 text-white px-3 py-1 rounded-md">Eliminar</button>
+            <tbody class="divide-y divide-gray-100">
+                @forelse ($entradas as $entrada)
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3">{{ $entrada->producto->category->name ?? '-' }}</td>
+                        <td class="px-4 py-3">{{ $entrada->product->name }}</td>
+                        <td class="px-4 py-3">{{ $entrada->producto->supplier->name ?? '-' }}</td>
+                        <td class="px-4 py-3">{{ \Carbon\Carbon::parse($entrada->fecha)->format('d/m/Y H:i') }}</td>
+                        <td class="px-4 py-3">{{ $entrada->cantidad }}</td>
+                        <td class="px-4 py-3">S/ {{ number_format($entrada->precio_u, 2) }}</td>
+                        <td class="px-4 py-3 text-center">
+                            <button
+                                wire:click="editEntrada({{ $entrada->id_entrada }})"
+                                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm shadow"
+                            >
+                                Editar
+                            </button>
+                            <button
+                                wire:click="deleteEntrada({{ $entrada->id_entrada }})"
+                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm shadow"
+                            >
+                                Eliminar
+                            </button>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="7" class="px-4 py-4 text-center text-gray-500">No hay entradas registradas.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
-
-        @if (session()->has('message'))
-            <div class="bg-green-500 text-white text-center py-2 mt-4">
-                {{ session('message') }}
-            </div>
-        @endif
     </div>
 </div>

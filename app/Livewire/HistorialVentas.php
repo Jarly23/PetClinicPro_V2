@@ -35,7 +35,7 @@ class HistorialVentas extends Component
 
     public function filtrar()
     {
-        $query = Ventas::with(['cliente', 'detalles.producto']);
+        $query = Ventas::with(['cliente', 'detalles.product']);
 
         if ($this->filtroFecha === 'hoy') {
             $query->whereDate('fecha', Carbon::today());
@@ -57,7 +57,7 @@ class HistorialVentas extends Component
 
     public function verDetalles($idVenta)
     {
-        $this->ventaSeleccionada = Ventas::with(['cliente', 'detalles.producto'])->find($idVenta);
+        $this->ventaSeleccionada = Ventas::with(['cliente', 'detalles.product'])->find($idVenta);
     }
 
     public function cerrarModal()

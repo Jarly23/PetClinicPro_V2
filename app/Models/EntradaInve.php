@@ -20,7 +20,7 @@ class EntradaInve extends Model
     ];
 
     // Relación con el modelo Product
-    public function producto()
+    public function product()
     {
         return $this->belongsTo(Product::class, 'id_product');
     }

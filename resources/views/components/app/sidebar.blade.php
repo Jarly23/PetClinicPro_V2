@@ -287,6 +287,18 @@
                                 </li>
                             </ul>
                             <!--Services-->
+
+                                <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
+                                    :class="open ? '!block' : 'hidden'">
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('services')) {{ '!text-violet-500' }} @endif"
+                                            href="{{ route('venta') }}">
+                                            <span
+                                                class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Regristrar Venta</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            <!--Veterinarians-->
                             <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
                                 :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
@@ -298,6 +310,7 @@
                                 </li>
                             </ul>
                             <!--Ventas-->
+
                             <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
                                 :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">

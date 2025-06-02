@@ -15,7 +15,7 @@ class CreateDetalleVentasTable extends Migration
             $table->float('cantidad');
             $table->float('p_unitario');
             $table->float('total');
-            $table->timestamps();
+            $table->timestamps();   
 
             $table->foreign('id_venta')->references('id_venta')->on('ventas')->onDelete('cascade');
             $table->foreign('id_product')->references('id_product')->on('products')->onDelete('cascade');
