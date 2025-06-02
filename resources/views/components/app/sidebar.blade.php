@@ -85,7 +85,7 @@
                                 </li>
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('fintech')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('fintech') }}">
+                                        href="">
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Fintech</span>
                                     </a>
@@ -95,8 +95,8 @@
                     </li>
                     <!-- Customers -->
                     <li
-                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['inbox'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['inbox'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
+                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['clientes'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['clientes'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
                             href="{{ route('customers') }}">
                             <div class="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
@@ -107,14 +107,14 @@
                                 </svg>
 
                                 <span
-                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Clientes</span>
+                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 @if (Route::is('customers')) {{ '!text-violet-500' }} @endif">Clientes</span>
                             </div>
                         </a>
                     </li>
                     <!-- Pets -->
                     <li
-                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['inbox'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['inbox'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
+                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['mascotas'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04] ' }} @endif">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['mascotas'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
                             href="{{ route('pets') }}">
                             <div class="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16"
@@ -124,17 +124,17 @@
                                 </svg>
 
                                 <span
-                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Mascotas</span>
+                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200  @if (Route::is('pets')) {{ '!text-violet-500' }} @endif">Mascotas</span>
                             </div>
                         </a>
                     </li>
                     <!-- reservations -->
                     <li
-                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['reservations'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['inbox'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
+                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['reservas'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['reservas'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
                             href="{{ route('reservations') }}">
                             <div class="flex items-center">
-                                <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['calendar'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
+                                <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['reservas'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     viewBox="0 0 16 16">
                                     <path d="M5 4a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H5Z" />
@@ -142,7 +142,7 @@
                                         d="M4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4ZM2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4Z" />
                                 </svg>
                                 <span
-                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Reservaciones</span>
+                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 @if (Route::is('reservations')) {{ '!text-violet-500' }} @endif">Reservaciones</span>
                             </div>
                         </a>
                     </li>
@@ -196,7 +196,8 @@
                                             fill-rule="evenodd" />
                                     </svg>
                                     <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Gestion de Producto</span>
+                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Gestion
+                                        de Producto</span>
                                 </div>
                                 <!-- Icon -->
                                 <div
@@ -242,7 +243,7 @@
                                     </a>
                                 </li>
                             </ul>
-                            
+
 
                         </div>
                     </li>
@@ -261,7 +262,8 @@
                                             fill-rule="evenodd" />
                                     </svg>
                                     <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Gestion de exixtencia </span>
+                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Gestion
+                                        de exixtencia </span>
                                 </div>
                                 <!-- Icon -->
                                 <div
@@ -285,6 +287,7 @@
                                 </li>
                             </ul>
                             <!--Services-->
+
                                 <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
                                     :class="open ? '!block' : 'hidden'">
                                     <li class="mb-1 last:mb-0">
@@ -299,25 +302,38 @@
                             <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
                                 :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('veterinarians')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('historial') }}">
+                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('services')) {{ '!text-violet-500' }} @endif"
+                                        href="{{ route('venta') }}">
                                         <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Historial de ventas</span>
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Salida</span>
                                     </a>
                                 </li>
                             </ul>
-                            
+                            <!--Ventas-->
+
+                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
+                                :class="open ? '!block' : 'hidden'">
+                                <li class="mb-1 last:mb-0">
+                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('veterinarians')) {{ '!text-violet-500' }} @endif"
+                                        href="{{ route('historial') }}">
+                                        <span
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Historial
+                                            de ventas</span>
+                                    </a>
+                                </li>
+                            </ul>
+
 
                         </div>
                     </li>
-                    <!-- Messages -->
+                    <!-- Messages  Blog-Documentacion-->
                     <li
-                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['messages'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['messages'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
-                            href="">
+                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['documentacion'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['documentacion'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
+                            href="{{ route('documentacion') }}">
                             <div class="flex items-center justify-between">
                                 <div class="grow flex items-center">
-                                    <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['messages'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
+                                    <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['documentacion'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         viewBox="0 0 16 16">
                                         <path
@@ -325,32 +341,13 @@
                                         <path d="M10 14a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2h-5Z" />
                                     </svg>
                                     <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Messages</span>
+                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Blog-Documentacion</span>
                                 </div>
                                 <!-- Badge -->
                                 <div class="flex flex-shrink-0 ml-2">
                                     <span
                                         class="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-violet-400 px-2 rounded">4</span>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-
-                    <!-- Calendar -->
-                    <li
-                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['calendar'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['calendar'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
-                            href="">
-                            <div class="flex items-center">
-                                <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['calendar'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    viewBox="0 0 16 16">
-                                    <path d="M5 4a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H5Z" />
-                                    <path
-                                        d="M4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4ZM2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4Z" />
-                                </svg>
-                                <span
-                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Calendar</span>
                             </div>
                         </a>
                     </li>
@@ -406,15 +403,28 @@
                                     </a>
                                 </li>
                             </ul>
-                            <!--Veterinarians-->
+                            <!--Tipos de  animales-->
                             <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
                                 :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('veterinarians')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('veterinarians') }}">
+                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('animalType')) {{ '!text-violet-500' }} @endif"
+                                        href="{{ route('animalType') }}">
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                            Veterinarios</span>
+                                            Tipo de animales</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!--Vacunas y enfermedades-->
+                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
+                                :class="open ? '!block' : 'hidden'">
+                                <li class="mb-1 last:mb-0">
+                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('vaccines-diseases')) {{ '!text-violet-500' }} @endif"
+                                        href="{{ route('vaccines-diseases') }}">
+                                        <span
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            Vacunas y enfermedades</span>
                                     </a>
                                 </li>
                             </ul>
@@ -433,18 +443,18 @@
                                 </ul>
                             @endcan
                             <!-- roles -->
-                            @can('roles.index')                                                 
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
-                                :class="open ? '!block' : 'hidden'">
-                                <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('roles')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('admin.roles.index') }}">
-                                        <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                            Roles</span>
-                                    </a>
-                                </li>
-                            </ul>
+                            @can('roles.index')
+                                <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
+                                    :class="open ? '!block' : 'hidden'">
+                                    <li class="mb-1 last:mb-0">
+                                        <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('roles')) {{ '!text-violet-500' }} @endif"
+                                            href="{{ route('admin.roles.index') }}">
+                                            <span
+                                                class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                                Roles</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             @endcan
 
                         </div>

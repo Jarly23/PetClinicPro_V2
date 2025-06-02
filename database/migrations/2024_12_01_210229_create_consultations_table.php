@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use PHPUnit\Framework\Constraint\Constraint;
 
 return new class extends Migration
 {
@@ -15,12 +16,25 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pet_id')->constrained('pets');
             $table->foreignId('customer_id')->constrained('customers');
-            $table->foreignId('veterinarian_id')->constrained('veterinarians');
-            $table->foreignId('service_id')->constrained('services');
+            $table->foreignId('user_id')->constrained('users');
             $table->dateTime('consultation_date');
-            $table->text('observations');
-            $table->text('recomendaciones');  // Columna para recomendaciones
-            $table->text('diagnostico');      // Columna para diagnóstico
+
+            $table->string('motivo_consulta')->nullable();
+            $table->float('peso', 5, 2)->nullable();
+            $table->float('temperatura', 4, 1)->nullable();
+            $table->string('frecuencia_cardiaca')->nullable();
+            $table->string('frecuencia_respiratoria')->nullable();
+            $table->string('estado_general')->nullable();
+
+            $table->boolean('desparasitacion')->default(false);
+            $table->boolean('vacunado')->default(false);
+
+            $table->text('observations')->nullable();
+            $table->text('diagnostico')->nullable();
+            $table->text('recomendaciones')->nullable();
+            $table->text('tratamiento')->nullable();
+            $table->foreignId('reservation_id')->nullable()->constrained('reservations');
+
             $table->timestamps();
         });
     }

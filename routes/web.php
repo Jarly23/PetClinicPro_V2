@@ -10,6 +10,10 @@ use PhpOffice\PhpSpreadsheet\RichText\Run;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Livewire\CategoryComponent;
 use App\Http\Controllers\PDFController;
+use App\Livewire\Pets\Detail;
+use App\Livewire\Pets\Show;
+use App\Livewire\UserCreate;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -55,17 +59,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('report');
 
     Route::get('/Productos', function () {
-      return view('pages.dashboard.categorys');
-    })->name('inventary');//
+        return view('pages.dashboard.categorys');
+    })->name('inventary'); //
 
     Route::get('/proveedor', function () {
         return view('pages.dashboard.suppliers');
-      })->name('suppliers');//
+    })->name('suppliers'); //
 
     Route::get('/producto', function () {
         return view('pages.dashboard.products');
-    })->name('products');//
-    
+    })->name('products'); //
+
     Route::get('/entradas', function () {
         return view('pages.dashboard.entradas'); // Asegúrate que esta vista exista
     })->name('entradas');
@@ -81,20 +85,32 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/Analityc', function () {
         return view('pages.dashboard.dashboardInve'); // Asegúrate que esta vista exista
     })->name('analityc');
-    
-   
-    
 
-    
 
+    // Ruta a Documentacion:
+    Route::get('/Documentacion', function () {
+        return view('pages.dashboard.documentacion');
+    })->name('documentacion');
+
+    Route::get('/config-Animal-type', function () {
+        return view('pages.dashboard.animalType');
+    })->name('animalType');
+
+    Route::get('/config-vacunas-enfermedades', function () {
+        return view('pages.dashboard.vaccinesDiseases');
+    })->name('vaccines-diseases');
 
     // Route for the getting the data feed
     Route::get('/json-data-feed', [DataFeedController::class, 'getDataFeed'])->name('json_data_feed');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/fintech', [DashboardController::class, 'fintech'])->name('fintech');
-});
-Route::get('/pets/{pet}/history', [PetController::class, 'history'])->name('pets.history');
 
-Route::resource('users', UserController::class)->middleware('can:users.index') ->names('admin.users');
-Route::resource('roles', RoleController::class)->middleware('can:roles.index')-> names('admin.roles');
+    Route::get('/dashboard/fintech', [DashboardController::class, 'fintech'])->name('fintech');
+
+});
+Route::get('/pets/{pet}/show', Show::class)->name('pets.detail');
+
+Route::resource('users', UserController::class)->middleware('can:users.index')->names('admin.users');
+Route::resource('roles', RoleController::class)->middleware('can:roles.index')->names('admin.roles');
+
+

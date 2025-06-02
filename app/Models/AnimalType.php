@@ -5,14 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Veterinarian extends Model
+class AnimalType extends Model
 {
+
     use HasFactory;
+
     protected $fillable = [
         'name',
-        'phone',
-        'email',
-        'specialty',
-        'photo'
     ];
+
+    public function pet ()
+    {
+        $this-> hasMany(Pet::class, 'pet_id');
+    }
 }

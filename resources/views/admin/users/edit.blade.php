@@ -1,36 +1,88 @@
 <x-app-layout>
-    <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        @if (@session('info'))
-            <div class="mb-4 text-green-600 font-semibold">
-                {{ session('info') }}
-            </div>
-        @endif
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold mb-4">Asignar un rol al usuario</h2>
-            
-            <!-- Nombre del usuario en un input -->
-            <div class="mb-4">
-                <label for="name" class="block text-gray-700 font-medium">Nombre:</label>
-                <input type="text" id="name" name="name" value="{{ $user->name }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" disabled>
-            </div>
+    <x-slot name="header">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            Editar Usuario
+        </h2>
+    </x-slot>
 
-            <!-- Formulario para asignar roles -->
-            {!! Form::model($user, ['route' => ['admin.users.update', $user], 'method' => 'put']) !!}
-            @foreach ($roles as $role)
-                <div class="mb-2 flex items-center">
-                    <label for="role-{{ $role->id }}" class="flex items-center text-gray-700">
-                        {!! Form::checkbox('roles[]', $role->id, $user->roles->contains($role->id), ['class' => 'mr-2', 'id' => 'role-' . $role->id]) !!}
-                        <span>{{ $role->name }}</span>
-                    </label>
-                </div>
-            @endforeach
+    <div class="py-6">
+        <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg p-6">
 
-            <!-- Botón de enviar -->
-            <div class="mt-4">
-                {!! Form::submit('Asignar rol', ['class' => 'px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200']) !!}
-                {!! Form::close() !!}
+                {{-- Mensajes flash --}}
+                @if(session('success'))
+                    <div class="p-4 mb-4 text-green-700 bg-green-100 rounded">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if(session('info'))
+                    <div class="p-4 mb-4 text-blue-700 bg-blue-100 rounded">
+                        {{ session('info') }}
+                    </div>
+                @endif
+                @if(session('warning'))
+                    <div class="p-4 mb-4 text-yellow-700 bg-yellow-100 rounded">
+                        {{ session('warning') }}
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="p-4 mb-4 text-red-700 bg-red-100 rounded">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('admin.users.update', $user) }}">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="mb-4">
+                        <label class="block font-medium">Nombre</label>
+                        <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full border-gray-300 rounded mt-1" required>
+                        @error('name') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium">Email</label>
+                        <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full border-gray-300 rounded mt-1" required>
+                        @error('email') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium">Contraseña (opcional)</label>
+                        <input type="password" name="password" class="w-full border-gray-300 rounded mt-1">
+                        @error('password') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block font-medium">Roles</label>
+                        @foreach($roles as $role)
+                            <div>
+                                <label class="inline-flex items-center">
+                                    <input 
+                                        type="checkbox" 
+                                        name="roles[]" 
+                                        value="{{ $role->name }}" 
+                                        class="rounded"
+                                        {{-- Mantener roles seleccionados tras error o mostrar roles actuales --}}
+                                        {{ (is_array(old('roles')) && in_array($role->name, old('roles'))) 
+                                            ? 'checked' 
+                                            : ($user->roles->contains('name', $role->name) ? 'checked' : '') }}>
+                                    <span class="ml-2">{{ $role->name }}</span>
+                                </label>
+                            </div>
+                        @endforeach
+                        @error('roles') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div>
+                        <button type="submit" class="px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700">
+                            Actualizar
+                        </button>
+                        <a href="{{ route('admin.users.index') }}" class="ml-4 text-gray-600 underline">Cancelar</a>
+                    </div>
+                </form>
+
             </div>
-          
         </div>
     </div>
 </x-app-layout>
