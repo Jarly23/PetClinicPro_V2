@@ -27,7 +27,7 @@ use App\Livewire\UserCreate;
 
 
 Route::get('/', function () {
-    return view('pages.web.home');
+    return view('auth.login');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {

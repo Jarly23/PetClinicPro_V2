@@ -16,7 +16,7 @@
             @foreach ($results as $client)
                 <li wire:click="selectClient({{ $client['id'] }})"
                     class="px-4 py-2 hover:bg-indigo-100 cursor-pointer text-sm">
-                    {{ $client['name'] }} {{ $client['lastname'] ?? '' }} - {{ $client['dni'] }}
+                    {{ $client['name'] }} {{ $client['lastname'] ?? '' }} - {{ $client['dniruc'] }}
                 </li>
             @endforeach
         </ul>
@@ -25,7 +25,7 @@
     @if ($selectedClient)
         <div class="mt-3 p-3 border rounded bg-gray-50 text-sm text-gray-700 space-y-1">
             <p><strong>Nombre:</strong> {{ $selectedClient['name'] }} {{ $selectedClient['lastname'] ?? '' }}</p>
-            <p><strong>DNI:</strong> {{ $selectedClient['dni'] }}</p>
+            <p><strong>DNI:</strong> {{ $selectedClient['dniruc'] }}</p>
             <p><strong>Teléfono:</strong> {{ $selectedClient['phone'] ?? 'N/A' }}</p>
             <p><strong>Email:</strong> {{ $selectedClient['email'] ?? 'N/A' }}</p>
         </div>

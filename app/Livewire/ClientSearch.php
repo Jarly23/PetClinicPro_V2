@@ -19,7 +19,7 @@ class ClientSearch extends Component
         'email' => '',
         'phone' => '',
         'addres' => '',
-        'dni' =>'',
+        'dniruc' =>'',
     ];
 
     public function updatedOwnerSearch()
@@ -36,7 +36,7 @@ class ClientSearch extends Component
         }
         $owners = Customer::where('name', 'like', '%'.$this->owner_search.'%' )
         ->orWhere('email' ,'like','%'.$this->owner_search.'%')
-        ->orWhere('dni', 'like','%'. $this->owner_search . '%')
+        ->orWhere('dniruc', 'like','%'. $this->owner_search . '%')
         ->limit(5)
         ->get();
 
@@ -95,7 +95,7 @@ class ClientSearch extends Component
             'new_owner.email' => 'nullable|email|unique:customers,email',
             'new_owner.phone' => 'nullable|string|max:20',
             'new_owner.address' => 'nullable|string|max:255',
-            'new_owner.dni' => 'required|string|max:20|unique:customers,dni',
+            'new_owner.dniruc' => 'required|string|max:20|unique:customers,dniruc',
         ])['new_owner'];
     }
 
