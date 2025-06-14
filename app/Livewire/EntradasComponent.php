@@ -15,12 +15,18 @@ class EntradasComponent extends Component
     public $open = false;
     public $precio_actual;
     public $showUpdatePriceModal = false;  // Variable de control del modal de confirmación
+    public $expiration_date;
+    public $confirmingDelete = false;
+    public $entradaToDelete = null;
+
+
 
     protected $rules = [
         'id_product' => 'required|exists:products,id_product',
         'cantidad' => 'required|integer|min:1',
         'fecha' => 'required|date',
         'precio_u' => 'required|numeric|min:0.01',
+        'expiration_date' => 'nullable|date|after_or_equal:today',
     ];
 
     public function mount()
@@ -71,6 +77,7 @@ class EntradasComponent extends Component
                 'cantidad' => $this->cantidad,
                 'fecha' => $this->fecha,
                 'precio_u' => $this->precio_u,
+                'expiration_date' => $this->expiration_date,
             ]);
 
             $producto->increment('current_stock', $this->cantidad);
@@ -93,6 +100,7 @@ class EntradasComponent extends Component
                 'cantidad' => $this->cantidad,
                 'fecha' => $this->fecha,
                 'precio_u' => $this->precio_u,
+                'expiration_date' => $this->expiration_date,
             ]);
 
             session()->flash('message', 'Entrada actualizada correctamente.');
@@ -134,12 +142,13 @@ class EntradasComponent extends Component
         $this->fecha = Carbon::parse($entrada->fecha)->format('Y-m-d\TH:i');
         $this->precio_u = $entrada->precio_u;
         $this->precio_actual = Product::find($this->id_product)->purchase_price;
+        $this->expiration_date = Carbon::parse($entrada->expiration_date)->format('Y-m-d');
         $this->open = true;
     }
 
-    public function deleteEntrada($id)
+   public function deleteEntrada()
     {
-        $entrada = EntradaInve::findOrFail($id);
+        $entrada = EntradaInve::findOrFail($this->entradaToDelete);
         $producto = Product::find($entrada->id_product);
 
         if ($producto) {
@@ -149,17 +158,27 @@ class EntradasComponent extends Component
         $entrada->delete();
 
         session()->flash('message', 'Entrada eliminada correctamente.');
+
+        $this->confirmingDelete = false;
+        $this->entradaToDelete = null;
     }
+
 
     private function resetInput()
     {
-        $this->reset(['entradaId', 'id_product', 'cantidad', 'precio_u', 'precio_actual']);
+        $this->reset(['entradaId', 'id_product', 'cantidad', 'precio_u', 'precio_actual','expiration_date']);
     }
 
     public function exportarExcel()
     {
         return Excel::download(new EntradasExport, 'entradas.xlsx');
     }
+        public function confirmDeleteEntrada($id)
+    {
+        $this->entradaToDelete = $id;
+        $this->confirmingDelete = true;
+    }
+
 
     public function render()
     {

@@ -12,6 +12,7 @@ class Product extends Model
     protected $table = 'products';
     protected $primaryKey = 'id_product';
     protected $fillable = [
+
         'name',
         'description',
         'id_category',
@@ -21,6 +22,7 @@ class Product extends Model
         'current_stock',
         'minimum_stock',
         'expiration_date'
+
     ];
 
     // Relación con Categoría

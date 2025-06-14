@@ -85,7 +85,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/Analityc', function () {
         return view('pages.dashboard.dashboardInve'); // Asegúrate que esta vista exista
-    })->name('analityc');
+    })->name('analytics');
 
 
     // Ruta a Documentacion:

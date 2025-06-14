@@ -39,13 +39,13 @@
                 </h3>
                 <ul class="mt-3">
                     <!-- Dashboard -->
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['dashboard'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif"
-                        x-data="{ open: {{ in_array(Request::segment(1), ['dashboard']) ? 1 : 0 }} }">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['dashboard'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif"
+                        x-data="{ open: {{ in_array(Request::segment(1), ['dashboard','analytics']) ? 1 : 0 }} }">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
                             href="#0" @click.prevent="open = !open; sidebarExpanded = true">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['dashboard'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
+                                    <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         viewBox="0 0 16 16">
                                         <path
@@ -59,7 +59,7 @@
                                 <!-- Icon -->
                                 <div
                                     class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 @if (in_array(Request::segment(1), ['dashboard'])) {{ 'rotate-180' }} @endif"
+                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 @if (in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'rotate-180' }} @endif"
                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
                                         <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                                     </svg>
@@ -67,7 +67,7 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['dashboard'])) {{ 'hidden' }} @endif"
+                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'hidden' }} @endif"
                                 :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('dashboard')) {{ '!text-violet-500' }} @endif"
@@ -78,7 +78,7 @@
                                 </li>
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('analytics')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('analityc') }}">
+                                        href="{{ route('analytics') }}">
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Analytics</span>
                                     </a>
@@ -181,142 +181,193 @@
                             </div>
                         </a>
                     </li>
-                    <!-- Gestion productos -->
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['settings'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif"
-                        x-data="{ open: {{ in_array(Request::segment(1), ['settings']) ? 1 : 0 }} }">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['settings'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
-                            href="#0" @click.prevent="open = !open; sidebarExpanded = true">
+                    @php
+                        $gestionRoutes = ['inventary', 'suppliers', 'products'];
+                        $isGestionRoute = in_array(Request::segment(1), $gestionRoutes);
+                    @endphp
+
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0
+                        bg-[linear-gradient(135deg,var(--tw-gradient-stops))]
+                        @if ($isGestionRoute)
+                            from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]
+                        @endif"
+                        x-data="{ open: {{ $isGestionRoute ? 'true' : 'false' }} }">
+
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition
+                            @if (!$isGestionRoute)
+                                hover:text-gray-900 dark:hover:text-white
+                            @endif"
+                            href="#0"
+                            @click.prevent="
+                                if (!{{ $isGestionRoute ? 'true' : 'false' }}) {
+                                    open = !open;
+                                    sidebarExpanded = true;
+                                }
+                            ">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['settings'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
-                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 16 16">
+                                    <svg class="shrink-0 fill-current
+                                            @if ($isGestionRoute)
+                                                text-violet-500
+                                            @else
+                                                text-gray-400 dark:text-gray-500
+                                            @endif"
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                                         <path
                                             d="M10.5 1a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2h-1.145a3.502 3.502 0 0 1-6.71 0H1a1 1 0 0 1 0-2h6.145A3.502 3.502 0 0 1 10.5 1ZM9 4.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM5.5 9a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2H8.855a3.502 3.502 0 0 1-6.71 0H1a1 1 0 1 1 0-2h1.145A3.502 3.502 0 0 1 5.5 9ZM4 12.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z"
                                             fill-rule="evenodd" />
                                     </svg>
                                     <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Gestion
-                                        de Producto</span>
+                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        Gestión de Producto
+                                    </span>
                                 </div>
-                                <!-- Icon -->
+                                <!-- Icono flechita -->
                                 <div
                                     class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 @if (in_array(Request::segment(1), ['settings'])) {{ 'rotate-180' }} @endif"
+                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
                                         <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                                     </svg>
                                 </div>
                             </div>
                         </a>
+
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
-                                :class="open ? '!block' : 'hidden'">
+                            <!-- Categoria -->
+                            <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('account')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('inventary') }}">
-                                        <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Categoria</span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--Services-->
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
-                                :class="open ? '!block' : 'hidden'">
-                                <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('services')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('suppliers') }}">
+                                    <a href="{{ route('inventary') }}"
+                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                            @if (Route::is('inventary')) !text-violet-500 @endif">
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                            Provedor</span>
+                                            Categoria
+                                        </span>
                                     </a>
                                 </li>
                             </ul>
-                            <!--Veterinarians-->
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
-                                :class="open ? '!block' : 'hidden'">
+
+                            <!-- Proveedor -->
+                            <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('veterinarians')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('products') }}">
+                                    <a href="{{ route('suppliers') }}"
+                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                            @if (Route::is('suppliers')) !text-violet-500 @endif">
                                         <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Productos</span>
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            Proveedor
+                                        </span>
                                     </a>
                                 </li>
                             </ul>
 
-
+                            <!-- Productos -->
+                            <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
+                                <li class="mb-1 last:mb-0">
+                                    <a href="{{ route('products') }}"
+                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                            @if (Route::is('products')) !text-violet-500 @endif">
+                                        <span
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            Productos
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </li>
-                    <!-- Gestion de esxitencia  -->
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['settings'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif"
-                        x-data="{ open: {{ in_array(Request::segment(1), ['settings']) ? 1 : 0 }} }">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['settings'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
-                            href="#0" @click.prevent="open = !open; sidebarExpanded = true">
+                    @php
+                        $gestionRoutes = ['settings'];
+                        $isGestionRoute = in_array(Request::segment(1), $gestionRoutes);
+                    @endphp
+
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0
+                        bg-[linear-gradient(135deg,var(--tw-gradient-stops))]
+                        @if ($isGestionRoute)
+                            from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]
+                        @endif"
+                        x-data="{ open: {{ $isGestionRoute ? 'true' : 'false' }} }">
+
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition
+                            @if (!$isGestionRoute) hover:text-gray-900 dark:hover:text-white @endif"
+                            href="#0"
+                            @click.prevent="
+                                if (!{{ $isGestionRoute ? 'true' : 'false' }}) {
+                                    open = !open;
+                                    sidebarExpanded = true;
+                                }
+                            ">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['settings'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
-                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M10.5 1a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2h-1.145a3.502 3.502 0 0 1-6.71 0H1a1 1 0 0 1 0-2h6.145A3.502 3.502 0 0 1 10.5 1ZM9 4.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM5.5 9a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2H8.855a3.502 3.502 0 0 1-6.71 0H1a1 1 0 1 1 0-2h1.145A3.502 3.502 0 0 1 5.5 9ZM4 12.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z"
-                                            fill-rule="evenodd" />
+                                    <svg class="shrink-0 fill-current
+                                        @if ($isGestionRoute) text-violet-500 @else text-gray-400 dark:text-gray-500 @endif"
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                        <path d="M10.5 1a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2h-1.145a3.502 3.502 0 0 1-6.71 0H1a1 1 0 0 1 0-2h6.145A3.502 3.502 0 0 1 10.5 1ZM9 4.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM5.5 9a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2H8.855a3.502 3.502 0 0 1-6.71 0H1a1 1 0 1 1 0-2h1.145A3.502 3.502 0 0 1 5.5 9ZM4 12.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z" fill-rule="evenodd"/>
                                     </svg>
-                                    <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Gestion
-                                        de exixtencia </span>
+                                    <span class="text-sm font-medium ml-4
+                                        lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        Gestion de existencia
+                                    </span>
                                 </div>
-                                <!-- Icon -->
-                                <div
-                                    class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 @if (in_array(Request::segment(1), ['settings'])) {{ 'rotate-180' }} @endif"
+
+                                <div class="flex shrink-0 ml-2
+                                    lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
-                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z"/>
                                     </svg>
                                 </div>
                             </div>
                         </a>
+
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
-                                :class="open ? '!block' : 'hidden'">
+                            <!-- Entradas -->
+                            <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('account')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('entradas') }}">
-                                        <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Entradas</span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <!--Services-->
-
-                                <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
-                                    :class="open ? '!block' : 'hidden'">
-                                    <li class="mb-1 last:mb-0">
-                                        <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('services')) {{ '!text-violet-500' }} @endif"
-                                            href="{{ route('venta') }}">
-                                            <span
-                                                class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Regristrar Venta</span>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                            <!--Ventas-->
-
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
-                                :class="open ? '!block' : 'hidden'">
-                                <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('veterinarians')) {{ '!text-violet-500' }} @endif"
-                                        href="{{ route('historial') }}">
-                                        <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Historial
-                                            de ventas</span>
+                                    <a href="{{ route('entradas') }}"
+                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        @if (Route::is('entradas')) !text-violet-500 @endif">
+                                        <span class="text-sm font-medium
+                                            lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            Entradas
+                                        </span>
                                     </a>
                                 </li>
                             </ul>
 
+                            <!-- Registrar Venta -->
+                            <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
+                                <li class="mb-1 last:mb-0">
+                                    <a href="{{ route('venta') }}"
+                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        @if (Route::is('venta')) !text-violet-500 @endif">
+                                        <span class="text-sm font-medium
+                                            lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            Registrar Venta
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
 
+                            <!-- Historial de ventas -->
+                            <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
+                                <li class="mb-1 last:mb-0">
+                                    <a href="{{ route('historial') }}"
+                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        @if (Route::is('historial')) !text-violet-500 @endif">
+                                        <span class="text-sm font-medium
+                                            lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            Historial de ventas
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </li>
+
                     <!-- Notificaciones-->
+
                     <li
                         class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['documentacion'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['documentacion'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"

@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->decimal('sale_price', 8, 2);
             $table->integer('current_stock');
             $table->integer('minimum_stock');
-            $table->date('expiration_date');
             $table->timestamps();
 
             // Claves foráneas correctamente referenciadas

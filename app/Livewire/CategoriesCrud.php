@@ -8,6 +8,8 @@ use App\Models\Category;
 class CategoriesCrud extends Component
 {
     public $name, $categoryId, $open = false;
+    public $confirmingDelete = false;
+    public $categoryToDelete = null;
 
     protected $rules = [
         'name' => 'required|string|max:255|unique:categories,name',
@@ -29,30 +31,44 @@ class CategoriesCrud extends Component
         $this->validate();
 
         Category::updateOrCreate(
-            ['id_category' => $this->categoryId], // Usa la clave primaria correcta
+            ['id_category' => $this->categoryId],
             ['name' => $this->name]
         );
 
         session()->flash('message', 'Categoría guardada con éxito.');
         $this->closeModal();
-        $this->dispatch('refreshCategories'); // Livewire 3: Emite evento para actualizar lista
+        $this->dispatch('refreshCategories');
     }
 
     public function edit($id)
     {
-        $category = Category::findOrFail($id); // Busca la categoría
+        $category = Category::findOrFail($id);
         $this->categoryId = $category->id_category;
         $this->name = $category->name;
-        $this->open = true; // Abre el modal con los datos cargados
+        $this->open = true;
     }
 
-    public function delete($id)
+    // Nuevo método para abrir modal de confirmación
+    public function confirmDelete($id)
     {
-        $category = Category::findOrFail($id);
+        $this->categoryToDelete = $id;
+        $this->confirmingDelete = true;
+    }
+
+    // Método para eliminar la categoría tras confirmar
+    public function delete()
+    {
+        $category = Category::findOrFail($this->categoryToDelete);
+
+        // Aquí puedes eliminar productos relacionados si ya tienes la relación
+        // $category->products()->delete();
+
         $category->delete();
 
         session()->flash('message', 'Categoría eliminada con éxito.');
-        $this->dispatch('refreshCategories'); // Emite evento para actualizar la lista
+        $this->confirmingDelete = false;
+        $this->categoryToDelete = null;
+        $this->dispatch('refreshCategories');
     }
 
     public function render()

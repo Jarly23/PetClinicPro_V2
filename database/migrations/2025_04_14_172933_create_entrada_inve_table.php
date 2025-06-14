@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->integer('cantidad');
             $table->dateTime('fecha');
             $table->decimal('precio_u', 8, 2);
+            $table->date('expiration_date')->nullable();
             $table->timestamps();
 
             // Relación correcta con tabla products
