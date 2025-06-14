@@ -120,7 +120,7 @@
                         <tbody>
                             @foreach ($ventaSeleccionada->detalles as $detalle)
                                 <tr class="border-b hover:bg-gray-50">
-                                    <td class="px-3 py-2">{{ $detalle->producto->name ?? '🗑 Eliminado' }}</td>
+                                    <td class="px-3 py-2">{{ $detalle->product->name ?? '🗑 Eliminado' }}</td>
                                     <td class="px-3 py-2">{{ $detalle->cantidad }}</td>
                                     <td class="px-3 py-2">${{ number_format($detalle->p_unitario, 2) }}</td>
                                     <td class="px-3 py-2 font-semibold">${{ number_format($detalle->total, 2) }}</td>

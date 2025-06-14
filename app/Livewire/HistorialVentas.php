@@ -73,7 +73,7 @@ class HistorialVentas extends Component
 
     public function eliminarVenta($idVenta)
     {
-        $venta = Ventas::with('detalles.producto')->find($idVenta);
+        $venta = Ventas::with('detalles.product')->find($idVenta);
 
         if (!$venta) {
             session()->flash('error', 'La venta no existe.');
@@ -81,9 +81,9 @@ class HistorialVentas extends Component
         }
 
         foreach ($venta->detalles as $detalle) {
-            if ($detalle->producto) {
-                $detalle->producto->current_stock += $detalle->cantidad;
-                $detalle->producto->save();
+            if ($detalle->product) {
+                $detalle->product->current_stock += $detalle->cantidad;
+                $detalle->product->save();
             }
         }
 

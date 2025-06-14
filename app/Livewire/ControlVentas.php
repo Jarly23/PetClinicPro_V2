@@ -13,7 +13,6 @@ use App\Models\Supplier;
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 use Illuminate\Support\Facades\DB;
 
-
 class ControlVentas extends Component
 {
     public $totalProducts;
@@ -39,14 +38,14 @@ class ControlVentas extends Component
     public $topSuppliers;
     public $supplierLabels;
     public $supplierCounts;
-    
+    public $expiringProducts;
 
     public function mount()
     {
         $this->totalProducts = Product::count();
         $this->totalPurchasesMonth = EntradaInve::whereMonth('fecha', Carbon::now()->month)
-        ->selectRaw('SUM(cantidad * precio_u) as total')
-        ->value('total');
+            ->selectRaw('SUM(cantidad * precio_u) as total')
+            ->value('total');
         $this->stockTotal = Product::sum('current_stock');
         $this->totalSalesMonth = Ventas::whereMonth('fecha', Carbon::now()->month)->sum('total');
 
@@ -80,46 +79,51 @@ class ControlVentas extends Component
         $this->ventasPorMesData = $ventasPorMes->values()->toArray();
         $this->buildCategorySalesChart();
         $this->buildDailySalesChart();
-        
 
-        $this->topSellingProducts = detalle_venta::select('id_product', DB::raw('SUM(cantidad) as total_vendido'))
+        // TOP 10 productos más vendidos del AÑO ACTUAL
+        $year = Carbon::now()->year;
+        $this->topSellingProducts = detalle_venta::whereHas('venta', function($query) use ($year) {
+            $query->whereYear('fecha', $year);
+        })
+        ->select('id_product', DB::raw('SUM(cantidad) as total_vendido'))
         ->groupBy('id_product')
         ->orderByDesc('total_vendido')
-        ->with('product') // Trae la info del producto
+        ->with('product')
         ->take(10)
-        ->get();
-        
-         $this->topCustomers = Customer::withCount('ventas')
-        ->orderBy('ventas_count', 'desc')
-        ->take(5)
         ->get();
 
+        $this->topCustomers = Customer::withCount('ventas')
+            ->orderBy('ventas_count', 'desc')
+            ->take(5)
+            ->get();
+
         $topSuppliers = Supplier::withCount('products')
-        ->orderBy('products_count', 'desc')
-        ->take(10)
-        ->get();
+            ->orderBy('products_count', 'desc')
+            ->take(10)
+            ->get();
 
         $this->supplierLabels = $topSuppliers->pluck('name')->toArray();
         $this->supplierCounts = $topSuppliers->pluck('products_count')->toArray();
 
-
-
+        $this->expiringProducts = EntradaInve::whereNotNull('expiration_date')
+            ->whereBetween('expiration_date', [now(), now()->addMonth()])
+            ->with('product')
+            ->get();
     }
 
     protected function buildSalesChart()
     {
-    $salesPerMonth = Ventas::selectRaw('MONTH(fecha) as month, SUM(total) as total')
-        ->groupBy('month')
-        ->orderBy('month')
-        ->pluck('total', 'month');
+        $salesPerMonth = Ventas::selectRaw('MONTH(fecha) as month, SUM(total) as total')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('total', 'month');
 
-    $chart = new Chart();
-    $chart->labels($salesPerMonth->keys()->map(fn($month) => Carbon::create()->month($month)->format('F')));
-    $chart->dataset('Ventas', 'bar', $salesPerMonth->values())->backgroundColor('#6366F1');
+        $chart = new Chart();
+        $chart->labels($salesPerMonth->keys()->map(fn($month) => Carbon::create()->month($month)->format('F')));
+        $chart->dataset('Ventas', 'bar', $salesPerMonth->values())->backgroundColor('#6366F1');
 
-    return $chart;
+        return $chart;
     }
-
 
     protected function buildCategorySalesChart()
     {
@@ -134,34 +138,29 @@ class ControlVentas extends Component
         $this->categoryTotals = $categorySales->values()->toArray();
     }
 
-
-   protected function buildDailySalesChart()
+    protected function buildDailySalesChart()
     {
-    $dailySales = collect();
-    $labels = collect();
+        $dailySales = collect();
+        $labels = collect();
 
-    // Últimos 7 días (de más antiguo a hoy)
-    foreach (range(6, 0) as $i) {
-        $date = Carbon::today()->subDays($i);
-        $total = Ventas::whereDate('fecha', $date)->sum('total');
-        $labels->push($date->format('d M')); // Ej: "14 May"
-        $dailySales->push($total);
+        foreach (range(6, 0) as $i) {
+            $date = Carbon::today()->subDays($i);
+            $total = Ventas::whereDate('fecha', $date)->sum('total');
+            $labels->push($date->format('d M'));
+            $dailySales->push($total);
+        }
+
+        $this->dailySalesLabels = $labels->toArray();
+        $this->dailySalesData = $dailySales->toArray();
     }
-
-    // Asignamos los datos a propiedades públicas para usarlas en la vista
-    $this->dailySalesLabels = $labels->toArray();
-    $this->dailySalesData = $dailySales->toArray();
-    }
-
-
 
     public function render()
     {
-    $salesChart = $this->buildSalesChart();
-    $categorySalesChart = $this->buildCategorySalesChart();
-    $dailySalesChart = $this->buildDailySalesChart();
+        $salesChart = $this->buildSalesChart();
+        $categorySalesChart = $this->buildCategorySalesChart();
+        $dailySalesChart = $this->buildDailySalesChart();
 
-    return view('livewire.control-ventas', compact('salesChart', 'categorySalesChart', 'dailySalesChart'));
+        return view('livewire.control-ventas', compact('salesChart', 'categorySalesChart', 'dailySalesChart'))
+            ->with('topSellingProducts', $this->topSellingProducts);
     }
-
 }

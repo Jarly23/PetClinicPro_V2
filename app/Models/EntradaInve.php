@@ -17,11 +17,20 @@ class EntradaInve extends Model
         'cantidad',
         'fecha',
         'precio_u',
+        'expiration_date',
     ];
 
     // Relación con el modelo Product
     public function product()
     {
         return $this->belongsTo(Product::class, 'id_product');
+    }
+
+    // Accessor para formatear la fecha de vencimiento (opcional)
+    public function getExpirationDateFormattedAttribute()
+    {
+        return $this->expiration_date 
+            ? \Carbon\Carbon::parse($this->expiration_date)->format('d/m/Y') 
+            : null;
     }
 }
