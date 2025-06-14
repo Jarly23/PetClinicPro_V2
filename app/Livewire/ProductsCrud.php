@@ -10,11 +10,15 @@
     class ProductsCrud extends Component
     {
         public $productId, $name, $description, $id_category, $id_supplier;
-        public $purchase_price, $sale_price, $current_stock, $minimum_stock, $expiration_date;
+        public $purchase_price, $sale_price, $current_stock, $minimum_stock;
         public $open = false;
         public $lowStockAlert = false;
         public $search = '';
         public $categoryFilter = '';
+        // Nuevas propiedades
+        public $confirmingDelete = false;
+        public $productToDelete = null;
+
 
         protected $rules = [
             'name' => 'required|string|max:255',
@@ -25,7 +29,6 @@
             'sale_price' => 'required|numeric|min:0',
             'current_stock' => 'required|integer|min:0',
             'minimum_stock' => 'required|integer|min:0',
-            'expiration_date' => 'nullable|date',
         ];
 
         public function openModal()
@@ -54,7 +57,6 @@
                     'sale_price' => $this->sale_price,
                     'current_stock' => $this->current_stock,
                     'minimum_stock' => $this->minimum_stock,
-                    'expiration_date' => $this->expiration_date,
                 ]
             );
 
@@ -81,7 +83,6 @@
             $this->sale_price = $product->sale_price;
             $this->current_stock = $product->current_stock;
             $this->minimum_stock = $product->minimum_stock;
-            $this->expiration_date = $product->expiration_date;
 
             $this->open = true;
         }
@@ -101,9 +102,31 @@
         {
             $this->reset([
                 'productId', 'name', 'description', 'id_category', 'id_supplier',
-                'purchase_price', 'sale_price', 'current_stock', 'minimum_stock', 'expiration_date'
+                'purchase_price', 'sale_price', 'current_stock', 'minimum_stock'
             ]);
         }
+        public function confirmDelete($id)
+        {
+            $this->productToDelete = $id;
+            $this->confirmingDelete = true;
+        }
+
+        public function cancelDelete()
+        {
+            $this->confirmingDelete = false;
+            $this->productToDelete = null;
+        }
+
+        public function deleteConfirmed()
+        {
+            Product::findOrFail($this->productToDelete)->delete();
+
+            session()->flash('message', 'Producto eliminado correctamente.');
+
+            $this->confirmingDelete = false;
+            $this->productToDelete = null;
+        }
+
 
         public function render()
         {

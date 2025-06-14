@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Nota de Venta #{{ $venta->id_venta }}</title>
+    <title>Nota de Venta #{{ $venta->id_venta}}</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

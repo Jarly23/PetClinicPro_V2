@@ -9,6 +9,8 @@ class SuppliersCrud extends Component
 {
     public $name, $contact, $phone, $address, $document_type, $document_number;
     public $supplierId, $open = false, $search = '';
+    public $confirmingDelete = false;
+    public $supplierToDelete = null;
 
     protected function rules()
     {
@@ -76,11 +78,20 @@ class SuppliersCrud extends Component
         $this->open = true;
     }
 
-    public function delete($id)
+    public function delete()
     {
-        Supplier::findOrFail($id)->delete();
+        Supplier::findOrFail($this->supplierToDelete)->delete();
+        $this->confirmingDelete = false;
+        $this->supplierToDelete = null;
         session()->flash('message', 'Proveedor eliminado correctamente.');
     }
+
+    public function confirmDelete($id)
+    {
+        $this->confirmingDelete = true;
+        $this->supplierToDelete = $id;
+    }
+
 
     public function render()
     {

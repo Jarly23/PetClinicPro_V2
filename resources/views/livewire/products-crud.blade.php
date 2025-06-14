@@ -9,8 +9,7 @@
     </div>
     {{-- Mensaje de sesión --}}
     @if (session()->has('message'))
-        <div x-data="{ show: true }"  x-show="show"
-            x-init="setTimeout(() => show = false, 1500)"
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 1500)"
             class="mb-4 px-4 py-2 bg-green-100 border border-green-400 text-green-700 rounded shadow transition">
             {{ session('message') }}
         </div>
@@ -49,14 +48,17 @@
                     <label class="block text-sm font-medium text-gray-700">Nombre del Producto</label>
                     <input wire:model="name" type="text"
                         class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300" />
-                    @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error('name')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Descripción</label>
-                    <textarea wire:model="description"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"></textarea>
-                    @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <textarea wire:model="description" class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"></textarea>
+                    @error('description')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -65,11 +67,13 @@
                         <select wire:model="id_category"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                             <option value="">Seleccione</option>
-                            @foreach($categories as $category)
+                            @foreach ($categories as $category)
                                 <option value="{{ $category->id_category }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
-                        @error('id_category') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        @error('id_category')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
@@ -77,11 +81,13 @@
                         <select wire:model="id_supplier"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                             <option value="">Seleccione</option>
-                            @foreach($suppliers as $supplier)
+                            @foreach ($suppliers as $supplier)
                                 <option value="{{ $supplier->id_supplier }}">{{ $supplier->name }}</option>
                             @endforeach
                         </select>
-                        @error('id_supplier') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        @error('id_supplier')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
@@ -90,14 +96,18 @@
                         <label class="block text-sm font-medium text-gray-700">Precio de Compra</label>
                         <input wire:model="purchase_price" type="number" step="0.01"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300" />
-                        @error('purchase_price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        @error('purchase_price')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Precio de Venta</label>
                         <input wire:model="sale_price" type="number" step="0.01"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300" />
-                        @error('sale_price') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        @error('sale_price')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
@@ -106,32 +116,28 @@
                         <label class="block text-sm font-medium text-gray-700">Stock Actual</label>
                         <input wire:model="current_stock" type="number"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300" />
-                        @error('current_stock') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        @error('current_stock')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Stock Mínimo</label>
                         <input wire:model="minimum_stock" type="number"
                             class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300" />
-                        @error('minimum_stock') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        @error('minimum_stock')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Fecha de Expiración</label>
-                    <input wire:model="expiration_date" type="date"
-                        class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300" />
-                    @error('expiration_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </form>
         </x-slot>
 
         <x-slot name="footer">
-            <button wire:click="closeModal"
-                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md mr-2">
+            <button wire:click="closeModal" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md mr-2">
                 Cancelar
             </button>
-            <button wire:click="save" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
+            <button wire:click="save" class="bg-blue-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">
                 Guardar
             </button>
         </x-slot>
@@ -140,14 +146,14 @@
     {{-- Tabla de productos --}}
     <div class="mt-6 overflow-x-auto">
         <table class="table-auto w-full border border-gray-300 shadow-sm">
-            <thead class="bg-gray-100">
+            <thead class="bg-gray-200">
                 <tr>
-                    <th class="px-4 py-2 border">Nombre</th>
-                    <th class="px-4 py-2 border">Categoría</th>
-                    <th class="px-4 py-2 border ">Precio Compra</th>
-                    <th class="px-4 py-2 border ">Precio Venta</th>
-                    <th class="px-4 py-2 border">Stock</th>
-                    <th class="px-4 py-2 border">Acciones</th>
+                    <th class="px-4 py-2 border border-gray-300">Nombre</th>
+                    <th class="px-4 py-2 border border-gray-300">Categoría</th>
+                    <th class="px-4 py-2 border border-gray-300">Precio Compra</th>
+                    <th class="px-4 py-2 border border-gray-300">Precio Venta</th>
+                    <th class="px-4 py-2 border border-gray-300">Stock</th>
+                    <th class="px-4 py-2 border border-gray-300">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -161,19 +167,19 @@
                         <td class="px-4 py-2 border text-green-600 font-semibold text-center">
                             S/. {{ number_format($product->sale_price, 2) }}
                         </td>
-                        <td class="px-4 py-2 border text-center font-bold {{ $product->current_stock <= $product->minimum_stock ? 'text-red-600' : 'text-gray-700' }}">
+                        <td
+                            class="px-4 py-2 border text-center font-bold {{ $product->current_stock <= $product->minimum_stock ? 'text-red-600' : 'text-gray-700' }}">
                             {{ $product->current_stock }}
                         </td>
                         <td class="px-4 py-2 border text-center">
                             <button wire:click="edit({{ $product->id_product }})"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md mr-2">
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transform transition duration-200 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 Editar
                             </button>
-                            <button wire:click="delete({{ $product->id_product }})"
-                                onclick="return confirm('¿Seguro que deseas eliminar este producto?')"
+                            <button wire:click="confirmDelete({{ $product->id_product }})"
                                 class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transform transition duration-200 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500">
                                 Eliminar
-                            </button>   
+                            </button>
                         </td>
                     </tr>
                 @empty
@@ -184,6 +190,27 @@
             </tbody>
         </table>
     </div>
+    {{-- nodal para confirmacion --}}
+    <x-confirmation-modal wire:model="confirmingDelete">
+        <x-slot name="title">
+            Confirmar Eliminación
+        </x-slot>
+
+        <x-slot name="content">
+            ¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.
+        </x-slot>
+
+        <x-slot name="footer">
+            <button wire:click="cancelDelete"
+                class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-200 mr-2">
+                Cancelar
+            </button>
+            <button wire:click="deleteConfirmed"
+                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-200">
+                Eliminar
+            </button>
+        </x-slot>
+    </x-confirmation-modal>
 
     <script>
         window.addEventListener('low-stock-alert', event => {

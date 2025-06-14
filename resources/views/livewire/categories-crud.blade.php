@@ -12,6 +12,19 @@
         </x-danger-button>
     </div>
 
+    <!-- Mensaje de éxito que desaparece en 2 segundos -->
+    @if (session()->has('message'))
+        <div 
+            x-data="{ show: true }" 
+            x-init="setTimeout(() => show = false, 2000)" 
+            x-show="show"
+            x-transition 
+            class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mt-4"
+        >
+            {{ session('message') }}
+        </div>
+    @endif
+
     <!-- Modal para crear o editar categoría -->
     <x-dialog-modal wire:model="open">
         <x-slot name="title">
@@ -35,7 +48,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <button wire:click="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-200">
+            <button wire:click="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-200 mr-2">
                 Cancelar
             </button>
             <button wire:click="save" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200" 
@@ -45,14 +58,41 @@
         </x-slot>
     </x-dialog-modal>
 
+    <!-- Modal de confirmación para eliminar -->
+    <x-dialog-modal wire:model="confirmingDelete">
+        <x-slot name="title">
+            Confirmar eliminación
+        </x-slot>
+
+        <x-slot name="content">
+            <p class="text-red-600">
+                ¿Estás seguro de eliminar esta categoría? <br>
+                También se eliminarán los productos registrados con esta categoría.
+            </p>
+        </x-slot>
+
+        <x-slot name="footer">
+            <button wire:click="$set('confirmingDelete', false)" 
+                class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-200 mr-2">
+                Cancelar
+            </button>
+            <button wire:click="delete" 
+                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-200" 
+                wire:loading.attr="disabled">
+                Eliminar
+            </button>
+
+        </x-slot>
+    </x-dialog-modal>
+
     <!-- Lista de categorías -->
     <div class="mt-6 bg-white shadow-md rounded-lg overflow-hidden">
         <table class="w-full table-auto border-collapse border border-gray-200">
-            <thead class="bg-indigo-100">
+            <thead class="bg-gray-200">
                 <tr>
-                    <th class="p-4 text-left text-sm font-medium text-gray-700 border border-gray-300">ID</th>
-                    <th class="p-4 text-left text-sm font-medium text-gray-700 border border-gray-300">Nombre</th>
-                    <th class="p-4 text-left text-sm font-medium text-gray-700 border border-gray-300">Acciones</th>
+                    <th class="p-4 text-left text-sm font-medium text-gray-700 border border-gray-400">ID</th>
+                    <th class="p-4 text-left text-sm font-medium text-gray-700 border border-gray-400">Nombre</th>
+                    <th class="p-4 text-left text-sm font-medium text-gray-700 border border-gray-400">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,7 +105,7 @@
                                 class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
                                 Editar
                             </button>
-                            <button wire:click="delete({{ $category->id_category }})" 
+                            <button wire:click="confirmDelete({{ $category->id_category }})" 
                                 class="bg-red-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-red-600 transition duration-200">
                                 Eliminar
                             </button>
@@ -79,4 +119,5 @@
             <p class="text-center text-gray-600 py-4">No hay categorías registradas.</p>
         @endif
     </div>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </div>

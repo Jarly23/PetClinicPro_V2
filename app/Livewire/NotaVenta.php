@@ -9,6 +9,8 @@ use App\Models\detalle_venta;
 use Livewire\Component;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
+
 
 class NotaVenta extends Component
 {
@@ -28,8 +30,8 @@ class NotaVenta extends Component
     public $nuevo_cliente_dniruc;
     public $nuevo_cliente_address;
     public $search = '';
-public $cliente = [];
-public $mostrarLista = false;
+    public $cliente = [];
+    public $mostrarLista = false;
     public $numero_factura;
     public $fecha;
     
@@ -183,10 +185,12 @@ public function guardarVenta()
 
     // Generar PDF inmediatamente
     $detalleVentas = $venta->detalles;
+    $customer = Customer::find($venta->customer_id);
 
     $html = view('pdf.nota_venta', [
         'venta' => $venta,
         'detalleVentas' => $detalleVentas,
+        'customer' => $customer
     ])->render();
 
     $pdf = PDF::loadHTML($html)->setPaper('A4', 'portrait');
@@ -205,8 +209,10 @@ public function guardarVenta()
 
     // Retornar el PDF como descarga
     return response()->streamDownload(function() use ($pdf) {
-        echo $pdf->output();
-    }, 'nota_venta_' . $venta->id_venta . '.pdf');
+    echo $pdf->output();
+    }, 'nota_venta_' . $venta->id_venta . '_' . Str::slug($customer->name . ' ' . $customer->lastname) . '.pdf');
+
+
 }
 
 
