@@ -20,6 +20,12 @@
                 </li>
             @endforeach
         </ul>
+
+    @endif
+    @if ($noResults)
+        <div class="absolute z-10 mt-1 w-full text-sm text-red-600 bg-white border rounded px-4 py-2">
+            No se encontró ningún cliente.
+        </div>
     @endif
 
     @if ($selectedClient)

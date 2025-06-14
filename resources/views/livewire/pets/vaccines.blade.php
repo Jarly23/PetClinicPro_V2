@@ -1,10 +1,11 @@
-@php
-    use Carbon\Carbon;
-@endphp
 <div class="p-6 bg-white rounded shadow-md" x-data="{ open: false }">
     @if (session()->has('success'))
         <div class="mb-4 p-3 text-green-700 bg-green-100 rounded">
             {{ session('success') }}
+        </div>
+    @elseif (session()->has('error'))
+        <div class="mb-4 p-3 text-red-700 bg-red-100 rounded">
+            {{ session('error') }}
         </div>
     @endif
 
@@ -96,9 +97,9 @@
                     <tr class="text-sm text-gray-800">
                         <td class="px-4 py-2">{{ $application->vaccine->name }}</td>
                         <td class="px-4 py-2">
-                            {{ Carbon::parse($application->application_date)->format('d/m/Y') }}</td>
+                            {{ \Carbon\Carbon::parse($application->application_date)->format('d/m/Y') }}</td>
                         <td class="px-4 py-2">
-                            {{ Carbon::parse($application->application_date)->addDays($application->vaccine->application_interval_days)->format('d/m/Y') }}
+                            {{ \Carbon\Carbon::parse($application->application_date)->addDays($application->vaccine->application_interval_days)->format('d/m/Y') }}
                         </td>
                         <td class="px-4 py-2">
                             <span
@@ -118,3 +119,5 @@
         </table>
     </div>
 </div>
+``
+ 

@@ -41,7 +41,7 @@
         <div class="mb-4 p-4 border border-gray-300 rounded-md">
             <h3 class="text-lg font-medium text-gray-900">Detalles de la Consulta</h3>
             <p><strong>Fecha de Consulta:</strong> {{ $selectedConsultation->consultation_date }}</p>
-            <p><strong>Servicio:</strong> {{ $selectedConsultation->service->name }}</p>
+            <p><strong>Servicio:</strong> {{ $selectedConsultation->service->names }}</p>
             <p><strong>Detalles del Servicio:</strong> {{ $selectedConsultation->service->description }}</p>
             <p><strong>Precio:</strong> ${{ $selectedConsultation->service->price }}</p>
         </div>

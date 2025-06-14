@@ -9,6 +9,8 @@ use App\Models\Pet;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Service;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class ConsultationCrud extends Component
 {
@@ -26,7 +28,7 @@ class ConsultationCrud extends Component
     public $consultation_details, $export_format;
     public $service_ids = []; // Servicios múltiples
     public $pets = [];
-        protected $listeners = [ 'clientSelected' => 'loadClientPets'];
+    protected $listeners = ['clientSelected' => 'loadClientPets'];
     protected $rules = [
         'consultation_date' => 'required|date',
         'pet_id' => 'required|exists:pets,id',
@@ -184,5 +186,25 @@ class ConsultationCrud extends Component
     {
         $this->consultation_details = Consultation::with('customer', 'pet', 'user', 'services')->find($id);
         $this->showDetails = true;
+    }
+    public function exportPDF($id)
+    {
+        $consultation = Consultation::with('customer', 'pet', 'user', 'services')->findOrFail($id);
+
+        $total = $consultation->services->sum('price');
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.consultation-receipt', [
+            'consultation' => $consultation,
+            'total' => $total,
+        ]);
+
+        $clientName = preg_replace('/[^A-Za-z0-9\-]/', '_', $consultation->customer->name);
+        $petName = preg_replace('/[^A-Za-z0-9\-]/', '_', $consultation->pet->name);
+
+        $filename = "boleta-consulta-{$clientName}-{$petName}.pdf";
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, $filename);
     }
 }

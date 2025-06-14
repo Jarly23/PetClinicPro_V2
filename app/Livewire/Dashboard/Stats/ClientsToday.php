@@ -22,7 +22,7 @@ class ClientsToday extends Component
 
         $this->secondIcon = $nuevosHoy > 0
             ? 'images/icons/VectorArrowUp.svg'
-            : 'images/icons/VectorArrowRight.svg';
+            : 'images/icons/VectorArrowDown.svg';
 
         $this->additionalData = $nuevosHoy > 0
             ? "$nuevosHoy nuevo(s) hoy"

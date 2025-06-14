@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard\Stats;
 
 use Livewire\Component;
 use App\Models\Reservation;
+use Carbon\Carbon;
 
 class PendingBookings extends Component
 {
@@ -15,7 +16,11 @@ class PendingBookings extends Component
 
     public function mount()
     {
-        $this->value = Reservation::where('status', 'Confirmed')->count();
+        $today = Carbon::today()->toDateString();
+
+        $this->value = Reservation::where('status', 'Confirmed')
+            ->whereDate('reservation_date', $today)
+            ->count();
     }
     public function render()
     {

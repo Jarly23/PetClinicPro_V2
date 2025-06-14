@@ -6,10 +6,9 @@
     <!-- Barra de búsqueda -->
     <div class="flex justify-end items-center gap-2">
         <x-input class="w-80 text-stone-700" wire:model.defer="search" placeholder="Buscar mascotas..." />
-        <button wire:click="$refresh"
-            class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition">
+        <x-buttons.search wire:click="$refresh">
             Buscar
-        </button>
+        </x-buttons.search>
     </div>
 
     <!-- Tabla de mascotas -->
@@ -32,11 +31,14 @@
                         <td class="px-4 py-2 text-sm">{{ $pet->owner->name }}</td>
                         <td class="px-4 py-2 space-x-2 text-sm">
                             <!-- Botones de acciones -->
-                            <x-secondary-button wire:click="edit({{ $pet->id }})">Editar</x-secondary-button>
-                            <x-danger-button wire:click="delete({{ $pet->id }})">Eliminar</x-danger-button>
-
+                            @can('mascotas.edit')
+                                <x-buttons.edit wire:click="edit({{ $pet->id }})">Editar</x-buttons.edit>
+                            @endcan
+                            @can('mascotas.delete')
+                                <x-buttons.delete wire:click="delete({{ $pet->id }})">Eliminar</x-buttons.delete>
+                            @endcan
                             <!-- Enlace para ver detalles -->
-                            <a href="{{ route('pets.detail', $pet->id) }}" class="text-indigo-600 hover:underline">Ver más</a>
+                            <x-buttons.view><a href="{{ route('pets.detail', $pet->id) }}">Ver más</a></x-buttons.view>
                         </td>
                     </tr>
                 @endforeach

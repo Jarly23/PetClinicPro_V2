@@ -10,8 +10,10 @@ class Vaccine extends Model
     use HasFactory;
     protected $fillable = ['name', 'description', 'application_interval_days'];
 
-public function diseases()
-{
-    return $this->belongsToMany(Disease::class, 'vaccine_disease')->withTimestamps();
-}
+    public function diseases()
+    {
+        return $this->belongsToMany(Disease::class, 'vaccine_disease')->withTimestamps();
+    }
+
+
 }

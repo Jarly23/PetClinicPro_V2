@@ -19,7 +19,6 @@ class CustomerCrud extends Component
         return [
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
             'phone' => 'required|digits:9',
             'address' => 'required|string|max:255',
             'dniruc' => 'required|digits:8|unique:customers,dniruc,'
@@ -47,7 +46,7 @@ class CustomerCrud extends Component
                     ->orWhere('address', 'like', "%{$this->search}%")
                     ->orWhere('dniruc', 'like', "%{$this->search}%");
             })
-            ->orderBy('name')
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('livewire.customer-crud', compact('customers'));

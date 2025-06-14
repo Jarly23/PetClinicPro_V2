@@ -18,8 +18,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('service_id')->constrained('services');
             $table->date('reservation_date');
-            $table->time('start_time');
-            $table->time('end_time');
             $table->enum('status', ['Pending', 'Confirmed', 'Completed', 'Canceled'])->default('Pending');
             $table->timestamps();
         });

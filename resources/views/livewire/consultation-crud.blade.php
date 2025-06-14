@@ -33,7 +33,7 @@
 
                     <!-- Cliente -->
                     <div class="sm:col-span-2">
-                      <livewire:client-selector>
+                        <livewire:client-selector>
                     </div>
 
                     <!-- Mascota -->
@@ -198,6 +198,7 @@
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900">Cliente</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900">Mascota</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900">Veterinario</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900">Motivo de la consulta</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900">Fecha</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold text-gray-900">Acciones</th>
                 </tr>
@@ -208,16 +209,16 @@
                         <td class="px-4 py-2">{{ $consultation->customer->name ?? 'No asignado' }}</td>
                         <td class="px-4 py-2">{{ $consultation->pet->name ?? 'No asignada' }}</td>
                         <td class="px-4 py-2">{{ $consultation->user->name ?? 'No asignado' }}</td>
+                        <td class="px-4 py-2">{{ $consultation->motivo_consulta ?? 'No hay un motivo' }}</td>
                         <td class="px-4 py-2">
                             {{ \Carbon\Carbon::parse($consultation->consultation_date)->format('d/m/Y H:i') }}
                         </td>
                         <td class="px-4 py-2">
-                            <button wire:click="viewDetails({{ $consultation->id }})"
-                                class="px-2 py-1 text-xs text-white bg-green-600 rounded hover:bg-green-700">Ver</button>
-                            <button wire:click="edit({{ $consultation->id }})"
-                                class="px-2 py-1 text-xs text-white bg-blue-500 rounded hover:bg-blue-600">Editar</button>
-                            <button wire:click="delete({{ $consultation->id }})"
-                                class="px-2 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600">Eliminar</button>
+                            <x-buttons.view wire:click="viewDetails({{ $consultation->id }})">Ver</x-buttons.view>
+                            <x-buttons.edit wire:click="edit({{ $consultation->id }})">Editar</x-buttons.edit>
+                            <x-buttons.delete wire:click="delete({{ $consultation->id }})">Eliminar</x-buttons.delete>
+                            <button wire:click="exportPDF({{ $consultation->id }})"
+                                class="text-sm text-blue-600 hover:underline">Boleta PDF</button>
                         </td>
                     </tr>
                 @endforeach

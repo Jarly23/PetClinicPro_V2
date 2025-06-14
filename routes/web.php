@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\DashboardController;
@@ -33,14 +34,14 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/clientes', function () {
         return view('pages.dashboard.customers');
-    })->name('customers');
+    })->middleware('can:clientes.index')->name('customers');
     Route::get('/servicios', function () {
         return view('pages.dashboard.services');
     })->name('services');
 
     Route::get('/mascotas', function () {
         return view('pages.dashboard.pets');
-    })->name('pets');
+    })->middleware('can:mascotas.index')->name('pets');
 
     Route::get('/veterinarios', function () {
         return view('pages.dashboard.veterinarians');

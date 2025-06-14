@@ -28,7 +28,6 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
             'email' => 'required|string|max:255|email|unique:users,email',
             'password' => 'required|string|max:255|min:8',
             'phone' => 'required|string|max:11',
@@ -38,7 +37,6 @@ class UserController extends Controller
         try {
             $user = User::create([
                 'name' => $request->name,
-                'lastname' => $request->lastname,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
@@ -62,7 +60,6 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'lastname' => 'required|string|max:255',
             'phone' => 'required|string|max:11',
             'password' => 'nullable|string|min:8',
             'roles' => 'array',
@@ -72,7 +69,6 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone = $request->phone;
-            $user->lastname = $request->lastname;
 
             if ($request->filled('password')) {
                 $user->password = Hash::make($request->password);
@@ -80,7 +76,7 @@ class UserController extends Controller
 
             $user->save();
 
-            $user->roles()->sync($request->roles);
+            $user->syncRoles($request->roles);
         } catch (QueryException $e) {
             return back()->withInput()->with('error', 'Error al actualizar el usuario: ' . $e->getMessage());
         }
