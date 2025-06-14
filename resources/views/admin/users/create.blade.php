@@ -1,14 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            Crear Usuario
-        </h2>
-    </x-slot>
-
     <div class="py-6">
         <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg p-6">
-
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    Crear Usuario
+                </h2>
                 {{-- Mensajes flash --}}
                 @if (session('success'))
                     <div class="p-4 mb-4 text-green-700 bg-green-100 rounded">
@@ -39,15 +35,6 @@
                         <input type="text" name="name" value="{{ old('name') }}"
                             class="w-full border-gray-300 rounded mt-1" required>
                         @error('name')
-                            <p class="text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block font-medium">Apellido</label>
-                        <input type="text" name="lastname" value="{{ old('lastname') }}"
-                            class="w-full border-gray-300 rounded mt-1" required>
-                        @error('lastname')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>

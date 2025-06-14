@@ -1,6 +1,8 @@
 <div class="space-y-6">
 
     <!-- ✅ Flash Messages -->
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Gestión de Reservas</h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Administra, confirma o inicia las reservas registradas.</p>
     @if (session()->has('message'))
         <div class="mb-4 rounded-md bg-green-50 border border-green-200 p-4 text-sm text-green-800">
             {{ session('message') }}
@@ -84,21 +86,6 @@
                         <x-input-error for="reservation_date" />
                     </div>
 
-                    <!-- Hora inicio -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-900">Hora de Inicio</label>
-                        <input wire:model="start_time" type="time"
-                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                        <x-input-error for="start_time" />
-                    </div>
-
-                    <!-- Hora fin -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-900">Hora de Fin</label>
-                        <input wire:model="end_time" type="time"
-                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                        <x-input-error for="end_time" />
-                    </div>
                 </div>
             </form>
         </x-slot>
@@ -123,7 +110,7 @@
         <table class="min-w-full text-sm text-left text-gray-900">
             <thead class="bg-gray-100">
                 <tr>
-                    @foreach (['Cliente', 'Mascota', 'Veterinario', 'Servicio', 'Fecha', 'Inicio', 'Fin', 'Estado', 'Acciones'] as $th)
+                    @foreach (['Cliente', 'Mascota', 'Veterinario', 'Servicio', 'Fecha', 'Estado', 'Acciones'] as $th)
                         <th class="px-4 py-2 font-semibold text-gray-700">{{ $th }}</th>
                     @endforeach
                 </tr>
@@ -136,8 +123,7 @@
                         <td class="px-4 py-2">{{ $reservation->user->name }}</td>
                         <td class="px-4 py-2">{{ $reservation->service->name }}</td>
                         <td class="px-4 py-2">{{ $reservation->reservation_date }}</td>
-                        <td class="px-4 py-2">{{ $reservation->start_time }}</td>
-                        <td class="px-4 py-2">{{ $reservation->end_time }}</td>
+
                         <td class="px-4 py-2">
                             <span
                                 class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full

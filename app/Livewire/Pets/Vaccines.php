@@ -7,6 +7,7 @@ use App\Models\Vaccine;
 use App\Models\VaccineApplication;
 use App\Models\Pet;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Vaccines extends Component
 {
@@ -18,16 +19,11 @@ class Vaccines extends Component
 
     public $availableVaccines = [];
 
-    public function confirmApplication()
-    {
-        // Activamos el modal de confirmación
-        $this->dispatchBrowserEvent('open-confirmation-modal');
-    }
     public function mount($petId)
     {
         $this->petId = $petId;
         $this->application_date = now()->format('Y-m-d');
-        $this->availableVaccines = Vaccine::all();
+        $this->availableVaccines = Vaccine::all(); // Ya no se necesita 'with(product)'
     }
 
     public function applyVaccine()
@@ -37,20 +33,28 @@ class Vaccines extends Component
             'application_date' => 'required|date',
         ]);
 
-        VaccineApplication::create([
-            'pet_id' => $this->petId,
-            'vaccine_id' => $this->vaccineId,
-            'application_date' => $this->application_date,
-            'user_id' => Auth::id(), // Veterinario que aplica
-            'notes' => $this->notes,
-            'with_deworming' => $this->with_deworming,
-        ]);
+        DB::beginTransaction();
 
-        session()->flash('success', 'Vacuna aplicada correctamente.');
+        try {
+            // Ya no se necesita cargar el producto ni verificar stock
+            VaccineApplication::create([
+                'pet_id' => $this->petId,
+                'vaccine_id' => $this->vaccineId,
+                'application_date' => $this->application_date,
+                'user_id' => Auth::id(),
+                'notes' => $this->notes,
+                'with_deworming' => $this->with_deworming,
+            ]);
 
-        // Reiniciar campos
-        $this->reset(['vaccineId', 'application_date', 'notes', 'with_deworming']);
-        $this->application_date = now()->format('Y-m-d');
+            DB::commit();
+
+            session()->flash('success', 'Vacuna aplicada correctamente.');
+            $this->reset(['vaccineId', 'application_date', 'notes', 'with_deworming']);
+            $this->application_date = now()->format('Y-m-d');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'Hubo un error al aplicar la vacuna: ' . $e->getMessage());
+        }
     }
     public function render()
     {

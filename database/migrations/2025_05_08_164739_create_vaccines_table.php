@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->integer('application_interval_days'); // Ej. 21 días    
+            $table->integer('application_interval_days');
             $table->timestamps();
         });
     }

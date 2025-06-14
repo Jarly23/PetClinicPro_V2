@@ -29,7 +29,7 @@
                 <x-modal-search />
 
                 <!-- Notifications button -->
-                <x-dropdown-notifications align="right" />
+                @livewire('dashboard.notificaciones-dropdown')
 
                 <!-- Info button -->
                 <x-dropdown-help align="right" />

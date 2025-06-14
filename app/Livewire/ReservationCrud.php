@@ -20,8 +20,7 @@ class ReservationCrud extends Component
     public $openConsultationModal = false;
 
     public $reservation_id, $reservation_date, $status = 'Pending',
-        $pet_id, $customer_id, $user_id, $service_id,
-        $start_time, $end_time;
+        $pet_id, $customer_id, $user_id, $service_id;
 
     public $pets = [];
     public $diagnostico, $recomendaciones;
@@ -32,8 +31,6 @@ class ReservationCrud extends Component
 
     protected $rules = [
         'reservation_date' => 'required|date',
-        'start_time' => 'required|date_format:H:i',
-        'end_time' => 'required|date_format:H:i|after:start_time',
         'status' => 'required|string|in:Pending,Confirmed,Canceled',
         'pet_id' => 'required|exists:pets,id',
         'customer_id' => 'required|exists:customers,id',
@@ -74,19 +71,15 @@ class ReservationCrud extends Component
     {
         $this->validate();
 
-        $conflict = Reservation::where('user_id', $this->user_id)
-            ->where('reservation_date', $this->reservation_date)
-            ->where(function ($query) {
-                $query->whereTime('start_time', '<', $this->end_time)
-                    ->whereTime('end_time', '>', $this->start_time);
-            })
+        $reservasDelDia = Reservation::where('user_id', $this->user_id)
+            ->whereDate('reservation_date', $this->reservation_date)
             ->when($this->reservation_id, function ($query) {
                 $query->where('id', '!=', $this->reservation_id);
             })
-            ->exists();
+            ->count();
 
-        if ($conflict) {
-            session()->flash('error', 'El veterinario ya tiene una reserva en este horario.');
+        if ($reservasDelDia >= 10) {
+            session()->flash('error', 'El veterinario ya tiene el máximo de 10 reservas para este día.');
             return;
         }
 
@@ -96,8 +89,6 @@ class ReservationCrud extends Component
             'user_id' => $this->user_id,
             'service_id' => $this->service_id,
             'reservation_date' => $this->reservation_date,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
             'status' => $this->status,
         ];
 
@@ -120,8 +111,6 @@ class ReservationCrud extends Component
 
         $this->reservation_id = $reservation->id;
         $this->reservation_date = $reservation->reservation_date;
-        $this->start_time = $reservation->start_time;
-        $this->end_time = $reservation->end_time;
         $this->status = $reservation->status;
         $this->customer_id = $reservation->customer_id;
         $this->updatedCustomerId($this->customer_id);
@@ -158,8 +147,6 @@ class ReservationCrud extends Component
         $this->reset([
             'reservation_id',
             'reservation_date',
-            'start_time',
-            'end_time',
             'status',
             'pet_id',
             'customer_id',

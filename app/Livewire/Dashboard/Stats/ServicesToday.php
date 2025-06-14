@@ -22,7 +22,7 @@ class ServicesToday extends Component
 
         $this->secondIcon = $hoy > 0
             ? 'images/icons/VectorArrowUp.svg'
-            : 'images/icons/VectorArrowRight.svg';
+            : 'images/icons/VectorArrowDown.svg';
 
         $this->additionalData = $hoy > 0
             ? "$hoy servicio(s) hoy"

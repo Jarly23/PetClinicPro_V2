@@ -94,7 +94,7 @@
         </tr>
         <tr>
             <th>Servicio</th>
-            <td>{{ $consultation->service->name }}</td>
+            <td>{{ $consultation->services->name }}</td>
         </tr>
         <tr>
             <th>Detalles del Servicio</th>

@@ -65,8 +65,8 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button  wire:click="resetForm">Cancelar</x-secondary-button>
-            <x-button wire:click="store">Guardar</x-button>
+            <x-buttons.cancel  wire:click="resetForm" class="mr-2">Cancelar</x-buttons.cancel>
+            <x-buttons.create wire:click="store">Guardar</x-buttons.create>
         </x-slot>
     </x-dialog-modal>
 </div>

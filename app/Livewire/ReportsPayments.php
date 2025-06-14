@@ -41,7 +41,7 @@ class ReportsPayments extends Component
     {
         if ($value) {
             // Obtener los detalles completos de la consulta
-            $this->selectedConsultation = Consultation::with('service')->find($value);
+            $this->selectedConsultation = Consultation::with('services')->find($value);
         } else {
             $this->selectedConsultation = null;
         }

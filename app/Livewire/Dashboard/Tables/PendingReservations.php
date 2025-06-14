@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class PendingReservations extends Component
 {
-    public $todayReservations = [];
+    public $pendingReservations ;
 
     public function mount()
     {
@@ -18,27 +18,15 @@ class PendingReservations extends Component
 
     public function loadReservations()
     {
-        $now = Carbon::now();
-        $today = $now->toDateString();
-
-        $this->todayReservations = Reservation::with(['pet', 'customer'])
-            ->where('status', 'Confirmed ')
-            ->whereDate('reservation_date', $today)
-            ->orderBy('start_time', 'asc')
-            ->get()
-            ->map(function ($reservation) use ($now) {
-                $startTime = Carbon::createFromFormat('H:i:s', $reservation->start_time);
-                $timeLeft = $startTime->diffInMinutes($now, false);
-
-                $reservation->time_diff = $timeLeft > 0
-                    ? "Hace {$timeLeft} min"
-                    : 'En ' . abs($timeLeft) . ' min';
-
-                return $reservation;
-            });
+         $this->pendingReservations = Reservation::with(['pet', 'customer', 'user'])
+            ->where('status', 'Confirmed')
+            ->orderBy('reservation_date', 'asc')
+            ->get();
     }
     public function render()
     {
-        return view('livewire.dashboard.tables.pending-reservations');
+        return view('livewire.dashboard.tables.pending-reservations',  [
+        'total' => $this->pendingReservations ? $this->pendingReservations->count() : 0,
+    ]);
     }
 }

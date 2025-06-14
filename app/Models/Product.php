@@ -12,8 +12,17 @@ class Product extends Model
     protected $table = 'products';
     protected $primaryKey = 'id_product';
     protected $fillable = [
-        'name', 'description', 'id_category', 'id_supplier',
-        'purchase_price', 'sale_price', 'current_stock', 'minimum_stock'
+
+        'name',
+        'description',
+        'id_category',
+        'id_supplier',
+        'purchase_price',
+        'sale_price',
+        'current_stock',
+        'minimum_stock',
+        'expiration_date'
+
     ];
 
     // Relación con Categoría
@@ -30,13 +39,17 @@ class Product extends Model
     // Relación con Ventas (Producto vendido en una venta)
     public function ventas()
     {
-        return $this->belongsToMany(Venta::class, 'detalle_ventas', 'id_product', 'id_venta')
-                    ->withPivot('cantidad', 'p_unitario', 'total');
+        return $this->belongsToMany(Ventas::class, 'detalle_ventas', 'id_product', 'id_venta')
+            ->withPivot('cantidad', 'p_unitario', 'total');
     }
 
     // Relación con DetalleVenta (Detalles de una venta)
     public function detalleVentas()
     {
-        return $this->hasMany(DetalleVenta::class, 'id_product');
+        return $this->hasMany(detalle_venta::class, 'id_product');
+    }
+    public function vaccine()
+    {
+        return $this->hasMany(Vaccine::class);
     }
 }

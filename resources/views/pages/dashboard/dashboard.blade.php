@@ -6,7 +6,10 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Dashboard </h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Dashboard</h1>
+                <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm">
+                    Panel con métricas clave, estadísticas diarias y actividad reciente.
+                </p>
             </div>
 
         </div>
@@ -24,7 +27,9 @@
 
             @livewire('dashboard.tables.pending-reservations')
             @livewire('dashboard.charts.monthly-consultations-chart')
-        
+            @livewire('dashboard.tables.pending-vaccinations'   )
+            @livewire('dashboard.charts.customer-stats-chart')
+
         </div>
 
     </div>
