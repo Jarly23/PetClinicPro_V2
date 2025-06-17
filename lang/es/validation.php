@@ -188,29 +188,47 @@ return [
     */
 
     'attributes' => [
-         // Tabla categories
-    'id_category' => 'categoría',
-    'name' => 'nombre',
+        // Tabla categories
+        'id_category' => 'categoría',
+        'name' => 'nombre',
 
-    // Tabla suppliers
-    'id_supplier' => 'proveedor',
-    'contact' => 'contacto',
-    'phone' => 'teléfono',
-    'address' => 'dirección',
+        // Tabla suppliers
+        'id_supplier' => 'proveedor',
+        'contact' => 'contacto',
+        'phone' => 'teléfono',
+        'address' => 'dirección',
 
-    // Tabla products
-    'id_product' => 'producto',
-    'description' => 'descripción',
-    'purchase_price' => 'precio de compra',
-    'sale_price' => 'precio de venta',
-    'current_stock' => 'stock actual',
-    'minimum_stock' => 'stock mínimo',
+        // Tabla products
+        'id_product' => 'producto',
+        'description' => 'descripción',
+        'purchase_price' => 'precio de compra',
+        'sale_price' => 'precio de venta',
+        'current_stock' => 'stock actual',
+        'minimum_stock' => 'stock mínimo',
 
-    // Tabla entradas_inve
-    'cantidad' => 'cantidad',
-    'fecha' => 'fecha',
-    'precio_u' => 'precio unitario',
-    'expiration_date' => 'fecha de vencimiento',
+        // Tabla entradas_inve
+        'cantidad' => 'cantidad',
+        'fecha' => 'fecha',
+        'precio_u' => 'precio unitario',
+        'expiration_date' => 'fecha de vencimiento',
+        // Registro de Consultas
+        'consultation_date' => 'fecha de consulta',
+        'pet_id' => 'mascota',
+        'customer_id' => 'cliente',
+        'user_id' => 'veterinario',
+        'service_ids' => 'servicios',
+        'motivo_consulta' => 'motivo de consulta',
+        'peso' => 'peso',
+        'temperatura' => 'temperatura',
+        'frecuencia_cardiaca' => 'frecuencia cardíaca',
+        'frecuencia_respiratoria' => 'frecuencia respiratoria',
+        'estado_general' => 'estado general',
+        'desparasitacion' => 'desparasitacion',
+        'vacunado' => 'vacunado',
+        'observations' => 'observaciones',
+        'recomendaciones' => 'recomendaciones',
+        'diagnostico' => 'diagnóstico',
+        'tratamiento' => 'tratamiento',
     ],
 
 ];

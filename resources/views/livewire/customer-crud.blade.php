@@ -89,7 +89,10 @@
                         <th class="px-4 py-3">Teléfono</th>
                         <th class="px-4 py-3">Dirección</th>
                         <th class="px-4 py-3">DNI</th>
-                        <th class="px-4 py-3">Acción</th>
+
+                        @canany(['clientes.edit', 'clientes.destroy'])
+                            <th class="px-4 py-3">Acción</th>
+                        @endcanany
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -100,14 +103,16 @@
                             <td class="px-4 py-2">{{ $customer->phone }}</td>
                             <td class="px-4 py-2">{{ $customer->address }}</td>
                             <td class="px-4 py-2">{{ $customer->dniruc }}</td>
-                            <td class="px-4 py-2 flex space-x-2">
-                                @can('clientes.edit')
-                                    <x-buttons.edit wire:click="edit({{ $customer->id }})">Editar</x-buttons.edit>
-                                @endcan
-                                @can('clientes.destroy')
-                                    <x-buttons.delete wire:click="delete({{ $customer->id }})">Eliminar</x-buttons.delete>
-                                @endcan
-                            </td>
+                            @canany(['clientes.edit', 'clientes.destroy'])
+                                <td class="px-4 py-2 flex space-x-2">
+                                    @can('clientes.edit')
+                                        <x-buttons.edit wire:click="edit({{ $customer->id }})">Editar</x-buttons.edit>
+                                    @endcan
+                                    @can('clientes.destroy')
+                                        <x-buttons.delete wire:click="delete({{ $customer->id }})">Eliminar</x-buttons.delete>
+                                    @endcan
+                                </td>
+                            @endcanany
                         </tr>
                     @endforeach
                 </tbody>

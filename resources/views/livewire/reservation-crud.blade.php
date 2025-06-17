@@ -1,8 +1,6 @@
 <div class="space-y-6">
 
     <!-- ✅ Flash Messages -->
-    <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Gestión de Reservas</h1>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Administra, confirma o inicia las reservas registradas.</p>
     @if (session()->has('message'))
         <div class="mb-4 rounded-md bg-green-50 border border-green-200 p-4 text-sm text-green-800">
             {{ session('message') }}
@@ -25,25 +23,26 @@
 
     <!-- 🧾 Modal de Registro -->
     <x-dialog-modal wire:model="open">
-        <x-slot name="title">
-            <h2 class="text-lg font-semibold text-gray-900">Nueva Reserva</h2>
-        </x-slot>
-
+        @can('reservas.create')
+            <x-slot name="title">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Nueva Reserva</h2>
+            </x-slot>
+        @endcan
         <x-slot name="content">
             <form wire:submit.prevent="save" class="space-y-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                     <!-- Cliente -->
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-medium text-gray-900">Cliente</label>
+                        <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Cliente</label>
                         <livewire:client-selector />
                     </div>
 
                     <!-- Mascota -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-900">Mascota</label>
+                        <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Mascota</label>
                         <select wire:model="pet_id"
-                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                             <option value="">Seleccione una mascota</option>
                             @foreach ($pets as $pet)
                                 <option value="{{ $pet->id }}">{{ $pet->name }}</option>
@@ -54,9 +53,9 @@
 
                     <!-- Veterinario -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-900">Veterinario</label>
+                        <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Veterinario</label>
                         <select wire:model="user_id"
-                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                             <option value="">Seleccione un veterinario</option>
                             @foreach ($veterinarians as $vet)
                                 <option value="{{ $vet->id }}">{{ $vet->name }}</option>
@@ -67,9 +66,9 @@
 
                     <!-- Servicio -->
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-medium text-gray-900">Servicio</label>
+                        <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Servicio</label>
                         <select wire:model="service_id"
-                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                             <option value="">Seleccione un servicio</option>
                             @foreach ($services as $service)
                                 <option value="{{ $service->id }}">{{ $service->name }}</option>
@@ -80,9 +79,10 @@
 
                     <!-- Fecha -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-900">Fecha de Reserva</label>
+                        <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Fecha de
+                            Reserva</label>
                         <input wire:model="reservation_date" type="date"
-                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-full mt-1 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                         <x-input-error for="reservation_date" />
                     </div>
 
@@ -92,32 +92,30 @@
 
         <x-slot name="footer">
             <div class="flex justify-end gap-3">
-                <button wire:click="resetForm" type="button"
-                    class="text-sm font-semibold text-gray-600 hover:text-gray-800">
+                <x-buttons.cancel wire:click="resetForm" type="button">
                     Cancelar
-                </button>
-                <button wire:click="save" type="submit"
-                    class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500">
+                </x-buttons.cancel>
+                <x-buttons.create wire:click="save" type="submit">
                     Guardar
-                </button>
+                </x-buttons.create>
             </div>
         </x-slot>
     </x-dialog-modal>
 
     <!-- 📋 Tabla de Reservas -->
 
-    <div class="overflow-x-auto bg-white shadow rounded-md">
-        <table class="min-w-full text-sm text-left text-gray-900">
-            <thead class="bg-gray-100">
+    <div class="overflow-x-auto bg-white shadow rounded-md dark:bg-gray-700">
+        <table class="min-w-full text-sm text-left text-gray-900 dark:text-gray-100">
+            <thead class="bg-gray-100 dark:bg-gray-800">
                 <tr>
                     @foreach (['Cliente', 'Mascota', 'Veterinario', 'Servicio', 'Fecha', 'Estado', 'Acciones'] as $th)
-                        <th class="px-4 py-2 font-semibold text-gray-700">{{ $th }}</th>
+                        <th class="px-4 py-2 font-semibold text-gray-700 dark:text-gray-100">{{ $th }}</th>
                     @endforeach
                 </tr>
             </thead>
             <tbody>
                 @foreach ($reservations as $reservation)
-                    <tr class="border-t hover:bg-gray-50">
+                    <tr class="border-t hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td class="px-4 py-2">{{ $reservation->customer->name }}</td>
                         <td class="px-4 py-2">{{ $reservation->pet->name }}</td>
                         <td class="px-4 py-2">{{ $reservation->user->name }}</td>
@@ -137,15 +135,16 @@
                             </span>
                         </td>
                         <td class="px-4 py-2 flex flex-wrap gap-2">
-                            <button wire:click="edit({{ $reservation->id }})"
-                                class="text-blue-600 hover:underline text-sm">
-                                Editar
-                            </button>
-                            <button wire:click="delete({{ $reservation->id }})"
-                                class="text-red-600 hover:underline text-sm">
-                                Eliminar
-                            </button>
-
+                            @can('reservas.edit')
+                                <x-buttons.edit wire:click="edit({{ $reservation->id }})">
+                                    Editar
+                                </x-buttons.edit>
+                            @endcan
+                            @can('reservas.destroy')
+                                <x-buttons.delete wire:click="delete({{ $reservation->id }})">
+                                    Eliminar
+                                </x-buttons.delete>
+                            @endcan
                             @if ($reservation->status === 'Pending')
                                 <button wire:click="confirmReservation({{ $reservation->id }})"
                                     class="text-sm px-3 py-1 rounded-md bg-yellow-600 text-white hover:bg-yellow-700 transition">
@@ -166,8 +165,6 @@
                                 <span class="text-gray-500 text-sm">Reserva Cancelada</span>
                             @endif
                         </td>
-
-
                     </tr>
                 @endforeach
             </tbody>

@@ -37,23 +37,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->middleware('can:clientes.index')->name('customers');
     Route::get('/servicios', function () {
         return view('pages.dashboard.services');
-    })->name('services');
+    })->middleware('can:servicios.index')->name('services');
 
     Route::get('/mascotas', function () {
         return view('pages.dashboard.pets');
     })->middleware('can:mascotas.index')->name('pets');
 
-    Route::get('/veterinarios', function () {
-        return view('pages.dashboard.veterinarians');
-    })->name('veterinarians');
-
     Route::get('/reservas', function () {
         return view('pages.dashboard.reservations');
-    })->name('reservations');
+    })->middleware('can:reservas.index')->name('reservations');
 
     Route::get('/consultas', function () {
         return view('pages.dashboard.consultations');
-    })->name('consultations');
+    })->middleware('can:consultas.index')->name('consultations');
 
     Route::get('/reportes', function () {
         return view('pages.dashboard.reports');
@@ -89,15 +85,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 
     // Ruta a Documentacion:
-    Route::get('/Documentacion', function () {
+    Route::get('/notificaciones', function () {
         return view('pages.dashboard.documentacion');
     })->name('documentacion');
 
-    Route::get('/config-Animal-type', function () {
+    Route::get('/configuracion-tipos-animales', function () {
         return view('pages.dashboard.animalType');
     })->name('animalType');
 
-    Route::get('/config-vacunas-enfermedades', function () {
+    Route::get('/configuracion-vacunas-enfermedades', function () {
         return view('pages.dashboard.vaccinesDiseases');
     })->name('vaccines-diseases');
 
@@ -109,7 +105,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard/fintech', [DashboardController::class, 'fintech'])->name('fintech');
 
 });
-Route::get('/pets/{pet}/show', Show::class)->name('pets.detail');
+Route::get('/pets/{pet}/ver-detalle', Show::class)->name('pets.detail');
 
 Route::resource('users', UserController::class)->middleware('can:users.index')->names('admin.users');
 Route::resource('roles', RoleController::class)->middleware('can:roles.index')->names('admin.roles');

@@ -39,13 +39,13 @@
                 </h3>
                 <ul class="mt-3">
                     <!-- Dashboard -->
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif"
-                        x-data="{ open: {{ in_array(Request::segment(1), ['dashboard','analytics']) ? 1 : 0 }} }">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['dashboard', 'analytics'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif"
+                        x-data="{ open: {{ in_array(Request::segment(1), ['dashboard', 'analytics']) ? 1 : 0 }} }">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['dashboard', 'analytics'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
                             href="#0" @click.prevent="open = !open; sidebarExpanded = true">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
+                                    <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['dashboard', 'analytics'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         viewBox="0 0 16 16">
                                         <path
@@ -59,7 +59,7 @@
                                 <!-- Icon -->
                                 <div
                                     class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 @if (in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'rotate-180' }} @endif"
+                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500 @if (in_array(Request::segment(1), ['dashboard', 'analytics'])) {{ 'rotate-180' }} @endif"
                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
                                         <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                                     </svg>
@@ -67,7 +67,7 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['dashboard','analytics'])) {{ 'hidden' }} @endif"
+                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['dashboard', 'analytics'])) {{ 'hidden' }} @endif"
                                 :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('dashboard')) {{ '!text-violet-500' }} @endif"
@@ -112,13 +112,15 @@
                         </a>
                     </li>
                     <!-- Pets -->
+                    @can('mascotas.index')
                     <li
                         class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['mascotas'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04] ' }} @endif">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['mascotas'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
                             href="{{ route('pets') }}">
                             <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16"
-                                    height="16"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['mascotas'])) {{ 'text-violet-500' }}@else{{ 'text-gray-400 dark:text-gray-500' }} @endif"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16"
+                                    height="16">
                                     <path fill="#9ca3af"
                                         d="M226.5 92.9c14.3 42.9-.3 86.2-32.6 96.8s-70.1-15.6-84.4-58.5s.3-86.2 32.6-96.8s70.1 15.6 84.4 58.5zM100.4 198.6c18.9 32.4 14.3 70.1-10.2 84.1s-59.7-.9-78.5-33.3S-2.7 179.3 21.8 165.3s59.7 .9 78.5 33.3zM69.2 401.2C121.6 259.9 214.7 224 256 224s134.4 35.9 186.8 177.2c3.6 9.7 5.2 20.1 5.2 30.5l0 1.6c0 25.8-20.9 46.7-46.7 46.7c-11.5 0-22.9-1.4-34-4.2l-88-22c-15.3-3.8-31.3-3.8-46.6 0l-88 22c-11.1 2.8-22.5 4.2-34 4.2C84.9 480 64 459.1 64 433.3l0-1.6c0-10.4 1.6-20.8 5.2-30.5zM421.8 282.7c-24.5-14-29.1-51.7-10.2-84.1s54-47.3 78.5-33.3s29.1 51.7 10.2 84.1s-54 47.3-78.5 33.3zM310.1 189.7c-32.3-10.6-46.9-53.9-32.6-96.8s52.1-69.1 84.4-58.5s46.9 53.9 32.6 96.8s-52.1 69.1-84.4 58.5z" />
                                 </svg>
@@ -128,7 +130,10 @@
                             </div>
                         </a>
                     </li>
+                    @endcan
+
                     <!-- reservations -->
+                    @can('reservas.index')
                     <li
                         class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['reservas'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['reservas'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
@@ -146,38 +151,40 @@
                             </div>
                         </a>
                     </li>
+                    @endcan
 
                     <!-- consultation -->
+                    @can('consultas.index')
                     <li
-                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['consultations'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['consultations'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
-                            href="{{ route('consultations') }}">
+                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['consultas'])) from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04] @endif">
+                        <a href="{{ route('consultations') }}"
+                            class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['consultas'])) hover:text-gray-900 dark:hover:text-white @endif">
                             <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="16"
-                                    height="16">
-                                    <path fill="#9ca3af"
-                                        d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192l42.7 0c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0L21.3 320C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7l42.7 0C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3l-213.3 0zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352l117.3 0C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7l-330.7 0c-14.7 0-26.7-11.9-26.7-26.7z" />
+                                <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['consultas'])) {{ 'text-violet-500' }} @else {{ 'text-gray-400 dark:text-gray-500' }} @endif"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="16">
+                                    <path fill="currentColor"
+                                        d="M142.4 21.9c5.6 16.8-3.5 34.9-20.2 40.5L96 71.1 96 192c0 53 43 96 96 96s96-43 96-96l0-120.9-26.1-8.7c-16.8-5.6-25.8-23.7-20.2-40.5s23.7-25.8 40.5-20.2l26.1 8.7C334.4 19.1 352 43.5 352 71.1L352 192c0 77.2-54.6 141.6-127.3 156.7C231 404.6 278.4 448 336 448c61.9 0 112-50.1 112-112l0-70.7c-28.3-12.3-48-40.5-48-73.3c0-44.2 35.8-80 80-80s80 35.8 80 80c0 32.8-19.7 61-48 73.3l0 70.7c0 97.2-78.8 176-176 176c-92.9 0-168.9-71.9-175.5-163.1C87.2 334.2 32 269.6 32 192L32 71.1c0-27.5 17.6-52 43.8-60.7l26.1-8.7c16.8-5.6 34.9 3.5 40.5 20.2zM480 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64z" />
                                 </svg>
                                 <span
-                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 @if (Route::is('consultations ')) {{ '!text-violet-500' }} @endif">Consultas</span>
+                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 @if (Route::is('consultations')) !text-violet-500 @endif">
+                                    Consultas
+                                </span>
                             </div>
                         </a>
                     </li>
+                    @endcan
                     <!-- reportes -->
                     <li
-                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['report'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['inbox'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
+                        class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] @if (in_array(Request::segment(1), ['reportes'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition @if (!in_array(Request::segment(1), ['reportes'])) {{ 'hover:text-gray-900 dark:hover:text-white' }} @endif"
                             href="{{ route('report') }}">
                             <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="16"
-                                    height="16">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="16">
                                     <path fill="#9ca3af"
-                                        d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192l42.7 0c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0L21.3 320C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7l42.7 0C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3l-213.3 0zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352l117.3 0C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7l-330.7 0c-14.7 0-26.7-11.9-26.7-26.7z" />
+                                        d="M64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-288-128 0c-17.7 0-32-14.3-32-32L224 0 64 0zM256 0l0 128 128 0L256 0zM80 64l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16L80 96c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s7.2-16 16-16zm16 96l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 352c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32zm0 32l0 64 192 0 0-64L96 256zM240 416l64 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
                                 </svg>
                                 <span
-                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">reportes</span>
+                                    class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 @if (Route::is('report')) !text-violet-500 @endif">Reportes</span>
                             </div>
                         </a>
                     </li>
@@ -188,15 +195,11 @@
 
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0
                         bg-[linear-gradient(135deg,var(--tw-gradient-stops))]
-                        @if ($isGestionRoute)
-                            from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]
-                        @endif"
+                        @if ($isGestionRoute) from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04] @endif"
                         x-data="{ open: {{ $isGestionRoute ? 'true' : 'false' }} }">
 
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition
-                            @if (!$isGestionRoute)
-                                hover:text-gray-900 dark:hover:text-white
-                            @endif"
+                            @if (!$isGestionRoute) hover:text-gray-900 dark:hover:text-white @endif"
                             href="#0"
                             @click.prevent="
                                 if (!{{ $isGestionRoute ? 'true' : 'false' }}) {
@@ -207,12 +210,11 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <svg class="shrink-0 fill-current
-                                            @if ($isGestionRoute)
-                                                text-violet-500
+                                            @if ($isGestionRoute) text-violet-500
                                             @else
-                                                text-gray-400 dark:text-gray-500
-                                            @endif"
-                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                text-gray-400 dark:text-gray-500 @endif"
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 16 16">
                                         <path
                                             d="M10.5 1a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2h-1.145a3.502 3.502 0 0 1-6.71 0H1a1 1 0 0 1 0-2h6.145A3.502 3.502 0 0 1 10.5 1ZM9 4.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM5.5 9a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2H8.855a3.502 3.502 0 0 1-6.71 0H1a1 1 0 1 1 0-2h1.145A3.502 3.502 0 0 1 5.5 9ZM4 12.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z"
                                             fill-rule="evenodd" />
@@ -284,9 +286,7 @@
 
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0
                         bg-[linear-gradient(135deg,var(--tw-gradient-stops))]
-                        @if ($isGestionRoute)
-                            from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]
-                        @endif"
+                        @if ($isGestionRoute) from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04] @endif"
                         x-data="{ open: {{ $isGestionRoute ? 'true' : 'false' }} }">
 
                         <a class="block text-gray-800 dark:text-gray-100 truncate transition
@@ -302,20 +302,25 @@
                                 <div class="flex items-center">
                                     <svg class="shrink-0 fill-current
                                         @if ($isGestionRoute) text-violet-500 @else text-gray-400 dark:text-gray-500 @endif"
-                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                        <path d="M10.5 1a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2h-1.145a3.502 3.502 0 0 1-6.71 0H1a1 1 0 0 1 0-2h6.145A3.502 3.502 0 0 1 10.5 1ZM9 4.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM5.5 9a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2H8.855a3.502 3.502 0 0 1-6.71 0H1a1 1 0 1 1 0-2h1.145A3.502 3.502 0 0 1 5.5 9ZM4 12.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z" fill-rule="evenodd"/>
+                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M10.5 1a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2h-1.145a3.502 3.502 0 0 1-6.71 0H1a1 1 0 0 1 0-2h6.145A3.502 3.502 0 0 1 10.5 1ZM9 4.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM5.5 9a3.502 3.502 0 0 1 3.355 2.5H15a1 1 0 1 1 0 2H8.855a3.502 3.502 0 0 1-6.71 0H1a1 1 0 1 1 0-2h1.145A3.502 3.502 0 0 1 5.5 9ZM4 12.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z"
+                                            fill-rule="evenodd" />
                                     </svg>
-                                    <span class="text-sm font-medium ml-4
+                                    <span
+                                        class="text-sm font-medium ml-4
                                         lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                         Gestion de existencia
                                     </span>
                                 </div>
 
-                                <div class="flex shrink-0 ml-2
+                                <div
+                                    class="flex shrink-0 ml-2
                                     lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                     <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
                                         :class="open ? 'rotate-180' : 'rotate-0'" viewBox="0 0 12 12">
-                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z"/>
+                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
                                     </svg>
                                 </div>
                             </div>
@@ -328,7 +333,8 @@
                                     <a href="{{ route('entradas') }}"
                                         class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                         @if (Route::is('entradas')) !text-violet-500 @endif">
-                                        <span class="text-sm font-medium
+                                        <span
+                                            class="text-sm font-medium
                                             lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Entradas
                                         </span>
@@ -342,7 +348,8 @@
                                     <a href="{{ route('venta') }}"
                                         class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                         @if (Route::is('venta')) !text-violet-500 @endif">
-                                        <span class="text-sm font-medium
+                                        <span
+                                            class="text-sm font-medium
                                             lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Registrar Venta
                                         </span>
@@ -356,7 +363,8 @@
                                     <a href="{{ route('historial') }}"
                                         class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                         @if (Route::is('historial')) !text-violet-500 @endif">
-                                        <span class="text-sm font-medium
+                                        <span
+                                            class="text-sm font-medium
                                             lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Historial de ventas
                                         </span>
@@ -421,17 +429,6 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
-                                :class="open ? '!block' : 'hidden'">
-                                <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('account')) {{ '!text-violet-500' }} @endif"
-                                        href="">
-                                        <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">My
-                                            Account</span>
-                                    </a>
-                                </li>
-                            </ul>
                             <!--Services-->
                             <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['settings'])) {{ 'hidden' }} @endif"
                                 :class="open ? '!block' : 'hidden'">
@@ -504,83 +501,60 @@
                 </ul>
             </div>
             <!-- More group -->
-            <div>
-                <h3 class="text-xs uppercase text-gray-400 dark:text-gray-500 font-semibold pl-3">
-                    <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
-                        aria-hidden="true">•••</span>
-                    <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">More</span>
-                </h3>
-                <ul class="mt-3">
-                    <!-- Authentication -->
-                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0" x-data="{ open: false }">
-                        <a class="block text-gray-800 dark:text-gray-100 truncate transition"
-                            :class="open ? '' : 'hover:text-gray-900 dark:hover:text-white'" href="#0"
-                            @click.prevent="open = !open; sidebarExpanded = true">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <svg class="shrink-0 fill-current text-gray-400 dark:text-gray-500"
-                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M11.442 4.576a1 1 0 1 0-1.634-1.152L4.22 11.35 1.773 8.366A1 1 0 1 0 .227 9.634l3.281 4a1 1 0 0 0 1.59-.058l6.344-9ZM15.817 4.576a1 1 0 1 0-1.634-1.152l-5.609 7.957a1 1 0 0 0-1.347 1.453l.656.8a1 1 0 0 0 1.59-.058l6.344-9Z" />
-                                    </svg>
-                                    <span
-                                        class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Authentication</span>
+            @if (Auth::user()->hasRole('Admin'))
+                <div>
+                    <h3 class="text-xs uppercase text-gray-400 dark:text-gray-500 font-semibold pl-3">
+                        <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6"
+                            aria-hidden="true">•••</span>
+                        <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">More</span>
+                    </h3>
+                    <ul class="mt-3">
+                        <!-- Authentication -->
+                        <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0" x-data="{ open: false }">
+                            <a class="block text-gray-800 dark:text-gray-100 truncate transition"
+                                :class="open ? '' : 'hover:text-gray-900 dark:hover:text-white'" href="#0"
+                                @click.prevent="open = !open; sidebarExpanded = true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="shrink-0 fill-current text-gray-400 dark:text-gray-500"
+                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M11.442 4.576a1 1 0 1 0-1.634-1.152L4.22 11.35 1.773 8.366A1 1 0 1 0 .227 9.634l3.281 4a1 1 0 0 0 1.59-.058l6.344-9ZM15.817 4.576a1 1 0 1 0-1.634-1.152l-5.609 7.957a1 1 0 0 0-1.347 1.453l.656.8a1 1 0 0 0 1.59-.058l6.344-9Z" />
+                                        </svg>
+                                        <span
+                                            class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Autenticación</span>
+                                    </div>
+                                    <!-- Icon -->
+                                    <div
+                                        class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
+                                            :class="{ 'rotate-180': open }" viewBox="0 0 12 12">
+                                            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+                                        </svg>
+                                    </div>
                                 </div>
-                                <!-- Icon -->
-                                <div
-                                    class="flex shrink-0 ml-2 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                    <svg class="w-3 h-3 shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500"
-                                        :class="{ 'rotate-180': open }" viewBox="0 0 12 12">
-                                        <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                                    </svg>
-                                </div>
+                            </a>
+                            <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
+                                <ul class="pl-8 mt-1" :class="{ 'hidden': !open }" x-cloak>
+                                    <li class="mb-1 last:mb-0">
+                                        <form method="POST" action="{{ route('logout') }}" x-data>
+                                            @csrf
+
+                                            <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate"
+                                                href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                                                <span
+                                                    class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Iniciar
+                                                    sesión</span>
+                                            </a>
+                                        </form>
+                                    </li>
+                                </ul>
                             </div>
-                        </a>
-                        <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1" :class="{ 'hidden': !open }" x-cloak>
-                                <li class="mb-1 last:mb-0">
-                                    <form method="POST" action="{{ route('logout') }}" x-data>
-                                        @csrf
-
-                                        <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate"
-                                            href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                            <span
-                                                class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Sign
-                                                In</span>
-                                        </a>
-                                    </form>
-                                </li>
-                                <li class="mb-1 last:mb-0">
-                                    <form method="POST" action="{{ route('logout') }}" x-data>
-                                        @csrf
-
-                                        <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate"
-                                            href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                            <span
-                                                class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Sign
-                                                Up</span>
-                                        </a>
-                                    </form>
-                                </li>
-                                <li class="mb-1 last:mb-0">
-                                    <form method="POST" action="{{ route('logout') }}" x-data>
-                                        @csrf
-
-                                        <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate"
-                                            href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                            <span
-                                                class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Reset
-                                                Password</span>
-                                        </a>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                </ul>
-            </div>
+                        </li>
+                    </ul>
+                </div>
+            @endif
         </div>
 
         <!-- Expand / collapse button -->

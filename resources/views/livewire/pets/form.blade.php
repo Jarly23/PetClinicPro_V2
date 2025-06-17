@@ -14,7 +14,7 @@
 
                 <!-- Tipo de animal -->
                 <x-form-group label="Tipo de animal">
-                    <select wire:model="animal_type_id" class="w-full border-gray-300 rounded">
+                    <select wire:model="animal_type_id" class="w-full border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                         <option value="">Selecciona un tipo</option>
                         @foreach ($animalTypes as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -37,7 +37,7 @@
 
                 <!-- Sexo -->
                 <x-form-group label="Sexo">
-                    <select wire:model="sex" class="w-full border-gray-300 rounded">
+                    <select wire:model="sex" class="w-full border-gray-300 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100">
                         <option value="">Selecciona el sexo</option>
                         <option value="Macho">Macho</option>
                         <option value="Hembra">Hembra</option>

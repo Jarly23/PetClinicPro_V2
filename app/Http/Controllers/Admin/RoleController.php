@@ -25,8 +25,10 @@ class RoleController extends Controller
     public function create()
     {
         //
-        $permissions = Permission::all();
-        return view('admin.roles.create' , compact('permissions'));  
+        $groupedPermissions = Permission::all()->groupBy(function ($permission) {
+            return explode('.', $permission->name)[0]; // agrupa por módulo
+        });
+        return view('admin.roles.create' , compact('groupedPermissions'));  
     }
 
     /**
@@ -58,8 +60,10 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         //
-        $permissions = Permission::all();
-        return view('admin.roles.edit',compact('role','permissions'));   //
+        $groupedPermissions = Permission::all()->groupBy(function ($permission) {
+            return explode('.', $permission->name)[0];
+        });
+        return view('admin.roles.edit',compact('role','groupedPermissions'));   //
     }
 
     /**
