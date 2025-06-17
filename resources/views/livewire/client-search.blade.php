@@ -2,17 +2,17 @@
     <!-- 🔍 Buscador de cliente -->
     <div class="flex items-end gap-4 mb-6 relative">
         <div class="w-full">
-            <label class="block text-sm font-medium text-gray-700">Buscar cliente (nombre, email o DNI)</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-100">Buscar cliente (nombre, email o DNI)</label>
             <input wire:model.debounce.300ms="owner_search" type="text"
-                class="w-full mt-1 rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                class="w-full mt-1 rounded-md shadow-sm border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
                 placeholder="Ej. Juan Pérez, juan@mail.com, 12345678" />
 
             <!-- 🔽 Lista de resultados -->
             @if (!empty($owner_data) && is_null($owner_id))
-                <ul class="absolute z-20 bg-white border border-gray-300 w-full mt-1 rounded-md shadow-md max-h-60 overflow-auto">
+                <ul class="absolute z-20 bg-white border border-gray-300 w-full mt-1 rounded-md shadow-md max-h-60 overflow-auto dark:bg-gray-800 dark:border-gray-700">
                     @foreach ($owner_data as $owner)
                         <li wire:click="selectOwner({{ $owner['id'] }})"
-                            class="px-4 py-2 hover:bg-indigo-100 cursor-pointer text-sm">
+                            class="px-4 py-2 hover:bg-indigo-100 cursor-pointer text-sm dark:hover:bg-gray-700">
                             {{ $owner['name'] }} {{ $owner['lastname'] }} - {{ $owner['dniruc'] }}
                         </li>
                     @endforeach
@@ -21,13 +21,13 @@
         </div>
 
         <div>
-            <x-button wire:click="searchOwner">Buscar</x-button>
+            <x-buttons.search wire:click="searchOwner">Buscar</x-buttons.search>
         </div>
     </div>
 
     <!-- 🧾 Datos del cliente (solo lectura si existe) -->
     @if (!empty($owner_data) && !is_null($owner_id))
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 p-4 border rounded bg-gray-50">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 p-4 border rounded bg-gray-50 dark:bg-gray-800">
             <x-form-group label="Nombre">
                 <x-input type="text" :value="$owner_data['name']" readonly />
             </x-form-group>
@@ -37,13 +37,10 @@
             <x-form-group label="DNI">
                 <x-input type="text" :value="$owner_data['dniruc']" readonly />
             </x-form-group>
-            <x-form-group label="Correo">
-                <x-input type="email" :value="$owner_data['email']" readonly />
-            </x-form-group>
             <x-form-group label="Teléfono">
                 <x-input type="text" :value="$owner_data['phone']" readonly />
             </x-form-group>
-            <x-form-group label="Dirección">
+            <x-form-group label="Dirección" class="col-span-2">
                 <x-input type="text" :value="$owner_data['address']" readonly />
             </x-form-group>
         </div>
@@ -72,15 +69,11 @@
                     <x-input wire:model.defer="new_owner.dniruc" type="text" />
                     <x-input-error for="new_owner.dniruc" />
                 </x-form-group>
-                <x-form-group label="Correo">
-                    <x-input wire:model.defer="new_owner.email" type="email" />
-                    <x-input-error for="new_owner.email" />
-                </x-form-group>
                 <x-form-group label="Teléfono">
                     <x-input wire:model.defer="new_owner.phone" type="text" />
                     <x-input-error for="new_owner.phone" />
                 </x-form-group>
-                <x-form-group label="Dirección">
+                <x-form-group label="Dirección" class="col-span-2">
                     <x-input wire:model.defer="new_owner.address" type="text" />
                     <x-input-error for="new_owner.address" />
                 </x-form-group>

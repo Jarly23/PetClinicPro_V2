@@ -16,6 +16,7 @@ class ConsultationCrud extends Component
 {
     use WithPagination;
 
+    public $isEdit = false;
     public $open = false;
     public $showDetails = false;
     public $search = "";
@@ -29,6 +30,11 @@ class ConsultationCrud extends Component
     public $service_ids = []; // Servicios múltiples
     public $pets = [];
     protected $listeners = ['clientSelected' => 'loadClientPets'];
+    public function closeModal()
+    {
+        $this->resetForm();
+        $this->open = false;
+    }
     protected $rules = [
         'consultation_date' => 'required|date',
         'pet_id' => 'required|exists:pets,id',
@@ -122,7 +128,7 @@ class ConsultationCrud extends Component
 
         // Relación muchos a muchos
         $consultation->services()->sync($this->service_ids);
-
+        $this->isEdit = false; // Indica creación
         $this->resetForm();
         $this->open = false;
         $this->resetPage();
@@ -154,6 +160,7 @@ class ConsultationCrud extends Component
 
     public function edit(Consultation $consultation)
     {
+        $this->isEdit = true; // Indica edición
         $this->consultation_id = $consultation->id;
         $this->consultation_date = $consultation->consultation_date;
         $this->motivo_consulta = $consultation->motivo_consulta;
@@ -193,7 +200,7 @@ class ConsultationCrud extends Component
 
         $total = $consultation->services->sum('price');
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.consultation-receipt', [
+        $pdf = Pdf::loadView('pdf.consultation-receipt', [
             'consultation' => $consultation,
             'total' => $total,
         ]);

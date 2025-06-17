@@ -15,67 +15,75 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         //Crear roles
-        $role1 = Role::firstOrCreate(['name' => 'Admin']);
-        $role2 = Role::firstOrCreate(['name' => 'Veterinario']);
-        $role3 = Role::firstOrCreate(['name' => 'Recepcionista']);
+        // Crear roles
+        $roles = [
+            'Admin' => null,
+            'Veterinario' => null,
+            'Recepcionista' => null,
+        ];
 
-        //Permisos Generales
-        //permisos para usuarios
-        Permission::firstOrCreate(['name' => 'users.index', 'description' => 'Ver la lista de usuarios'])->syncRoles([$role1]);
-        Permission::firstOrCreate(['name' => 'users.edit', 'description' => 'Editar usuarios'])->syncRoles([$role1]);
-        Permission::firstOrCreate(['name' => 'users.update', 'description' => 'Actualizar información de usuarios'])->syncRoles([$role1]);
-        Permission::firstOrCreate(['name' => 'users.destroy', 'description' => 'Eliminar usuarios'])->syncRoles($role1);
+        foreach ($roles as $name => $value) {
+            $roles[$name] = Role::firstOrCreate(['name' => $name]);
+        }
 
-        //Permiso para roles
-        Permission::firstOrCreate(['name' => 'roles.index', 'description' => 'Ver lista de Roles '])->syncRoles($role1);
+        // Definir permisos con roles asignados
+        $permissions = [
+            // Usuarios
+            ['name' => 'users.index',     'description' => 'Ver la lista de usuarios',         'roles' => ['Admin']],
+            ['name' => 'users.edit',      'description' => 'Editar usuarios',                 'roles' => ['Admin']],
+            ['name' => 'users.update',    'description' => 'Actualizar información de usuarios', 'roles' => ['Admin']],
+            ['name' => 'users.destroy',   'description' => 'Eliminar usuarios',               'roles' => ['Admin']],
 
-        Permission::firstOrCreate(['name' => 'services.index', 'description' => 'Ver la lista de servicios'])->syncRoles([$role2]);
-        Permission::firstOrCreate(['name' => 'services.create', 'description' => 'Crear servicios'])->syncRoles([$role2]);
-        Permission::firstOrCreate(['name' => 'services.edit', 'description' => 'Editar servicios'])->syncRoles([$role2]);
-        Permission::firstOrCreate(['name' => 'services.destroy', 'description' => 'Eliminar servicios'])->syncRoles([$role1, $role2]);
+            // Roles
+            ['name' => 'roles.index',     'description' => 'Ver lista de roles',              'roles' => ['Admin']],
 
+            // Servicios
+            ['name' => 'services.index',  'description' => 'Ver la lista de servicios',       'roles' => ['Veterinario']],
+            ['name' => 'services.create', 'description' => 'Crear servicios',                 'roles' => ['Veterinario']],
+            ['name' => 'services.edit',   'description' => 'Editar servicios',                'roles' => ['Veterinario']],
+            ['name' => 'services.destroy', 'description' => 'Eliminar servicios',              'roles' => ['Admin', 'Veterinario']],
 
-        // Permisos para módulo de clientes
-        Permission::firstOrCreate([
-            'name' => 'clientes.index',
-            'description' => 'Ver lista de clientes'
-        ])->syncRoles([$role1, $role2, $role3]);
+            // Clientes
+            ['name' => 'clientes.index',  'description' => 'Ver lista de clientes',           'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'clientes.create', 'description' => 'Registrar nuevos clientes',       'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'clientes.edit',   'description' => 'Editar información de clientes',  'roles' => ['Admin']],
+            ['name' => 'clientes.destroy', 'description' => 'Eliminar clientes del sistema',   'roles' => ['Admin']],
 
-        Permission::firstOrCreate([
-            'name' => 'clientes.create',
-            'description' => 'Registrar nuevos clientes'
-        ])->syncRoles([$role1, $role2, $role3]);
+            // Mascotas
+            ['name' => 'mascotas.index',  'description' => 'Ver lista de mascotas',           'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'mascotas.create', 'description' => 'Registrar nuevas mascotas',       'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'mascotas.edit',   'description' => 'Editar información mascotas',     'roles' => ['Admin']],
+            ['name' => 'mascotas.destroy', 'description' => 'Eliminar mascota',                'roles' => ['Admin']],
 
-        Permission::firstOrCreate([
-            'name' => 'clientes.edit',
-            'description' => 'Editar información de clientes'
-        ])->syncRoles([$role1]);
+            // Consultas
+            ['name' => 'consultas.index', 'description' => 'Ver lista de consultas',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'consultas.create', 'description' => 'Registrar nuevas consultas',      'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'consultas.edit', 'description' => 'Editar informacion de consultas',  'roles' => ['Admin']],
+            ['name' => 'consultas.destroy', 'description' => 'Eliminar consultas',  'roles' => ['Admin']],
 
-        Permission::firstOrCreate([
-            'name' => 'clientes.destroy',
-            'description' => 'Eliminar clientes del sistema'
-        ])->syncRoles([$role1]);
+            // Reservas
+            ['name' => 'reservas.index', 'description' => 'Ver lista de reservas',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'reservas.create', 'description' => 'Registrar nuevas reservas',      'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'reservas.edit', 'description' => 'Editar informacion de reservas',  'roles' => ['Admin']],
+            ['name' => 'reservas.destroy', 'description' => 'Eliminar reservas',  'roles' => ['Admin']],
 
-        // Permisos para módulo de mascotas
-        Permission::firstOrCreate([
-            'name' => 'mascotas.index',
-            'description' => 'Ver lista de mascotas'
-        ])->syncRoles([$role1, $role2, $role3]);
+            // Servicios
+            ['name' => 'servicios.index', 'description' => 'Ver lista de servicios',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'servicios.create', 'description' => 'Registrar nuevos servicios',      'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'servicios.edit', 'description' => 'Editar informacion de servicios',  'roles' => ['Admin']],
+            ['name' => 'servicios.destroy', 'description' => 'Eliminar servicios',  'roles' => ['Admin']],
 
-        Permission::firstOrCreate([
-            'name' => 'mascotas.create',
-            'description' => 'Registrar nuevas mascotas'
-        ])->syncRoles([$role1, $role2, $role3]);
+        ];
 
-                
-        Permission::firstOrCreate([
-            'name' => 'mascotas.edit',
-            'description' => 'Editar información mascotas'
-        ])->syncRoles([$role1]);
+        // Crear permisos y asignar roles
+        foreach ($permissions as $perm) {
+            $permission = Permission::firstOrCreate([
+                'name' => $perm['name']
+            ], [
+                'description' => $perm['description']
+            ]);
 
-        Permission::firstOrCreate([
-            'name' => 'mascota.delete',
-            'description' => 'Eliminar mascota'
-        ])->syncRoles([$role1]);
+            $permission->syncRoles(array_map(fn($r) => $roles[$r], $perm['roles']));
+        }
     }
 }

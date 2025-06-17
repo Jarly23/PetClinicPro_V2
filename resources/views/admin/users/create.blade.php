@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="py-6">
         <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
-            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg p-6">
-                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg p-6 dark:bg-gray-800">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-100">
                     Crear Usuario
                 </h2>
                 {{-- Mensajes flash --}}
@@ -33,7 +33,7 @@
                     <div class="mb-4">
                         <label class="block font-medium">Nombre</label>
                         <input type="text" name="name" value="{{ old('name') }}"
-                            class="w-full border-gray-300 rounded mt-1" required>
+                            class="w-full border-gray-300 rounded mt-1 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" required>
                         @error('name')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -42,7 +42,7 @@
                     <div class="mb-4">
                         <label class="block font-medium">Email</label>
                         <input type="email" name="email" value="{{ old('email') }}"
-                            class="w-full border-gray-300 rounded mt-1" required>
+                            class="w-full border-gray-300 rounded mt-1 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" required>
                         @error('email')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -50,7 +50,7 @@
                     <div class="mb-4">
                         <label class="block font-medium">Teléfono</label>
                         <input type="text" name="phone" value="{{ old('phone') }}"
-                            class="w-full border-gray-300 rounded mt-1" required>
+                            class="w-full border-gray-300 rounded mt-1 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" required>
                         @error('phone')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -58,7 +58,7 @@
 
                     <div class="mb-4">
                         <label class="block font-medium">Contraseña</label>
-                        <input type="password" name="password" class="w-full border-gray-300 rounded mt-1" required>
+                        <input type="password" name="password" class="w-full border-gray-300 rounded mt-1 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100" required>
                         @error('password')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -81,10 +81,10 @@
                     </div>
 
                     <div>
-                        <button type="submit" class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+                        <x-buttons.create type="submit">
                             Crear
-                        </button>
-                        <a href="{{ route('admin.users.index') }}" class="ml-4 text-gray-600 underline">Cancelar</a>
+                        </x-buttons.create>
+                        <a href="{{ route('admin.users.index') }}" class="ml-4 text-gray-600 underline dark:text-gray-100">Cancelar</a>
                     </div>
                 </form>
 

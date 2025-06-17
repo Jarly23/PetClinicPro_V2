@@ -1,7 +1,9 @@
 <div>
+    @can('servicios.create')
     <x-danger-button wire:click="$set('open',true)">
         Crear un nuevo servicio
     </x-danger-button>
+    @endcan
     <x-dialog-modal wire:model="open">
         <x-slot name="title">
             <h2 class="text-base/7 font-semibold text-gray-900">Detalle del Servicio</h2>
@@ -116,6 +118,7 @@
                             class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
                             Imagen</p>
                     </th>
+                    
                     <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
                         <p
                             class="block font-sans text-sm antialiased font-normal leading-none text-blue-gray-900 opacity-70">
@@ -138,12 +141,16 @@
                             @endif
                         </td>
                         <td class="p-4">
-                            <a href="#" wire:click="edit({{ $service->id }})"
-                                class="block text-blue-600">Editar</a>
+                            @can('servicios.edit')
+                                <a href="#" wire:click="edit({{ $service->id }})"
+                                    class="block text-blue-600">Editar</a>
+                            @endcan
                         </td>
                         <td class="p-4">
-                            <a href="#" wire:click="delete({{ $service->id }})"
-                                class="block text-red-600">Eliminar</a>
+                            @can('servicios.destroy')
+                                <a href="#" wire:click="delete({{ $service->id }})"
+                                    class="block text-red-600">Eliminar</a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
