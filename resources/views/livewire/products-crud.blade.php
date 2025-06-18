@@ -15,15 +15,12 @@
         </div>
     @endif
     {{-- Filtros de búsqueda --}}
-    <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-        <div class="flex flex-1 gap-2">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6 flex-wrap">
+        <div class="w-full md:flex-1">
             <input type="text" wire:model.debounce.500ms="search" placeholder="Buscar producto..."
                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm" />
-            <button type="button" wire:click="$refresh"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
-                Buscar/Filtrar
-            </button>
         </div>
+
         <div class="w-full md:w-1/3">
             <select wire:model="categoryFilter"
                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm">
@@ -33,7 +30,25 @@
                 @endforeach
             </select>
         </div>
+
+        <div class="w-full md:w-1/3">
+            <select wire:model="supplierFilter"
+                class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm">
+                <option value="">Todos los proveedores</option>
+                @foreach ($suppliers as $supplier)
+                    <option value="{{ $supplier->id_supplier }}">{{ $supplier->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="w-full md:w-auto">
+            <button type="button" wire:click="$refresh"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+                Buscar/Filtrar
+            </button>
+        </div>
     </div>
+  
 
 
     {{-- Modal --}}
@@ -145,15 +160,17 @@
 
     {{-- Tabla de productos --}}
     <div class="mt-6 overflow-x-auto">
-        <table class="table-auto w-full border border-gray-300 shadow-sm">
+        <table class="table-auto w-full border border-gray-300 shadow-sm text-sm">
             <thead class="bg-gray-200">
                 <tr>
-                    <th class="px-4 py-2 border border-gray-300">Nombre</th>
-                    <th class="px-4 py-2 border border-gray-300">Categoría</th>
-                    <th class="px-4 py-2 border border-gray-300">Precio Compra</th>
-                    <th class="px-4 py-2 border border-gray-300">Precio Venta</th>
-                    <th class="px-4 py-2 border border-gray-300">Stock</th>
-                    <th class="px-4 py-2 border border-gray-300">Acciones</th>
+                    <th class="px-4 py-2 border">Nombre</th>
+                    <th class="px-4 py-2 border">Categoría</th>
+                    <th class="px-4 py-2 border">Proveedor</th>
+                    <th class="px-4 py-2 border">P. Compra</th>
+                    <th class="px-4 py-2 border">P. Venta</th>
+                    <th class="px-4 py-2 border">Ganancia</th>
+                    <th class="px-4 py-2 border">Stock</th>
+                    <th class="px-4 py-2 border">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -161,30 +178,37 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2 border">{{ $product->name }}</td>
                         <td class="px-4 py-2 border">{{ $product->category->name ?? '—' }}</td>
-                        <td class="px-4 py-2 border text-yellow-600 font-semibold text-center">
+                        <td class="px-4 py-2 border">{{ $product->supplier->name ?? '—' }}</td>
+                        <td class="px-4 py-2 border text-center text-yellow-600 font-semibold">
                             S/. {{ number_format($product->purchase_price, 2) }}
                         </td>
-                        <td class="px-4 py-2 border text-green-600 font-semibold text-center">
+                        <td class="px-4 py-2 border text-center text-green-600 font-semibold">
                             S/. {{ number_format($product->sale_price, 2) }}
                         </td>
-                        <td
-                            class="px-4 py-2 border text-center font-bold {{ $product->current_stock <= $product->minimum_stock ? 'text-red-600' : 'text-gray-700' }}">
+                        <td class="px-4 py-2 border text-center text-indigo-600 font-semibold">
+                            S/. {{ number_format($product->sale_price - $product->purchase_price, 2) }}
+                            ({{ number_format((($product->sale_price - $product->purchase_price) / $product->purchase_price) * 100, 1) }}%)
+                        </td>
+
+                        <td class="px-4 py-2 border text-center font-bold {{ $product->current_stock <= $product->minimum_stock ? 'text-red-600' : 'text-gray-700' }}">
                             {{ $product->current_stock }}
                         </td>
-                        <td class="px-4 py-2 border text-center">
-                            <button wire:click="edit({{ $product->id_product }})"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transform transition duration-200 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                Editar
-                            </button>
-                            <button wire:click="confirmDelete({{ $product->id_product }})"
-                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-md transform transition duration-200 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500">
-                                Eliminar
-                            </button>
+                        <td class="px-4 py-2 border text-center whitespace-nowrap">
+                            <div class="flex justify-center gap-2 flex-wrap">
+                                <button wire:click="edit({{ $product->id_product }})"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md shadow-md transition">
+                                    Editar
+                                </button>
+                                <button wire:click="confirmDelete({{ $product->id_product }})"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md shadow-md transition">
+                                    Eliminar
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-gray-500">No se encontraron productos.</td>
+                        <td colspan="8" class="text-center py-4 text-gray-500">No se encontraron productos.</td>
                     </tr>
                 @endforelse
             </tbody>

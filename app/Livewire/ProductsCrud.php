@@ -15,6 +15,7 @@
         public $lowStockAlert = false;
         public $search = '';
         public $categoryFilter = '';
+        public $supplierFilter = '';
         // Nuevas propiedades
         public $confirmingDelete = false;
         public $productToDelete = null;
@@ -139,7 +140,18 @@
                 ->when($this->categoryFilter, fn($query) =>
                     $query->where('id_category', $this->categoryFilter)
                 )
-                ->get();
+                ->when($this->supplierFilter, fn($query) =>  // ✅ NUEVO FILTRO
+                    $query->where('id_supplier', $this->supplierFilter)
+                )
+                ->get()
+                ->map(function ($product) {
+                    if ($product->purchase_price > 0) {
+                        $product->margen = round((($product->sale_price - $product->purchase_price) / $product->purchase_price) * 100, 2);
+                    } else {
+                        $product->margen = 0;
+                    }
+                    return $product;
+                });;
 
             return view('livewire.products-crud', [
                 'products' => $products,
