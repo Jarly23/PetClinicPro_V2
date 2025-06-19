@@ -73,12 +73,14 @@
                             <td class="px-4 py-3">{{ $venta->fecha }}</td>
                             <td class="px-4 py-3 font-semibold text-green-600">${{ number_format($venta->total, 2) }}</td>
                             <td class="px-4 py-3 text-center">
-                                <button wire:click="verDetalles({{ $venta->id_venta }})" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition">
-                                    👁️ <span class="hidden md:inline">Ver Detalles</span>
-                                </button>
-                                <button wire:click="confirmarEliminar({{ $venta->id_venta }})" class="inline-flex items-center gap-2 text-red-600 hover:text-red-800 transition ml-2">
-                                    🗑️ <span class="hidden md:inline">Eliminar</span>
-                                </button>
+                                <x-buttons.view wire:click="verDetalles({{ $venta->id_venta }})">
+                                    <span class="hidden md:inline">Ver Detalles</span>
+                                </x-buttons.view>
+                                @can('historial.destroy')
+                                <x-buttons.delete wire:click="confirmarEliminar({{ $venta->id_venta }})">
+                                     <span class="hidden md:inline">Eliminar</span>
+                                </x-buttons.delete>
+                                @endcan
                             </td>
                         </tr>
                     @empty

@@ -139,15 +139,18 @@
                         <td class="px-4 py-3">S/ {{ number_format($entrada->precio_u, 2) }}</td>
                         <td class="px-4 py-3">{{ $entrada->expiration_date_formatted ?? '-' }}</td>
                         <td class="px-4 py-3 text-center">
+                            @can('entrada.edit')
                             <button wire:click="editEntrada({{ $entrada->id_entrada }})"
                                 class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm shadow">
                                 Editar
-                            </button>
+                            </button>                               
+                            @endcan
+                            @can('entrada.destroy')
                             <button wire:click="confirmDeleteEntrada({{ $entrada->id_entrada }})"
                                 class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm shadow">
                                 Eliminar
-                            </button>
-
+                            </button>                                
+                            @endcan
                         </td>
                     </tr>
                 @empty

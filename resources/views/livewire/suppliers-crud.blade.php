@@ -15,9 +15,12 @@
         </div>
         {{-- Barra superior con buscador y botón --}}
         <div class="flex justify-between items-center mb-4">
+            @can('proveedor.create')
             <x-danger-button wire:click="openModal">
                 Crear nuevo proveedor
             </x-danger-button>
+                
+            @endcan
 
             <form wire:submit.prevent="$refresh" class="flex gap-2 w-1/3">
                 <input type="text" wire:model.debounce.500ms="search"
@@ -65,12 +68,17 @@
                             <td class="border px-4 py-2">{{ $supplier->phone }}</td>
                             <td class="border px-4 py-2">{{ $supplier->address }}</td>
                             <td class="border px-4 py-2">
+                                @can('proveedor.edit')
                                 <button wire:click="edit({{ $supplier->id_supplier }})"
-                                    class="bg-blue-600 text-white px-4 py-1 rounded-md">Editar</button>
-                                <button wire:click="confirmDelete({{ $supplier->id_supplier }})"
+                                    class="bg-blue-600 text-white px-4 py-1 rounded-md">Editar</button> 
+                                @endcan
+                                @can('proveedor.destroy')
+                                 <button wire:click="confirmDelete({{ $supplier->id_supplier }})"
                                     class="bg-red-500 text-white px-3 py-1 rounded-md">
                                     Eliminar
-                                </button>
+                                </button>                                   
+                                @endcan
+
                             </td>
                         </tr>
                     @empty

@@ -101,14 +101,18 @@
                         <td class="p-4 text-sm text-gray-700 border border-gray-300">{{ $category->id_category }}</td>
                         <td class="p-4 text-sm text-gray-700 border border-gray-300">{{ $category->name }}</td>
                         <td class="p-4 text-sm text-gray-700 border border-gray-300">
+                            @can('categorias.edit')
                             <button wire:click="edit({{ $category->id_category }})" 
                                 class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-200">
                                 Editar
                             </button>
+                            @endcan
+                            @can('categorias.destroy')
                             <button wire:click="confirmDelete({{ $category->id_category }})" 
                                 class="bg-red-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-red-600 transition duration-200">
                                 Eliminar
-                            </button>
+                            </button>                               
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

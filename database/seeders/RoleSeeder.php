@@ -73,6 +73,38 @@ class RoleSeeder extends Seeder
             ['name' => 'servicios.edit', 'description' => 'Editar informacion de servicios',  'roles' => ['Admin']],
             ['name' => 'servicios.destroy', 'description' => 'Eliminar servicios',  'roles' => ['Admin']],
 
+            // Categorias
+            ['name' => 'categorias.index', 'description' => 'Ver lista de categorias',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'categorias.create', 'description' => 'registar nuevas categorias',        'roles' => ['Admin','Recepcionista']],
+            ['name' => 'categorias.edit', 'description' => 'Editar informacion de categoias',  'roles' => ['Admin','Recepcionista']],
+            ['name' => 'categorias.destroy', 'description' => 'Eliminar categoias',  'roles' => ['Admin','Recepcionista']],
+
+            // Proveedor
+            ['name' => 'proveedor.index', 'description' => 'Ver lista de Proveedor',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'proveedor.create', 'description' => 'registar nuevas Proveedor',        'roles' => ['Admin']],
+            ['name' => 'proveedor.edit', 'description' => 'Editar informacion de Proveedor',  'roles' => ['Admin']],
+            ['name' => 'proveedor.destroy', 'description' => 'Eliminar Proveedor',              'roles' => ['Admin']],
+
+            // Productos
+            ['name' => 'productos.index', 'description' => 'Ver lista de productos',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'productos.create', 'description' => 'registar nuevas productos',        'roles' => ['Admin','Recepcionista']],
+            ['name' => 'productos.edit', 'description' => 'Editar informacion de productos',  'roles' => ['Admin','Recepcionista']],
+            ['name' => 'productos.destroy', 'description' => 'Eliminar productos',              'roles' => ['Admin','Recepcionista']],
+
+            // Entrada
+            ['name' => 'entrada.index', 'description' => 'Ver lista de entrada',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'entrada.create', 'description' => 'registar nuevas entrada',        'roles' => ['Admin','Recepcionista']],
+            ['name' => 'entrada.edit', 'description' => 'Editar informacion de entrada',  'roles' => ['Admin','Recepcionista']],
+            ['name' => 'entrada.destroy', 'description' => 'Eliminar entrada',              'roles' => ['Admin','Recepcionista']],
+
+            // Ventas
+            ['name' => 'ventas.index', 'description' => 'Ver lista de ventas',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'ventas.create', 'description' => 'registar nuevas ventas',        'roles' => ['Admin','Recepcionista']],
+
+            // Historial
+            ['name' => 'historial.index', 'description' => 'Ver historial de ventas',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'historial.destroy', 'description' => 'Eliminar venta',              'roles' => ['Admin']],
+
         ];
 
         // Crear permisos y asignar roles

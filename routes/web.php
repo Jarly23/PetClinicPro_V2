@@ -55,29 +55,29 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('pages.dashboard.reports');
     })->name('report');
 
-    Route::get('/Productos', function () {
+    Route::get('/categorias', function () {
         return view('pages.dashboard.categorys');
-    })->name('inventary'); //
+    })->middleware('can:categorias.index')->name('categorias'); //
 
     Route::get('/proveedor', function () {
         return view('pages.dashboard.suppliers');
-    })->name('suppliers'); //
+    })->middleware('can:proveedor.index')->name('suppliers'); //
 
     Route::get('/producto', function () {
         return view('pages.dashboard.products');
-    })->name('products'); //
+    })->middleware('can:productos.index')->name('products'); //
 
     Route::get('/entradas', function () {
         return view('pages.dashboard.entradas'); // Asegúrate que esta vista exista
-    })->name('entradas');
+    })->middleware('can:entrada.index')->name('entradas');
 
     Route::get('/registrar-venta', function () {
         return view('pages.dashboard.notaventa'); // Asegúrate que esta vista exista
-    })->name('venta');
+    })->middleware('can:ventas.index')->name('venta');
 
     Route::get('/Historial', function () {
         return view('pages.dashboard.Historial'); // Asegúrate que esta vista exista
-    })->name('historial');
+    })->middleware('can:historial.index')->name('historial');
 
     Route::get('/Analityc', function () {
         return view('pages.dashboard.dashboardInve'); // Asegúrate que esta vista exista

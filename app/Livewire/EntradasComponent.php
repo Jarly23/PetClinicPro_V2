@@ -129,7 +129,13 @@ class EntradasComponent extends Component
 
     public function cancelUpdatePrice()
     {
-        $this->showUpdatePriceModal = false;  // Cierra el modal de actualización de precio
+            $producto = Product::find($this->id_product);
+
+            // Guarda la entrada sin actualizar el precio
+            $this->guardarEntrada($producto);
+
+            $this->showUpdatePriceModal = false;  // Cierra el modal de actualización de precio
+            $this->open = false;  // Cierra el modal de registro
     }
 
     public function editEntrada($id)
