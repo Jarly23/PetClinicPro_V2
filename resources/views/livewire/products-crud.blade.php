@@ -195,14 +195,18 @@
                         </td>
                         <td class="px-4 py-2 border text-center whitespace-nowrap">
                             <div class="flex justify-center gap-2 flex-wrap">
+                                @can('productos.edit')
                                 <button wire:click="edit({{ $product->id_product }})"
                                     class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md shadow-md transition">
                                     Editar
-                                </button>
+                                </button>  
+                                @endcan
+                                @can('productos.destroy')
                                 <button wire:click="confirmDelete({{ $product->id_product }})"
                                     class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md shadow-md transition">
                                     Eliminar
                                 </button>
+                                @endcan
                             </div>
                         </td>
                     </tr>
