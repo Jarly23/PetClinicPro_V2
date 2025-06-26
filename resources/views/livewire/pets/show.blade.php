@@ -1,5 +1,5 @@
 <div class="px-6 py-4" x-data="{ tab: 'details' }">
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Mascota: {{ $pet->name }}</h2>
+    <h2 class="text-2xl font-bold text-gray-800 mb-4 dark:text-gray-100">Mascota: {{ $pet->name }}</h2>
 
     <!-- Tabs -->
     <div class="flex space-x-4 border-b mb-4">
