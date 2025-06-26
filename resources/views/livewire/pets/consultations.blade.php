@@ -6,32 +6,71 @@
             No hay consultas registradas para esta mascota.
         </div>
     @else
-        <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl mt-4 overflow-auto">
-            <table class="w-full text-left table-auto min-w-max">
-                <thead>
-                    <tr class="bg-blue-gray-100">
-                        <th class="p-4">Fecha</th>
-                        <th class="p-4">Veterinario</th>
-                        <th class="p-4">Servicio</th>
-                        <th class="p-4">Diagnóstico</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($consultations as $consultation)
-                        <tr class="even:bg-gray-50">
-                            <td class="px-4 py-2">{{ $consultation->consultation_date }}</td>
-                            <td class="px-4 py-2">{{ $consultation->user->name ?? '—' }}</td>
-                            <td class="px-4 py-2">
-                                @foreach ($consultation->services as $service)
-                                    <span
-                                        class="inline-block bg-gray-200 px-2 py-1 rounded text-sm">{{ $service->name ?? '--'}}</span>
-                                @endforeach
-                            </td>
-                            <td class="px-4 py-2">{{ $consultation->diagnostico }}</td>
+        <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl mt-4 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left table-auto">
+                    <thead>
+                        <tr class="bg-blue-gray-100">
+                            <th class="p-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Fecha</th>
+                            <th class="p-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Motivo</th>
+                            <th class="p-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Veterinario</th>
+                            <th class="p-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Servicios</th>
+                            <th class="p-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Diagnóstico</th>
+                            <th class="p-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Tratamiento</th>
+                            <th class="p-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Obs.</th>
+                            <th class="p-3 text-xs font-medium text-gray-600 uppercase tracking-wider">Estado</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($consultations as $consultation)
+                            <tr class="even:bg-gray-50 hover:bg-gray-100">
+                                <td class="px-3 py-2 text-xs whitespace-nowrap">
+                                    {{ \Carbon\Carbon::parse($consultation->consultation_date)->format('d/m/Y') }}
+                                </td>
+                                <td class="px-3 py-2 text-xs">
+                                    <span class="inline-block max-w-24 truncate" title="{{ $consultation->motivo_consulta }}">
+                                        {{ $consultation->motivo_consulta }}
+                                    </span>
+                                </td>
+                                <td class="px-3 py-2 text-xs">
+                                    <span class="inline-block max-w-20 truncate" title="{{ $consultation->user->name ?? '—' }}">
+                                        {{ $consultation->user->name ?? '—' }}
+                                    </span>
+                                </td>
+                                <td class="px-3 py-2 text-xs">
+                                    <div class="flex flex-wrap gap-1">
+                                        @foreach ($consultation->services as $service)
+                                            <span class="inline-block bg-gray-200 px-1 py-0.5 rounded text-xs max-w-16 truncate" title="{{ $service->name ?? '--' }}">
+                                                {{ $service->name ?? '--' }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </td>
+                                <td class="px-3 py-2 text-xs">
+                                    <span class="inline-block max-w-24 truncate" title="{{ $consultation->diagnostico }}">
+                                        {{ $consultation->diagnostico }}
+                                    </span>
+                                </td>
+                                <td class="px-3 py-2 text-xs">
+                                    <span class="inline-block max-w-24 truncate" title="{{ $consultation->tratamiento }}">
+                                        {{ $consultation->tratamiento }}
+                                    </span>
+                                </td>
+                                <td class="px-3 py-2 text-xs">
+                                    <span class="inline-block max-w-20 truncate" title="{{ $consultation->observaciones }}">
+                                        {{ $consultation->observaciones }}
+                                    </span>
+                                </td>
+                                <td class="px-3 py-2 text-xs">
+                                    <span class="inline-block max-w-16 truncate" title="{{ $consultation->estado }}">
+                                        {{ $consultation->estado }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     @endif
 </div>
