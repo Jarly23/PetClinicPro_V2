@@ -123,12 +123,6 @@
             </div>
         @endif
 
-
-
-
-
-
-
         {{-- Fecha --}}
         <div>
             <label class="text-sm font-medium text-gray-600">Fecha y Hora</label>
@@ -181,7 +175,7 @@
                                 <td class="p-2">S/{{ number_format($item['producto']->sale_price, 2) }}</td>
                                 <td class="p-2">S/{{ number_format($item['total'], 2) }}</td>
                                 <td class="p-2">
-                                    <button wire:click="eliminarProducto({{ $item['producto']->id_product }})"
+                                    <button type="button" wire:click="eliminarProducto({{ $item['producto']->id_product }})"
                                         class="text-red-600 hover:text-red-800 font-semibold">
                                         ❌ Eliminar
                                     </button>
@@ -201,18 +195,23 @@
         <hr class="border-t-2 border-gray-200 my-4">
 
 
-        {{-- Botón para registrar venta --}}
-        <div class="text-right">
+        {{-- Botones para registrar venta y ver historial --}}
+        <div class="text-right flex justify-end gap-4">
             @can('ventas.create')
+            <a href="{{ route('historial') }}"
+                class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg shadow flex items-center justify-center">
+                📜 Ver Historial
+            </a>
             <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow">
                 💾 Registrar Venta
             </button>
             @endcan
         </div>
 
+
         {{-- Mensaje de éxito --}}
         @if (session()->has('message'))
-            <div class="mt-4 text-red-700 bg-red-100 p-4 rounded-md border border-green-300">
+            <div class="mt-4 text-green-700 bg-green-100 p-4 rounded-md border border-green-300">
                 {{ session('message') }}
             </div>
         @endif

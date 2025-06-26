@@ -85,7 +85,7 @@
                                 </li>
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('fintech')) {{ '!text-violet-500' }} @endif"
-                                        href="">
+                                        href="{{ route('egresos') }}">
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Fintech</span>
                                     </a>
@@ -240,8 +240,12 @@
                             <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
                                     <a href="{{ route('categorias') }}"
-                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        class="flex items-center text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                             @if (Route::is('categorias')) !text-violet-500 @endif">
+                                        <!-- Icono Categoria (folder) -->
+                                        <svg class="w-4 h-4 shrink-0 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+                                        </svg>
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Categoria
@@ -254,8 +258,12 @@
                             <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
                                     <a href="{{ route('suppliers') }}"
-                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        class="flex items-center text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                             @if (Route::is('suppliers')) !text-violet-500 @endif">
+                                        <!-- Icono Proveedor (truck) -->
+                                        <svg class="w-4 h-4 shrink-0 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2a4 4 0 00-8 0v2m4 0h8m-6-6h6l2 4m-6 2v-6m6 8a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Proveedor
@@ -268,8 +276,14 @@
                             <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
                                     <a href="{{ route('products') }}"
-                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        class="flex items-center text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                             @if (Route::is('products')) !text-violet-500 @endif">
+                                        <!-- Icono Productos (box) -->
+                                        <svg class="w-4 h-4 shrink-0 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10l9 4 9-4V7" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 11v10" />
+                                        </svg>
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Productos
@@ -331,11 +345,15 @@
                             <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
                                     <a href="{{ route('entradas') }}"
-                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        class="flex items-center text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                         @if (Route::is('entradas')) !text-violet-500 @endif">
+                                        <!-- Icono Caja -->
+                                        <svg class="w-4 h-4 shrink-0 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16zM12 3.2l6.16 3.54L12 10.27 5.84 6.74 12 3.2z" />
+                                            <path d="M12 12v9.55l-6-3.46V13l6 3z" />
+                                        </svg>
                                         <span
-                                            class="text-sm font-medium
-                                            lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Entradas
                                         </span>
                                     </a>
@@ -346,26 +364,35 @@
                             <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
                                     <a href="{{ route('venta') }}"
-                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        class="flex items-center text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                         @if (Route::is('venta')) !text-violet-500 @endif">
+                                        <!-- Icono Carrito -->
+                                        <svg class="w-4 h-4 shrink-0 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
+                                            <circle cx="7" cy="21" r="2" />
+                                            <circle cx="17" cy="21" r="2" />
+                                        </svg>
                                         <span
-                                            class="text-sm font-medium
-                                            lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Registrar Venta
                                         </span>
                                     </a>
                                 </li>
                             </ul>
-
+                            
                             <!-- Historial de ventas -->
                             <ul class="pl-8 mt-1" :class="open ? '!block' : 'hidden'">
                                 <li class="mb-1 last:mb-0">
                                     <a href="{{ route('historial') }}"
-                                        class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
+                                        class="flex items-center text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate
                                         @if (Route::is('historial')) !text-violet-500 @endif">
+                                        <!-- Icono Reloj -->
+                                        <svg class="w-4 h-4 shrink-0 mr-2 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
+                                        </svg>
                                         <span
-                                            class="text-sm font-medium
-                                            lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                             Historial de ventas
                                         </span>
                                     </a>
