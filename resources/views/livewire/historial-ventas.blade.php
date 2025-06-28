@@ -71,7 +71,7 @@
                             <td class="px-4 py-3">{{ $venta->id_venta }}</td>
                             <td class="px-4 py-3">{{ $venta->cliente->name }} {{ $venta->cliente->lastname }}</td>
                             <td class="px-4 py-3">{{ $venta->fecha }}</td>
-                            <td class="px-4 py-3 font-semibold text-green-600">${{ number_format($venta->total, 2) }}</td>
+                            <td class="px-4 py-3 font-semibold text-green-600">S/{{ number_format($venta->total, 2) }}</td>
                             <td class="px-4 py-3 text-center">
                                 <x-buttons.view wire:click="verDetalles({{ $venta->id_venta }})">
                                     <span class="hidden md:inline">Ver Detalles</span>
@@ -105,7 +105,7 @@
                 <div class="text-sm text-gray-600 space-y-2">
                     <p><strong>Cliente:</strong> {{ $ventaSeleccionada->cliente->name }} {{ $ventaSeleccionada->cliente->lastname }}</p>
                     <p><strong>Fecha:</strong> {{ $ventaSeleccionada->fecha }}</p>
-                    <p><strong>Total:</strong> <span class="text-green-600 font-semibold">${{ number_format($ventaSeleccionada->total, 2) }}</span></p>
+                    <p><strong>Total:</strong> <span class="text-green-600 font-semibold">S/{{ number_format($ventaSeleccionada->total, 2) }}</span></p>
                 </div>
 
                 <h4 class="mt-6 mb-2 font-semibold text-gray-700">🛒 Productos vendidos</h4>
@@ -124,8 +124,8 @@
                                 <tr class="border-b hover:bg-gray-50">
                                     <td class="px-3 py-2">{{ $detalle->product->name ?? '🗑 Eliminado' }}</td>
                                     <td class="px-3 py-2">{{ $detalle->cantidad }}</td>
-                                    <td class="px-3 py-2">${{ number_format($detalle->p_unitario, 2) }}</td>
-                                    <td class="px-3 py-2 font-semibold">${{ number_format($detalle->total, 2) }}</td>
+                                    <td class="px-3 py-2">S/{{ number_format($detalle->p_unitario, 2) }}</td>
+                                    <td class="px-3 py-2 font-semibold">S/{{ number_format($detalle->total, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
