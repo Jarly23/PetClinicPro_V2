@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Egreso;
 use App\Models\Consultation;
-use App\Models\Ventas;
 use App\Models\detalle_venta;
 use Carbon\Carbon;
 
@@ -19,7 +18,7 @@ class Egresos extends Component
     public $egresoToDelete = null;
 
     public $nombre, $descripcion, $monto, $fecha, $egresoId;
-    public $filtroMes; // <-- filtro mensual
+    public $filtroMes;
 
     protected $rules = [
         'nombre' => 'required|string|max:255',
@@ -100,14 +99,12 @@ class Egresos extends Component
             ->latest()
             ->paginate(10);
 
-        // Total por servicios
         $precioConsulta = 50; // Valor fijo
         $cantidadConsultas = Consultation::whereMonth('created_at', $fecha->month)
             ->whereYear('created_at', $fecha->year)
             ->count();
         $totalServicios = $cantidadConsultas * $precioConsulta;
 
-        // Ganancia productos
         $gananciaProductos = detalle_venta::whereHas('venta', function ($q) use ($fecha) {
             $q->whereMonth('fecha', $fecha->month)
               ->whereYear('fecha', $fecha->year);
@@ -115,8 +112,7 @@ class Egresos extends Component
         ->join('products', 'products.id_product', '=', 'detalle_ventas.id_product')
         ->selectRaw('SUM((detalle_ventas.p_unitario - products.purchase_price) * detalle_ventas.cantidad) as ganancia')
         ->value('ganancia') ?? 0;
-        
-        // Egresos del mes
+
         $egresosMes = Egreso::whereMonth('fecha', $fecha->month)
             ->whereYear('fecha', $fecha->year)
             ->sum('monto');

@@ -105,6 +105,12 @@ class RoleSeeder extends Seeder
             ['name' => 'historial.index', 'description' => 'Ver historial de ventas',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
             ['name' => 'historial.destroy', 'description' => 'Eliminar venta',              'roles' => ['Admin']],
 
+            // Egresos
+            ['name' => 'egresos.index', 'description' => 'Ver lista de egresos',          'roles' => ['Admin', 'Veterinario', 'Recepcionista']],
+            ['name' => 'egresos.create', 'description' => 'registar nuevas egresos',        'roles' => ['Admin','Recepcionista']],
+            ['name' => 'egresos.edit', 'description' => 'Editar informacion de egresos',  'roles' => ['Admin','Recepcionista']],
+            ['name' => 'egresos.destroy', 'description' => 'Eliminar egresos',              'roles' => ['Admin','Recepcionista']],
+
         ];
 
         // Crear permisos y asignar roles
