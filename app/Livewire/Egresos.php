@@ -192,7 +192,7 @@ class Egresos extends Component
 
         foreach ($meses as $mes) {
             // Servicios
-            $totalServicios = \App\Models\Consultation::whereMonth('created_at', $mes)
+            $totalServicios = Consultation::whereMonth('created_at', $mes)
                 ->whereYear('created_at', $year)
                 ->with('services')
                 ->get()
@@ -201,7 +201,7 @@ class Egresos extends Component
                 });
 
             // Ganancia productos
-            $ganancia = \App\Models\detalle_venta::whereHas('venta', function ($q) use ($mes, $year) {
+            $ganancia = detalle_venta::whereHas('venta', function ($q) use ($mes, $year) {
                     $q->whereMonth('fecha', $mes)
                       ->whereYear('fecha', $year);
                 })
@@ -210,7 +210,7 @@ class Egresos extends Component
                 ->value('ganancia') ?? 0;
 
             // Egresos
-            $egresosMes = \App\Models\Egreso::porMes($mes, $year)->sum('monto');
+            $egresosMes = Egreso::porMes($mes, $year)->sum('monto');
 
             // Balance
             $balanceMes = ($totalServicios + $ganancia) - $egresosMes;
@@ -222,7 +222,7 @@ class Egresos extends Component
         }
 
         return [
-            'labels' => array_map(function($m) { return \Carbon\Carbon::create()->month($m)->translatedFormat('F'); }, $meses),
+            'labels' => array_map(function($m) { return Carbon::create()->month($m)->translatedFormat('F'); }, $meses),
             'servicios' => $servicios,
             'gananciaProductos' => $gananciaProductos,
             'egresos' => $egresos,
