@@ -41,7 +41,7 @@
                                     </span>
                 
                                     <label class="relative inline-flex items-center cursor-pointer">
-                                        {!! Form::checkbox(
+                                        {!!Form::checkbox(
                                             'permissions[]',
                                             $permission->id,
                                             isset($role) ? $role->permissions->contains($permission->id) : false,
