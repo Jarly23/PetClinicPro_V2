@@ -25,11 +25,17 @@
 
         <div>
             <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Enfermedades asociadas</label>
-            <select wire:model="disease_ids" multiple class="w-full input input-bordered dark:bg-gray-700">
+            <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded-md p-3 dark:bg-gray-700">
                 @foreach ($diseases as $disease)
-                    <option value="{{ $disease->id }}">{{ $disease->name }}</option>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" 
+                               wire:model="disease_ids" 
+                               value="{{ $disease->id }}" 
+                               class="checkbox checkbox-sm">
+                        <span class="text-sm text-gray-700 dark:text-gray-300">{{ $disease->name }}</span>
+                    </label>
                 @endforeach
-            </select>
+            </div>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-2">
