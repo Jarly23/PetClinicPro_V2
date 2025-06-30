@@ -83,9 +83,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('pages.dashboard.dashboardInve');
     })->name('analytics');
 
-    Route::get('/Ingresos', function () {
+    Route::get('/Egresos', function () {
         return view('pages.dashboard.egresosclinic');
-    })->name('egresos');
+    })->middleware('can:egresos.index')->name('egresos');
 
 
     // Ruta a Documentacion:

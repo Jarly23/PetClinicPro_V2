@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Egreso;
 use App\Models\Consultation;
-use App\Models\Ventas;
 use App\Models\detalle_venta;
 use Carbon\Carbon;
 
@@ -17,7 +16,6 @@ class Egresos extends Component
     public $open = false;
     public $confirmingDelete = false;
     public $egresoToDelete = null;
-
     public $nombre, $descripcion, $monto, $fecha, $egresoId;
     public $filtroMes; // <-- filtro mensual
     public $balance;
@@ -238,8 +236,12 @@ class Egresos extends Component
             ->latest()
             ->paginate(10);
 
+        $precioConsulta = 50; // Valor fijo
+        $cantidadConsultas = Consultation::whereMonth('created_at', $fecha->month)
+
         // Total por servicios - Calculamos el precio real de los servicios prestados
         $totalServicios = Consultation::whereMonth('created_at', $fecha->month)
+
             ->whereYear('created_at', $fecha->year)
             ->with('services')
             ->get()
@@ -247,7 +249,9 @@ class Egresos extends Component
                 return $consultation->services->sum('price');
             });
 
+
         // Ganancia productos - Optimizamos la consulta
+
         $gananciaProductos = detalle_venta::whereHas('venta', function ($q) use ($fecha) {
             $q->whereMonth('fecha', $fecha->month)
               ->whereYear('fecha', $fecha->year);
@@ -255,6 +259,12 @@ class Egresos extends Component
         ->join('products', 'products.id_product', '=', 'detalle_ventas.id_product')
         ->selectRaw('SUM((detalle_ventas.p_unitario - products.purchase_price) * detalle_ventas.cantidad) as ganancia')
         ->value('ganancia') ?? 0;
+
+
+        $egresosMes = Egreso::whereMonth('fecha', $fecha->month)
+            ->whereYear('fecha', $fecha->year)
+            ->sum('monto');
+
         
         // Egresos del mes usando el método del modelo
         $egresosMes = Egreso::totalPorPeriodo($fecha->month, $fecha->year);
@@ -262,6 +272,7 @@ class Egresos extends Component
         $this->balance = ($totalServicios + $gananciaProductos) - $egresosMes;
         $balance = $this->balance;
         $estadisticas = $this->getEstadisticasBalance();
+
 
         // Evolución mensual para el gráfico
         $evolucion = $this->getEvolucionMensual();
