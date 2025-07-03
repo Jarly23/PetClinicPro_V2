@@ -95,45 +95,45 @@
 
     {{-- Modal Detalles --}}
     @if ($ventaSeleccionada)
-        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-            <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-xl animate-fade-in">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-gray-800">🧾 Detalles de Venta #{{ $ventaSeleccionada->id_venta }}</h3>
-                    <button wire:click="cerrarModal" class="text-red-500 hover:text-red-700 text-lg">✖</button>
+        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-3xl animate-fade-in border border-gray-200">
+                <div class="flex justify-between items-center mb-6 border-b border-gray-200 pb-3">
+                    <h3 class="text-2xl font-extrabold text-gray-900">🧾 Detalles de Venta #{{ $ventaSeleccionada->id_venta }}</h3>
+                    <button wire:click="cerrarModal" class="text-red-600 hover:text-red-800 text-2xl font-bold transition-colors duration-200">✖</button>
                 </div>
 
-                <div class="text-sm text-gray-600 space-y-2">
+                <div class="text-gray-700 space-y-3 text-base">
                     <p><strong>Cliente:</strong> {{ $ventaSeleccionada->cliente->name }} {{ $ventaSeleccionada->cliente->lastname }}</p>
-                    <p><strong>Fecha:</strong> {{ $ventaSeleccionada->fecha }}</p>
-                    <p><strong>Total:</strong> <span class="text-green-600 font-semibold">S/{{ number_format($ventaSeleccionada->total, 2) }}</span></p>
+                    <p><strong>Fecha:</strong> {{ \Carbon\Carbon::parse($ventaSeleccionada->fecha)->format('d/m/Y') }}</p>
+                    <p><strong>Total:</strong> <span class="text-green-700 font-semibold text-lg">S/{{ number_format($ventaSeleccionada->total, 2) }}</span></p>
                 </div>
 
-                <h4 class="mt-6 mb-2 font-semibold text-gray-700">🛒 Productos vendidos</h4>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full text-sm">
-                        <thead class="bg-gray-100 text-gray-700">
+                <h4 class="mt-8 mb-4 text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">🛒 Productos vendidos</h4>
+                <div class="overflow-x-auto max-h-72">
+                    <table class="min-w-full text-sm text-gray-800">
+                        <thead class="bg-gray-100 text-gray-700 sticky top-0">
                             <tr>
-                                <th class="px-3 py-2 text-left">Producto</th>
-                                <th class="px-3 py-2 text-left">Cantidad</th>
-                                <th class="px-3 py-2 text-left">P. Unitario</th>
-                                <th class="px-3 py-2 text-left">Subtotal</th>
+                                <th class="px-4 py-3 text-left font-semibold">Producto</th>
+                                <th class="px-4 py-3 text-left font-semibold">Cantidad</th>
+                                <th class="px-4 py-3 text-left font-semibold">P. Unitario</th>
+                                <th class="px-4 py-3 text-left font-semibold">Subtotal</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($ventaSeleccionada->detalles as $detalle)
-                                <tr class="border-b hover:bg-gray-50">
-                                    <td class="px-3 py-2">{{ $detalle->product->name ?? '🗑 Eliminado' }}</td>
-                                    <td class="px-3 py-2">{{ $detalle->cantidad }}</td>
-                                    <td class="px-3 py-2">S/{{ number_format($detalle->p_unitario, 2) }}</td>
-                                    <td class="px-3 py-2 font-semibold">S/{{ number_format($detalle->total, 2) }}</td>
+                                <tr class="border-b hover:bg-gray-50 transition-colors duration-150">
+                                    <td class="px-4 py-3">{{ $detalle->product->name ?? '🗑 Eliminado' }}</td>
+                                    <td class="px-4 py-3">{{ $detalle->cantidad }}</td>
+                                    <td class="px-4 py-3">S/{{ number_format($detalle->p_unitario, 2) }}</td>
+                                    <td class="px-4 py-3 font-semibold">S/{{ number_format($detalle->total, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
 
-                <div class="text-right mt-6">
-                    <button wire:click="cerrarModal" class="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg shadow">
+                <div class="text-right mt-8">
+                    <button wire:click="cerrarModal" class="px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-xl shadow-lg font-semibold transition duration-200">
                         Cerrar
                     </button>
                 </div>
