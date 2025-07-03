@@ -13,6 +13,9 @@ class CustomerCrud extends Component
     public $open = false;
     public $search = '';
     public $customer_id, $name, $lastname, $email, $phone, $address, $dniruc;
+    public $showSuggestions = false;
+    public $selectedCustomer = null;
+    public $showDetail = false;
 
     protected function rules()
     {
@@ -28,11 +31,28 @@ class CustomerCrud extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+        $this->showSuggestions = strlen($this->search) > 2;
     }
 
     public function searchCustomer()
     {
         $this->resetPage(); 
+        $this->showSuggestions = false;
+    }
+
+    public function selectCustomer($id)
+    {
+        $this->selectedCustomer = Customer::findOrFail($id);
+        $this->showDetail = true;
+        $this->showSuggestions = false;
+        $this->search = '';
+    }
+
+    public function backToList()
+    {
+        $this->selectedCustomer = null;
+        $this->showDetail = false;
+        $this->search = '';
     }
 
     public function render()
@@ -49,7 +69,20 @@ class CustomerCrud extends Component
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('livewire.customer-crud', compact('customers'));
+        // Para las sugerencias
+        $suggestions = collect();
+        if (strlen($this->search) > 2) {
+            $suggestions = Customer::query()
+                ->where(function ($query) {
+                    $query->where('name', 'like', "%{$this->search}%")
+                        ->orWhere('lastname', 'like', "%{$this->search}%")
+                        ->orWhere('dniruc', 'like', "%{$this->search}%");
+                })
+                ->limit(5)
+                ->get();
+        }
+
+        return view('livewire.customer-crud', compact('customers', 'suggestions'));
     }
 
     public function save()

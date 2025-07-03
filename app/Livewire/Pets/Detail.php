@@ -13,10 +13,24 @@ class Detail extends Component
 
     public $pet;
     public $photo;
+    public $consultations;
+    public $lastConsultation;
+
     public function mount(Pet $pet)
     {
         $this->pet = $pet;
+        $this->loadConsultations();
     }
+
+    public function loadConsultations()
+    {
+        $this->consultations = $this->pet->consultations()
+            ->orderBy('consultation_date', 'desc')
+            ->get();
+        
+        $this->lastConsultation = $this->consultations->first();
+    }
+
     public function savePhoto()
     {
         // Validar y guardar la foto si se sube una nueva
@@ -34,6 +48,7 @@ class Detail extends Component
             session()->flash('message', 'Foto actualizada correctamente.');
         }
     }
+
     public function render()
     {
         return view('livewire.pets.detail');

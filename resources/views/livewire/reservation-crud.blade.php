@@ -121,19 +121,6 @@
                         <td class="px-4 py-2">{{ $reservation->user->name }}</td>
                         <td class="px-4 py-2">{{ $reservation->service->name }}</td>
                         <td class="px-4 py-2">{{ $reservation->reservation_date }}</td>
-
-                        <td class="px-4 py-2">
-                            <span
-                                class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full
-                            @switch($reservation->status)
-                                @case('Confirmed') bg-green-100 text-green-800 @break
-                                @case('Pending') bg-yellow-100 text-yellow-800 @break
-                                @case('Canceled') bg-red-100 text-red-800 @break
-                                @default bg-gray-100 text-gray-600
-                            @endswitch">
-                                ● {{ ucfirst($reservation->status) }}
-                            </span>
-                        </td>
                         <td class="px-4 py-2 flex flex-wrap gap-2">
                             @can('reservas.edit')
                                 <x-buttons.edit wire:click="edit({{ $reservation->id }})">
@@ -160,9 +147,9 @@
                                     Cancelar Reserva
                                 </button>
                             @elseif ($reservation->status === 'Completed')
-                                <span class="text-gray-500 text-sm">Consulta Completada</span>
+                                <span class="text-gray-500 text-sm dark:text-gray-400">Consulta Completada</span>
                             @elseif ($reservation->status === 'Canceled')
-                                <span class="text-gray-500 text-sm">Reserva Cancelada</span>
+                                <span class="text-gray-500 text-sm dark:text-gray-400">Reserva Cancelada</span>
                             @endif
                         </td>
                     </tr>
@@ -183,36 +170,34 @@
         <x-slot name="content">
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-900">Cliente</label>
-                    <input type="text" disabled class="w-full rounded-md bg-gray-100"
+                    <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Cliente</label>
+                    <input type="text" disabled class="w-full rounded-md bg-gray-100 dark:bg-gray-800"
                         value="{{ optional(App\Models\Customer::find($customer_id))->name }}">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-900">Mascota</label>
-                    <input type="text" disabled class="w-full rounded-md bg-gray-100"
+                    <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Mascota</label>
+                    <input type="text" disabled class="w-full rounded-md bg-gray-100 dark:bg-gray-800   "
                         value="{{ optional(App\Models\Pet::find($pet_id))->name }}">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-900">Diagnóstico</label>
-                    <textarea wire:model="diagnostico" class="w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                    <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Diagnóstico</label>
+                    <textarea wire:model="diagnostico" class="w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-800"></textarea>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-900">Recomendaciones</label>
-                    <textarea wire:model="recomendaciones" class="w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                    <label class="block text-sm font-medium text-gray-900 dark:text-gray-100">Recomendaciones</label>
+                    <textarea wire:model="recomendaciones" class="w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-800  "></textarea>
                 </div>
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <button wire:click="$set('openConsultationModal', false)" type="button"
-                class="text-sm font-semibold text-gray-600 hover:text-gray-800">Cancelar</button>
-            <button wire:click="saveConsultation" type="button"
-                class="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700">
+            <x-buttons.cancel wire:click="$set('openConsultationModal', false)" type="button" class="mr-2">Cancelar</x-buttons.cancel>
+            <x-buttons.create wire:click="saveConsultation" type="button">
                 Guardar Consulta
-            </button>
+            </x-buttons.create>
         </x-slot>
     </x-dialog-modal>
-</div>
+</div> 
