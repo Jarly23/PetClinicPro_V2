@@ -10,7 +10,8 @@ use App\Models\Customer;
 use App\Models\User;
 use App\Models\Service;
 use App\Models\Consultation;
-use Illuminate\Support\Facades\Log;
+use Hamcrest\Type\IsBoolean;
+use PhpOffice\PhpSpreadsheet\Calculation\Logical\Boolean;
 
 class ReservationCrud extends Component
 {
@@ -23,7 +24,9 @@ class ReservationCrud extends Component
         $pet_id, $customer_id, $user_id, $service_id;
 
     public $pets = [];
-    public $diagnostico, $recomendaciones;
+    public $diagnostico, $recomendaciones, $peso, $motivo_consulta, $temperatura, $estado_general,
+        $tratamiento, $observations, $frecuencia_cardiaca, $frecuencia_respiratoria,
+        $desparasitacion, $vacunado;
     public $selected_services = [];
     public $owner_found = false;
 
@@ -160,13 +163,13 @@ class ReservationCrud extends Component
         $this->open = false;
         $this->openConsultationModal = false;
     }
+
     public function confirmReservation($reservationId)
     {
         $reservation = Reservation::find($reservationId);
 
         if ($reservation) {
             if ($reservation->status === 'Pending') {
-                // Cambiar el estado a "Confirmed"
                 $reservation->status = 'Confirmed';
                 $reservation->save();
 
@@ -178,20 +181,33 @@ class ReservationCrud extends Component
             session()->flash('error', 'La reserva no se encontró.');
         }
     }
+
     public function startConsultation($reservationId)
     {
         $reservation = Reservation::with(['pet', 'customer'])->find($reservationId);
 
         if ($reservation && $reservation->status === 'Confirmed') {
-            // Cargar datos relacionados
             $this->reservation_id = $reservation->id;
             $this->customer_id = $reservation->customer_id;
             $this->pet_id = $reservation->pet_id;
             $this->user_id = $reservation->user_id;
             $this->service_id = $reservation->service_id;
             $this->reservation_date = now();
+
+            $this->motivo_consulta = '';
+            $this->peso = '';
+            $this->temperatura = '';
+            $this->frecuencia_cardiaca = '';
+            $this->frecuencia_respiratoria = '';
+            $this->estado_general = '';
+            $this->desparasitacion = false;
+            $this->vacunado = false;
+            $this->observations = '';
             $this->diagnostico = '';
             $this->recomendaciones = '';
+            $this->tratamiento = '';
+            $this->selected_services = [];
+
             $this->openConsultationModal = true;
         } else {
             session()->flash('error', 'No se puede iniciar la consulta para esta reserva.');
@@ -203,8 +219,7 @@ class ReservationCrud extends Component
         $reservation = Reservation::find($reservationId);
 
         if ($reservation) {
-            if ($reservation->status === 'Pending' || $reservation->status === 'Confirmed') {
-                // Cambiar el estado a "Canceled" si la reserva está pendiente o confirmada
+            if (in_array($reservation->status, ['Pending', 'Confirmed'])) {
                 $reservation->status = 'Canceled';
                 $reservation->save();
 
@@ -216,31 +231,71 @@ class ReservationCrud extends Component
             session()->flash('error', 'La reserva no se encontró.');
         }
     }
+
     public function saveConsultation()
     {
         $this->validate([
-            'diagnostico' => 'required|string|min:3',
-            'recomendaciones' => 'required|string|min:3',
+            'motivo_consulta' => 'nullable|string|max:255',
+            'peso' => 'nullable|numeric|min:0|max:100',
+            'temperatura' => 'nullable|numeric|min:30|max:45',
+            'frecuencia_cardiaca' => 'nullable|string|max:50',
+            'frecuencia_respiratoria' => 'nullable|string|max:50',
+            'estado_general' => 'nullable|string|max:100',
+            'desparasitacion' => 'boolean',
+            'vacunado' => 'boolean',
+            'observations' => 'nullable|string',
+            'diagnostico' => 'nullable|string',
+            'recomendaciones' => 'nullable|string',
+            'tratamiento' => 'nullable|string',
+            'selected_services' => 'array|min:0',
+            'selected_services.*' => 'exists:services,id',
         ]);
 
-        $consultation = Consultation::create([
-            'reservation_id' => $this->reservation_id,
-            'customer_id' => $this->customer_id,
-            'pet_id' => $this->pet_id,
-            'user_id' => $this->user_id,
-            'consultation_date' => now(),
-            'diagnostico' => $this->diagnostico,
-            'recomendaciones' => $this->recomendaciones,
-            'observations' => '',
-        ]);
+        // Si quieres que permita editar una consulta existente:
+        $consultation = Consultation::updateOrCreate(
+            ['reservation_id' => $this->reservation_id],
+            [
+                'customer_id' => $this->customer_id,
+                'pet_id' => $this->pet_id,
+                'user_id' => $this->user_id,
+                'consultation_date' => now(),
+                'motivo_consulta' => $this->motivo_consulta,
+                'peso' => $this->peso === '' ? null : $this->peso,
+                'temperatura' => $this->temperatura === '' ? null : $this->temperatura,
+                'frecuencia_cardiaca' => $this->frecuencia_cardiaca === '' ? null : $this->frecuencia_cardiaca,
+                'frecuencia_respiratoria' => $this->frecuencia_respiratoria === '' ? null : $this->frecuencia_respiratoria,
+                'estado_general' => $this->estado_general,
+                'desparasitacion' => $this->desparasitacion ?? false,
+                'vacunado' => $this->vacunado ?? false,
+                'observations' => $this->observations,
+                'diagnostico' => $this->diagnostico,
+                'recomendaciones' => $this->recomendaciones,
+                'tratamiento' => $this->tratamiento,
+            ]
+        );
 
-        // Guardar servicios seleccionados en la tabla pivote consultation_service
         $consultation->services()->sync($this->selected_services);
 
-        // Cambiar estado de la reserva
+        // Actualiza estado de reserva a completada
         Reservation::find($this->reservation_id)->update(['status' => 'Completed']);
 
-        $this->reset(['diagnostico', 'recomendaciones', 'openConsultationModal', 'selected_services']);
+        // Resetea campos
+        $this->reset([
+            'diagnostico',
+            'recomendaciones',
+            'motivo_consulta',
+            'tratamiento',
+            'peso',
+            'temperatura',
+            'frecuencia_cardiaca',
+            'frecuencia_respiratoria',
+            'estado_general',
+            'desparasitacion',
+            'vacunado',
+            'observations',
+            'openConsultationModal',
+            'selected_services',
+        ]);
 
         session()->flash('message', 'Consulta registrada exitosamente.');
     }
