@@ -38,7 +38,7 @@
                         Nombre de la Categoría
                     </label>
                     <input wire:model="name" type="text" id="category-name" 
-                        class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out" 
+                        class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-indigo-500 transition duration-150 ease-in-out" 
                         placeholder="Ingrese el nombre de la categoría">
                     @error('name') 
                         <span class="text-red-500 text-sm">{{ $message }}</span> 
@@ -51,7 +51,7 @@
             <button wire:click="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition duration-200 mr-2">
                 Cancelar
             </button>
-            <button wire:click="save" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition duration-200" 
+            <button wire:click="save" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200" 
                 wire:loading.attr="disabled">
                 Guardar
             </button>

@@ -12,26 +12,50 @@
       </p>
     </div>
 
-    <!-- Métricas -->
-    <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-sm text-gray-500">Ventas del mes</p>
-        <p class="text-xl font-bold text-gray-900">S/ {{ number_format($totalSalesMonth, 2) }}</p>
+    <!-- Métricas Mejoradas -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full mx-auto px-6">
+      <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-start hover:shadow-2xl transition-shadow duration-300">
+        <p class="text-sm font-semibold text-blue-500 uppercase mb-2 tracking-wide">Ventas del mes</p>
+        <div class="flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h4l3 6 4-12 3 6h4" />
+          </svg>
+          <p class="text-2xl font-extrabold text-gray-900">S/ {{ number_format($totalSalesMonth, 2) }}</p>
+        </div>
       </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-sm text-gray-500">Compras del mes</p>
-        <p class="text-xl font-bold text-gray-900">S/ {{ number_format($totalPurchasesMonth, 2) }}</p>
+
+      <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-start hover:shadow-2xl transition-shadow duration-300">
+        <p class="text-sm font-semibold text-purple-500 uppercase mb-2 tracking-wide">Compras del mes</p>
+        <div class="flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h4l3 6 4-12 3 6h4" />
+          </svg>
+          <p class="text-2xl font-extrabold text-gray-900">S/ {{ number_format($totalPurchasesMonth, 2) }}</p>
+        </div>
       </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-sm text-gray-500">Total productos</p>
-        <p class="text-xl font-bold text-gray-900">{{ $totalProducts }}</p>
+
+      <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-start hover:shadow-2xl transition-shadow duration-300">
+        <p class="text-sm font-semibold text-indigo-500 uppercase mb-2 tracking-wide">Total productos</p>
+        <div class="flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9" stroke-linecap="round" stroke-linejoin="round" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
+          </svg>
+          <p class="text-2xl font-extrabold text-gray-900">{{ $totalProducts }}</p>
+        </div>
       </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-sm text-gray-500">Stock total</p>
-        <p class="text-xl font-bold text-gray-900">{{ number_format($stockTotal) }}</p>
+
+      <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-start hover:shadow-2xl transition-shadow duration-300">
+        <p class="text-sm font-semibold text-teal-500 uppercase mb-2 tracking-wide">Stock total</p>
+        <div class="flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16" />
+          </svg>
+          <p class="text-2xl font-extrabold text-gray-900">{{ number_format($stockTotal) }}</p>
+        </div>
       </div>
     </section>
-
 
       <!-- Sección: Ventas de hoy + Entradas/Salidas + Stock Bajo + productos por vencer -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
