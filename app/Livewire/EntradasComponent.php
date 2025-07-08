@@ -175,10 +175,6 @@ class EntradasComponent extends Component
         $this->reset(['entradaId', 'id_product', 'cantidad', 'precio_u', 'precio_actual','expiration_date']);
     }
 
-    public function exportarExcel()
-    {
-        return Excel::download(new EntradasExport, 'entradas.xlsx');
-    }
         public function confirmDeleteEntrada($id)
     {
         $this->entradaToDelete = $id;

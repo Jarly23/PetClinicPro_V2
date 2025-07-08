@@ -52,4 +52,8 @@ class Product extends Model
     {
         return $this->hasMany(Vaccine::class);
     }
+    public function entradasInve()
+    {
+        return $this->hasMany(\App\Models\EntradaInve::class, 'id_product', 'id_product');
+    }
 }
