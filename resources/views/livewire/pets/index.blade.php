@@ -50,7 +50,7 @@
         <table class="min-w-full bg-white  rounded shadow dark:bg-gray-700">
             <thead class="bg-gray-100 dark:bg-gray-800">
                 <tr>
-                    @foreach (['Fecha de registro','Nombre', 'Especie', 'Raza', 'Edad', 'Dueño', 'Acciones'] as $col)
+                    @foreach (['Fecha de registro','Id','Nombre', 'Especie', 'Raza', 'Edad', 'Dueño', 'Acciones'] as $col)
                         <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 dark:text-gray-100">{{ $col }}</th>
                     @endforeach
                 </tr>
@@ -59,6 +59,7 @@
                 @foreach ($pets as $pet)
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-400">
                         <td class="px-4 py-2 text-sm">{{ $pet->created_at }}</td>
+                        <td class="px-4 py-2 text-sm">{{$pet->id}}</td>
                         <td class="px-4 py-2 text-sm">{{ $pet->name }}</td>
                         <td class="px-4 py-2 text-sm">{{ $pet->animaltype->name ?? '-' }}</td>
                         <td class="px-4 py-2 text-sm">{{ $pet->breed }}</td>

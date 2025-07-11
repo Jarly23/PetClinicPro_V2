@@ -8,49 +8,26 @@ use Carbon\Carbon;
 
 class MonthlyConsultationsChart extends Component
 {
-    public $selectedYear;
-    public $years = [];
-
     public $labels = [];
     public $data = [];
 
     public function mount()
-    {
-        $this->selectedYear = now()->year;
-
-        $this->years = DB::table('consultations')
-            ->selectRaw('YEAR(created_at) as year')
-            ->distinct()
-            ->orderBy('year', 'desc')
-            ->pluck('year')
-            ->toArray();
-
-        $this->loadChartData();
-    }
-
-    public function updatedSelectedYear()
     {
         $this->loadChartData();
     }
 
     public function loadChartData()
     {
-        $monthlyIncome = DB::table('consultation_service')
+        $yearlyIncome = DB::table('consultation_service')
             ->join('services', 'services.id', '=', 'consultation_service.service_id')
             ->join('consultations', 'consultations.id', '=', 'consultation_service.consultation_id')
-            ->whereYear('consultations.created_at', $this->selectedYear)
-            ->selectRaw('MONTH(consultations.created_at) as month, SUM(services.price) as total')
-            ->groupBy('month')
-            ->orderBy('month')
-            ->pluck('total', 'month');
+            ->selectRaw('YEAR(consultations.consultation_date) as year, SUM(services.price) as total')
+            ->groupBy('year')
+            ->orderBy('year')
+            ->pluck('total', 'year');
 
-        $this->labels = [];
-        $this->data = [];
-
-        foreach (range(1, 12) as $month) {
-            $this->labels[] = Carbon::create()->month($month)->locale('es')->translatedFormat('F');
-            $this->data[] = $monthlyIncome->get($month, 0);
-        }
+        $this->labels = $yearlyIncome->keys()->toArray();
+        $this->data = $yearlyIncome->values()->toArray();
     }
     public function render()
     {
