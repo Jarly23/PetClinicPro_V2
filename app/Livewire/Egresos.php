@@ -229,30 +229,31 @@ class Egresos extends Component
     }
 
     public function render()
-    {
-        $fecha = $this->filtroMes ? Carbon::parse($this->filtroMes) : now();
+{
+    $fecha = $this->filtroMes ? Carbon::parse($this->filtroMes) : now();
 
-        $egresos = Egreso::porMes($fecha->month, $fecha->year)
-            ->latest()
-            ->paginate(10);
+    $egresos = Egreso::porMes($fecha->month, $fecha->year)
+        ->latest()
+        ->paginate(10);
 
-        $precioConsulta = 50; // Valor fijo
-        $cantidadConsultas = Consultation::whereMonth('created_at', $fecha->month)
+    $precioConsulta = 50; // Valor fijo
 
-        // Total por servicios - Calculamos el precio real de los servicios prestados
-        $totalServicios = Consultation::whereMonth('created_at', $fecha->month)
+    // Cantidad de consultas en el mes
+    $cantidadConsultas = Consultation::whereMonth('created_at', $fecha->month)
+        ->whereYear('created_at', $fecha->year)
+        ->count();
 
-            ->whereYear('created_at', $fecha->year)
-            ->with('services')
-            ->get()
-            ->sum(function ($consultation) {
-                return $consultation->services->sum('price');
-            });
+    // Total por servicios - Calculamos el precio real de los servicios prestados
+    $totalServicios = Consultation::whereMonth('created_at', $fecha->month)
+        ->whereYear('created_at', $fecha->year)
+        ->with('services')
+        ->get()
+        ->sum(function ($consultation) {
+            return $consultation->services->sum('price');
+        });
 
-
-        // Ganancia productos - Optimizamos la consulta
-
-        $gananciaProductos = detalle_venta::whereHas('venta', function ($q) use ($fecha) {
+    // Ganancia productos - Optimizamos la consulta
+    $gananciaProductos = detalle_venta::whereHas('venta', function ($q) use ($fecha) {
             $q->whereMonth('fecha', $fecha->month)
               ->whereYear('fecha', $fecha->year);
         })
@@ -260,31 +261,26 @@ class Egresos extends Component
         ->selectRaw('SUM((detalle_ventas.p_unitario - products.purchase_price) * detalle_ventas.cantidad) as ganancia')
         ->value('ganancia') ?? 0;
 
+    // Egresos del mes usando el método del modelo
+    $egresosMes = Egreso::totalPorPeriodo($fecha->month, $fecha->year);
 
-        $egresosMes = Egreso::whereMonth('fecha', $fecha->month)
-            ->whereYear('fecha', $fecha->year)
-            ->sum('monto');
+    $this->balance = ($totalServicios + $gananciaProductos) - $egresosMes;
+    $balance = $this->balance;
+    $estadisticas = $this->getEstadisticasBalance();
 
-        
-        // Egresos del mes usando el método del modelo
-        $egresosMes = Egreso::totalPorPeriodo($fecha->month, $fecha->year);
+    // Evolución mensual para el gráfico
+    $evolucion = $this->getEvolucionMensual();
 
-        $this->balance = ($totalServicios + $gananciaProductos) - $egresosMes;
-        $balance = $this->balance;
-        $estadisticas = $this->getEstadisticasBalance();
+    return view('livewire.egresos', compact(
+        'egresos', 
+        'cantidadConsultas',
+        'totalServicios', 
+        'gananciaProductos', 
+        'egresosMes', 
+        'balance',
+        'estadisticas',
+        'evolucion'
+    ));
+}
 
-
-        // Evolución mensual para el gráfico
-        $evolucion = $this->getEvolucionMensual();
-
-        return view('livewire.egresos', compact(
-            'egresos', 
-            'totalServicios', 
-            'gananciaProductos', 
-            'egresosMes', 
-            'balance',
-            'estadisticas',
-            'evolucion'
-        ));
-    }
 }
