@@ -26,7 +26,7 @@ PetClinicPro V2 es un sistema completo de gestión para clínicas veterinarias d
 - **Backend**: Laravel 10.x
 - **Frontend**: Livewire 3.x, Tailwind CSS 3.x
 - **Autenticación**: Laravel Jetstream con Fortify
-- **Base de Datos**: MySQL/PostgreSQL
+- **Base de Datos**: MySQL
 - **Permisos**: Spatie Laravel Permission
 - **Reportes**: DomPDF, PhpSpreadsheet
 - **Charts**: Chart.js
@@ -45,7 +45,7 @@ Este proyecto utiliza como base la plantilla **Mosaic Lite Laravel** de [Cruip.c
 - Composer >= 2.0
 - Node.js >= 16.0
 - NPM >= 8.0
-- MySQL >= 8.0 o PostgreSQL >= 13.0
+- MySQL >= 8.0
 - Servidor web (Apache/Nginx)
 
 ## 🚀 Instalación
